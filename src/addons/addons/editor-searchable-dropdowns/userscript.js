@@ -124,6 +124,8 @@ export default async function ({ addon, console, msg }) {
     resultOfLastGetOptions = options;
     return options;
   };
+  Blockly.FieldTextDropdown.prototype.getOptions = Blockly.FieldDropdown.prototype.getOptions;
+  Blockly.FieldNumberDropdown.prototype.getOptions = Blockly.FieldDropdown.prototype.getOptions;
 
   const oldFieldVariableOnItemSelected = Blockly.FieldVariable.prototype.onItemSelected;
   Blockly.FieldVariable.prototype.onItemSelected = function (menu, menuItem) {
