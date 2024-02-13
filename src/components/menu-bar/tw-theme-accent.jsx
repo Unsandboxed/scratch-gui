@@ -17,7 +17,7 @@ const options = defineMessages({
     [ACCENT_GRAY]: {
         defaultMessage: 'Gray',
         description: 'Name of the gray color scheme, used by Unsandboxed by default.',
-        id: 'tw.accent.blue'
+        id: 'tw.accent.gray'
     },
     [ACCENT_RED]: {
         defaultMessage: 'Red',
