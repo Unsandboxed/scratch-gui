@@ -641,6 +641,7 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
         ${blockSeparator}
         <block type="operator_and"/>
         <block type="operator_or"/>
+        <block type="operator_xor"/>
         <block type="operator_not"/>
         ${blockSeparator}
         ${isInitialSetup ? '' : `
@@ -658,6 +659,23 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
             </block>
             <block type="operator_letter_of">
                 <value name="LETTER">
+                    <shadow type="math_whole_number">
+                        <field name="NUM">1</field>
+                    </shadow>
+                </value>
+                <value name="STRING">
+                    <shadow type="text">
+                        <field name="TEXT">${apple}</field>
+                    </shadow>
+                </value>
+            </block>
+            <block type="operator_letters_of">
+                <value name="LETTER1">
+                    <shadow type="math_whole_number">
+                        <field name="NUM">1</field>
+                    </shadow>
+                </value>
+                <value name="LETTER2">
                     <shadow type="math_whole_number">
                         <field name="NUM">1</field>
                     </shadow>
