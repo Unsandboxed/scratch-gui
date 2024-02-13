@@ -22,7 +22,7 @@ const ACCENT_MAP = {
     [ACCENT_RED]: accentRed,
     [ACCENT_GRAY]: accentGray
 };
-const ACCENT_DEFAULT = ACCENT_RED;
+const ACCENT_DEFAULT = ACCENT_GRAY;
 
 const GUI_LIGHT = 'light';
 const GUI_DARK = 'dark';
