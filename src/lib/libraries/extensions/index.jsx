@@ -336,28 +336,6 @@ export default [
         helpLink: 'https://scratch.mit.edu/vernier'
     },
     {
-        // not really an extension, but it's easiest to present it as one
-        name: (
-            <FormattedMessage
-                defaultMessage="Custom Reporters"
-                description="Name of custom reporters extension"
-                id="tw.customReporters.name"
-            />
-        ),
-        extensionId: 'procedures_enable_return',
-        iconURL: returnIcon,
-        description: (
-            <FormattedMessage
-                defaultMessage="Allow custom blocks to output values and be used as inputs."
-                description="Description of custom reporters extension"
-                id="tw.customReporters.description"
-            />
-        ),
-        tags: ['tw'],
-        incompatibleWithScratch: true,
-        featured: true
-    },
-    {
         name: (
             <FormattedMessage
                 defaultMessage="{APP_NAME} Blocks"
@@ -378,7 +356,7 @@ export default [
             />
         ),
         incompatibleWithScratch: true,
-        tags: ['tw'],
+        tags: ['tw', 'usb'],
         featured: true
     },
     {
@@ -398,7 +376,7 @@ export default [
                 id="tw.customExtension.description"
             />
         ),
-        tags: ['tw'],
+        tags: ['tw', 'usb'],
         featured: true
         // Not marked as incompatible with Scratch so that clicking on it doesn't show a prompt
     }
