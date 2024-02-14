@@ -98,7 +98,7 @@ const Footer = () => (
             <div className={styles.footerText}>
                 <FormattedMessage
                     // eslint-disable-next-line max-len
-                    defaultMessage="{APP_NAME} is not affiliated with Scratch, the Scratch Team, or the Scratch Foundation."
+                    defaultMessage="Unsandboxed and TurboWarp are not affiliated with Scratch, the Scratch Team, or the Scratch Foundation."
                     description="Disclaimer that Unsandboxed is not connected to Scratch"
                     id="tw.footer.disclaimer"
                 />
@@ -159,7 +159,7 @@ const Footer = () => (
                             id="tw.feedback"
                         />
                     </a>
-                    <a href="https://github.com/TurboWarp/">
+                    <a href="https://github.com/Unsandboxed/">
                         <FormattedMessage
                             defaultMessage="Source Code"
                             description="Link to source code"
