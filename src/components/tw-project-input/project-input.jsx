@@ -8,7 +8,8 @@ import {defaultProjectId} from '../../reducers/project-state';
 import styles from './project-input.css';
 import {setProjectId} from '../../lib/tw-navigation-utils';
 
-const PROJECT_BASE = 'https://scratch.mit.edu/projects/';
+const SET_CUSTOM_STAGE_SIZE = 'tw/custom-stage-size/SET';
+const setCustomStageSize = require('../../reducers/custom-stage-size');
 
 const messages = defineMessages({
     tooltip: {
@@ -38,6 +39,7 @@ class ProjectInput extends React.Component {
             if (this.props.projectId === defaultProjectId) {
                 this.input.focus();
                 this.input.selectionStart = this.input.value.length;
+                setCustomStageSize(480, 360);
             } else {
                 this.input.blur();
             }
