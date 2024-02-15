@@ -64,34 +64,6 @@ const motion = function (isInitialSetup, isStage, targetId, colors) {
                 </shadow>
             </value>
         </block>
-        <block type="motion_glideto" id="motion_glideto">
-            <value name="SECS">
-                <shadow type="math_number">
-                    <field name="NUM">1</field>
-                </shadow>
-            </value>
-            <value name="TO">
-                <shadow type="motion_glideto_menu">
-                </shadow>
-            </value>
-        </block>
-        <block type="motion_glidesecstoxy">
-            <value name="SECS">
-                <shadow type="math_number">
-                    <field name="NUM">1</field>
-                </shadow>
-            </value>
-            <value name="X">
-                <shadow id="glidex" type="math_number">
-                    <field name="NUM">0</field>
-                </shadow>
-            </value>
-            <value name="Y">
-                <shadow id="glidey" type="math_number">
-                    <field name="NUM">0</field>
-                </shadow>
-            </value>
-        </block>
         ${blockSeparator}
         <block type="motion_pointindirection">
             <value name="DIRECTION">
@@ -135,8 +107,6 @@ const motion = function (isInitialSetup, isStage, targetId, colors) {
                 </shadow>
             </value>
         </block>
-        ${blockSeparator}
-        <block type="motion_ifonedgebounce"/>
         ${blockSeparator}
         <block type="motion_setrotationstyle"/>
         ${blockSeparator}
@@ -366,8 +336,6 @@ const events = function (isInitialSetup, isStage, targetId, colors) {
         ` : `
             <block type="event_whenthisspriteclicked"/>
         `}
-        <block type="event_whenbackdropswitchesto">
-        </block>
         ${blockSeparator}
         <block type="event_whengreaterthan">
             <value name="VALUE">
@@ -469,14 +437,6 @@ const sensing = function (isInitialSetup, isStage, targetId, colors) {
                     <shadow type="colour_picker"/>
                 </value>
             </block>
-            <block type="sensing_coloristouchingcolor">
-                <value name="COLOR">
-                    <shadow type="colour_picker"/>
-                </value>
-                <value name="COLOR2">
-                    <shadow type="colour_picker"/>
-                </value>
-            </block>
             <block type="sensing_distanceto">
                 <value name="DISTANCETOMENU">
                     <shadow type="sensing_distancetomenu"/>
@@ -503,13 +463,6 @@ const sensing = function (isInitialSetup, isStage, targetId, colors) {
         <block type="sensing_mousedown"/>
         <block type="sensing_mousex"/>
         <block type="sensing_mousey"/>
-        ${isStage ? '' : `
-            ${blockSeparator}
-            '<block type="sensing_setdragmode" id="sensing_setdragmode"></block>'+
-            ${blockSeparator}
-        `}
-        ${blockSeparator}
-        <block id="loudness" type="sensing_loudness"/>
         ${blockSeparator}
         <block id="timer" type="sensing_timer"/>
         <block type="sensing_resettimer"/>
@@ -519,10 +472,8 @@ const sensing = function (isInitialSetup, isStage, targetId, colors) {
                 <shadow id="sensing_of_object_menu" type="sensing_of_object_menu"/>
             </value>
         </block>
-        ${blockSeparator}
-        <block id="current" type="sensing_current"/>
+        ${categorySeparator}
         <block type="sensing_dayssince2000"/>
-        ${blockSeparator}
         <block type="sensing_username"/>
         ${categorySeparator}
     </category>
