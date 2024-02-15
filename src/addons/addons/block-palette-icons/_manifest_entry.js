@@ -6,7 +6,7 @@ const manifest = {
   "tags": [
     "theme"
   ],
-  "enabledByDefault": false,
+  "enabledByDefault": true,
   "dynamicDisable": true,
   "userstyles": [
     {
