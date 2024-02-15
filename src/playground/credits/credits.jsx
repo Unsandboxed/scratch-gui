@@ -81,7 +81,7 @@ const Credits = () => (
         <section>
             <h2>Scratch</h2>
             <p>
-                {APP_NAME} and TurboWarp are based on the work of the <a href="https://scratch.mit.edu/credits">Scratch contributors</a> but is not endorsed by Scratch in any way.
+                {APP_NAME} and TurboWarp are based on the work of the <a href="https://scratch.mit.edu/credits">Scratch contributors</a>, but are not endorsed by Scratch in any way.
             </p>
             <p>
                 <a href="https://scratch.mit.edu/donate">
