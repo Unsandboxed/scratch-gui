@@ -11,6 +11,7 @@ const manifest = {
   "tags": [
     "new"
   ],
+  "enabledByDefault": true,
   "userscripts": [
     {
       "url": "userscript.js"
