@@ -319,7 +319,7 @@ class Interface extends React.Component {
                                 <p>
                                     <FormattedMessage
                                         // eslint-disable-next-line max-len
-                                        defaultMessage="{APP_NAME} is a Scratch mod that compiles projects to JavaScript to make them run really fast. Try it out by inputting a project ID or URL above or choosing a featured project below."
+                                        defaultMessage="{APP_NAME} is a TurboWarp mod with many changes to the editor. Unlike TurboWarp, we don't guarantee projects made in Unsandboxed will work in Scratch."
                                         description="Description of Unsandboxed on the homepage"
                                         id="tw.home.description"
                                         values={{
