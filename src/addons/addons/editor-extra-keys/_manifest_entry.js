@@ -20,11 +20,6 @@ const manifest = {
       "type": "notice",
       "text": "The \"Shift keys\" include keys which typically require the Shift key and a number key, like hashtag, exclamation mark and more. These keys only work with the \"when () key pressed\" block and do not work on all operating systems or keyboard layouts.",
       "id": "shiftKeysWarn"
-    },
-    {
-      "type": "warning",
-      "text": "The \"TurboWarp keys\" will only work in TurboWarp, not in Scratch.",
-      "id": "twKeysWarn"
     }
   ],
   "settings": [
@@ -44,12 +39,13 @@ const manifest = {
     },
     {
       "dynamic": true,
-      "name": "Show TurboWarp keys",
+      "name": "Show Unsandboxed keys",
       "id": "twKeys",
       "type": "boolean",
-      "default": false
+      "default": true
     }
   ],
+  "enabledByDefault": true,
   "userscripts": [
     {
       "url": "userscript.js"
