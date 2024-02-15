@@ -64,6 +64,18 @@ const motion = function (isInitialSetup, isStage, targetId, colors) {
                 </shadow>
             </value>
         </block>
+        <block type="motion_changebyxy">
+            <value name="X">
+                <shadow id="movex" type="math_number">
+                    <field name="NUM">0</field>
+                </shadow>
+            </value>
+            <value name="Y">
+                <shadow id="movey" type="math_number">
+                    <field name="NUM">0</field>
+                </shadow>
+            </value>
+        </block>
         ${blockSeparator}
         <block type="motion_pointindirection">
             <value name="DIRECTION">
@@ -75,6 +87,18 @@ const motion = function (isInitialSetup, isStage, targetId, colors) {
         <block type="motion_pointtowards">
             <value name="TOWARDS">
                 <shadow type="motion_pointtowards_menu">
+                </shadow>
+            </value>
+        </block>
+        <block type="motion_pointtowardsxy">
+            <value name="X">
+                <shadow id="movex" type="math_number">
+                    <field name="NUM">0</field>
+                </shadow>
+            </value>
+            <value name="Y">
+                <shadow id="movey" type="math_number">
+                    <field name="NUM">0</field>
                 </shadow>
             </value>
         </block>
@@ -109,6 +133,7 @@ const motion = function (isInitialSetup, isStage, targetId, colors) {
         </block>
         ${blockSeparator}
         <block type="motion_setrotationstyle"/>
+        <block id="${targetId}_rotationstyle" type="motion_rotationstyle"/>
         ${blockSeparator}
         <block id="${targetId}_xposition" type="motion_xposition"/>
         <block id="${targetId}_yposition" type="motion_yposition"/>
@@ -329,14 +354,15 @@ const events = function (isInitialSetup, isStage, targetId, colors) {
     return `
     <category name="%{BKY_CATEGORY_EVENTS}" id="events" colour="${colors.primary}" secondaryColour="${colors.tertiary}">
         <block type="event_whenflagclicked"/>
+        <block type="event_when"/>
         <block type="event_whenkeypressed">
         </block>
+        ${blockSeparator}
         ${isStage ? `
             <block type="event_whenstageclicked"/>
         ` : `
             <block type="event_whenthisspriteclicked"/>
         `}
-        ${blockSeparator}
         <block type="event_whengreaterthan">
             <value name="VALUE">
                 <shadow type="math_number">
