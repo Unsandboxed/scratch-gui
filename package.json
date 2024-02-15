@@ -91,7 +91,7 @@
     "scratch-audio": "github:TurboWarp/scratch-audio#develop",
     "scratch-blocks": "github:Unsandboxed/scratch-blocks#develop-builds",
     "scratch-paint": "github:TurboWarp/scratch-paint#develop",
-    "scratch-render": "github:TurboWarp/scratch-render#develop",
+    "scratch-render": "github:Unsandboxed/scratch-render#develop",
     "scratch-vm": "github:Unsandboxed/scratch-vm#develop",
     "style-loader": "^0.23.0",
     "text-encoding": "0.7.0",
