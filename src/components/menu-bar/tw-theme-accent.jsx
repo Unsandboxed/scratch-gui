@@ -7,13 +7,18 @@ import {connect} from 'react-redux';
 import check from './check.svg';
 import dropdownCaret from './dropdown-caret.svg';
 import {MenuItem, Submenu} from '../menu/menu.jsx';
-import {ACCENT_BLUE, ACCENT_MAP, ACCENT_PURPLE, ACCENT_RED, Theme} from '../../lib/themes/index.js';
+import {ACCENT_GRAY, ACCENT_BLUE, ACCENT_MAP, ACCENT_PURPLE, ACCENT_RED, Theme} from '../../lib/themes/index.js';
 import {openAccentMenu, accentMenuOpen, closeSettingsMenu} from '../../reducers/menus.js';
 import {setTheme} from '../../reducers/theme.js';
 import {persistTheme} from '../../lib/themes/themePersistance.js';
 import styles from './settings-menu.css';
 
 const options = defineMessages({
+    [ACCENT_GRAY]: {
+        defaultMessage: 'Gray',
+        description: 'Name of the gray color scheme, used by Unsandboxed by default.',
+        id: 'tw.accent.gray'
+    },
     [ACCENT_RED]: {
         defaultMessage: 'Red',
         description: 'Name of the red color scheme, used by TurboWarp by default.',
