@@ -47,9 +47,15 @@ import gdxforConnectionIconURL from './gdxfor/gdxfor-illustration.svg';
 import gdxforConnectionSmallIconURL from './gdxfor/gdxfor-small.svg';
 
 import twIcon from './tw/tw.svg';
+import twInsetIcon from './tw/tw-small.svg';
+
 import customExtensionIcon from './custom/custom.svg';
+import customExtensionInsetIcon from './custom/custom-small.svg';
+
 import returnIcon from './custom/return.svg';
+
 import galleryIcon from './gallery/gallery.svg';
+
 import {APP_NAME} from '../../brand';
 
 export default [
@@ -348,6 +354,7 @@ export default [
         ),
         extensionId: 'tw',
         iconURL: twIcon,
+        insetIconURL: twInsetIcon,
         description: (
             <FormattedMessage
                 defaultMessage="Weird new blocks."
@@ -369,6 +376,7 @@ export default [
         ),
         extensionId: 'custom_extension',
         iconURL: customExtensionIcon,
+        insetIconURL: customExtensionInsetIcon,
         description: (
             <FormattedMessage
                 defaultMessage="Load custom extensions from URLs, files, or JavaScript source code."
