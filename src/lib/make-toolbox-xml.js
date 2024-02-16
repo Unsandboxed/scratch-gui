@@ -507,6 +507,26 @@ const sensing = function (isInitialSetup, isStage, targetId, colors) {
     `;
 };
 
+/* eslint-disable no-unused-vars */
+const camera = function (isInitialSetup, isStage, targetId, colors) {
+    return `
+    <category name="%{BKY_CATEGORY_CAMERA}" id="camera" colour="${colors.primary}" secondaryColour="${colors.tertiary}">
+        <block type="camera_movetoxy">
+            <value name="X">
+                <shadow id="movex" type="math_number">
+                    <field name="NUM">0</field>
+                </shadow>
+            </value>
+            <value name="Y">
+                <shadow id="movey" type="math_number">
+                    <field name="NUM">0</field>
+                </shadow>
+            </value>
+        </block>
+    </category>
+    `;
+};
+
 const operators = function (isInitialSetup, isStage, targetId, colors) {
     const apple = translate('OPERATORS_JOIN_APPLE', 'apple');
     const banana = translate('OPERATORS_JOIN_BANANA', 'banana');
@@ -795,6 +815,7 @@ const makeToolboxXML = function (isInitialSetup, isStage = true, targetId, categ
     const eventsXML = moveCategory('event') || events(isInitialSetup, isStage, targetId, colors.event);
     const controlXML = moveCategory('control') || control(isInitialSetup, isStage, targetId, colors.control);
     const sensingXML = moveCategory('sensing') || sensing(isInitialSetup, isStage, targetId, colors.sensing);
+    const cameraXML = moveCategory('camera') || camera(isInitialSetup, isStage, targetId, colors.camera);
     const operatorsXML = moveCategory('operators') || operators(isInitialSetup, isStage, targetId, colors.operators);
     const variablesXML = moveCategory('data') || variables(isInitialSetup, isStage, targetId, colors.data);
     const myBlocksXML = moveCategory('procedures') || myBlocks(isInitialSetup, isStage, targetId, colors.more);
@@ -814,6 +835,7 @@ const makeToolboxXML = function (isInitialSetup, isStage = true, targetId, categ
         eventsXML, gap,
         controlXML, gap,
         sensingXML, gap,
+        cameraXML, gap,
         operatorsXML, gap,
         variablesXML, gap,
         myBlocksXML
