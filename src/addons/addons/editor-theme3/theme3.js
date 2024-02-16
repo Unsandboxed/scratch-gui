@@ -47,6 +47,11 @@ const categories = [
     colorId: "sensing",
   },
   {
+    categoryId: "camera",
+    settingId: "camera-color",
+    colorId: "camera",
+  },
+  {
     categoryId: "operators",
     settingId: "operators-color",
     colorId: "operators",
