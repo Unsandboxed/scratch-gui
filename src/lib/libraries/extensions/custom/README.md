@@ -1,6 +1,6 @@
 # Image attribution
 
-## custom.svg
+## custom.svg + custom-small.svg
 
 { } characters from https://github.com/jesseweed/seti-ui/blob/master/icons/json.svg under the MIT License:
 
