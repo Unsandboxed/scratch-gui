@@ -523,6 +523,51 @@ const camera = function (isInitialSetup, isStage, targetId, colors) {
                 </shadow>
             </value>
         </block>
+        <block type="camera_changebyxy">
+            <value name="X">
+                <shadow type="math_number">
+                    <field name="NUM">0</field>
+                </shadow>
+            </value>
+            <value name="Y">
+                <shadow type="math_number">
+                    <field name="NUM">0</field>
+                </shadow>
+            </value>
+        </block>
+        ${blockSeparator}
+        <block type="camera_setx">
+            <value name="X">
+                <shadow id="movex" type="math_number">
+                    <field name="NUM">0</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="camera_changex">
+            <value name="X">
+                <shadow type="math_number">
+                    <field name="NUM">0</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="camera_sety">
+            <value name="Y">
+                <shadow id="movex" type="math_number">
+                    <field name="NUM">0</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="camera_changey">
+            <value name="Y">
+                <shadow type="math_number">
+                    <field name="NUM">0</field>
+                </shadow>
+            </value>
+        </block>
+        ${blockSeparator}
+        <block type="camera_xposition"/>
+        <block type="camera_yposition"/>
+        ${categorySeparator}
     </category>
     `;
 };
