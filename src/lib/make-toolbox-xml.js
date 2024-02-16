@@ -526,12 +526,12 @@ const camera = function (isInitialSetup, isStage, targetId, colors) {
         <block type="camera_changebyxy">
             <value name="X">
                 <shadow type="math_number">
-                    <field name="NUM">0</field>
+                    <field name="NUM">10</field>
                 </shadow>
             </value>
             <value name="Y">
                 <shadow type="math_number">
-                    <field name="NUM">0</field>
+                    <field name="NUM">10</field>
                 </shadow>
             </value>
         </block>
@@ -546,7 +546,7 @@ const camera = function (isInitialSetup, isStage, targetId, colors) {
         <block type="camera_changex">
             <value name="X">
                 <shadow type="math_number">
-                    <field name="NUM">0</field>
+                    <field name="NUM">10</field>
                 </shadow>
             </value>
         </block>
@@ -560,7 +560,7 @@ const camera = function (isInitialSetup, isStage, targetId, colors) {
         <block type="camera_changey">
             <value name="Y">
                 <shadow type="math_number">
-                    <field name="NUM">0</field>
+                    <field name="NUM">10</field>
                 </shadow>
             </value>
         </block>
