@@ -38,6 +38,10 @@
   background-image: url(icons/sensing_icon.svg);
 }
 
+.scratchCategoryId-camera .scratchCategoryItemBubble::after {
+  background-image: url(icons/camera_icon.svg);
+}
+
 .scratchCategoryId-operators .scratchCategoryItemBubble::after {
   background-image: url(icons/operators_icon.svg);
 }
