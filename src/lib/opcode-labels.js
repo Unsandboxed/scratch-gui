@@ -16,6 +16,11 @@ const messages = defineMessages({
         description: 'Label for the y position monitor when shown on the stage',
         id: 'gui.opcodeLabels.yposition'
     },
+    motion_rotationstyle: {
+        defaultMessage: 'rotation style',
+        description: 'Label for the rotation style monitor when shown on the stage',
+        id: 'gui.opcodeLabels.rotationstyle'
+    },
 
     // Looks
     looks_size: {
@@ -42,6 +47,41 @@ const messages = defineMessages({
         defaultMessage: 'backdrop number',
         description: 'Label for the backdrop number monitor when shown on the stage',
         id: 'gui.opcodeLabels.backdropnumber'
+    },
+    looks_effectcolor: {
+        defaultMessage: 'color',
+        description: 'Label for the color effect monitor when shown on the stage',
+        id: 'gui.opcodeLabels.effectcolor'
+    },
+    looks_effectfisheye: {
+        defaultMessage: 'fisheye',
+        description: 'Label for the fisheye effect monitor when shown on the stage',
+        id: 'gui.opcodeLabels.effectfisheye'
+    },
+    looks_effectwhirl: {
+        defaultMessage: 'whirl',
+        description: 'Label for the whirl effect monitor when shown on the stage',
+        id: 'gui.opcodeLabels.effectwhirl'
+    },
+    looks_effectpixelate: {
+        defaultMessage: 'pixelate',
+        description: 'Label for the pixelate effect monitor when shown on the stage',
+        id: 'gui.opcodeLabels.effectpixelate'
+    },
+    looks_effectmosaic: {
+        defaultMessage: 'mosaic',
+        description: 'Label for the mosaic effect monitor when shown on the stage',
+        id: 'gui.opcodeLabels.effectmosaic'
+    },
+    looks_effectbrightness: {
+        defaultMessage: 'brightness',
+        description: 'Label for the brightness effect monitor when shown on the stage',
+        id: 'gui.opcodeLabels.effectbrightness'
+    },
+    looks_effectghost: {
+        defaultMessage: 'ghost',
+        description: 'Label for the ghost effect monitor when shown on the stage',
+        id: 'gui.opcodeLabels.effectghost'
     },
 
 
@@ -132,7 +172,19 @@ const messages = defineMessages({
         defaultMessage: 'days since 2000',
         description: 'Label for the days since 2000 monitor when show on the stage',
         id: 'tw.opcode.2000'
-    }
+    },
+
+    // Camera
+    camera_xposition: {
+        defaultMessage: 'camera x',
+        description: 'Label for the camera x position monitor when shown on the stage',
+        id: 'gui.opcodeLabels.xposition'
+    },
+    camera_yposition: {
+        defaultMessage: 'camera y',
+        description: 'Label for the camera y position monitor when shown on the stage',
+        id: 'gui.opcodeLabels.yposition'
+    },
 });
 
 class OpcodeLabels {
@@ -154,12 +206,14 @@ class OpcodeLabels {
             motion_direction: {category: 'motion'},
             motion_xposition: {category: 'motion'},
             motion_yposition: {category: 'motion'},
+            motion_rotationstyle: {category: 'motion'},
 
             // Looks
             looks_size: {category: 'looks'},
             looks_costumenumbername: {category: 'looks'},
             looks_backdropnumbername: {category: 'looks'},
             looks_backdropname: {category: 'looks'},
+            looks_effect: {category: 'looks'},
 
             // Data
             data_variable: {category: 'data'},
@@ -178,7 +232,11 @@ class OpcodeLabels {
             sensing_username: {category: 'sensing'},
             sensing_current: {category: 'sensing'},
             sensing_timer: {category: 'sensing'},
-            sensing_dayssince2000: {category: 'sensing'}
+            sensing_dayssince2000: {category: 'sensing'},
+
+            // Camera
+            camera_xposition: {category: 'camera'},
+            camera_yposition: {category: 'camera'}
         };
 
         // Initialize opcodeMap with default strings
@@ -204,6 +262,7 @@ class OpcodeLabels {
         this._opcodeMap.motion_direction.labelFn = () => this._translator(messages.motion_direction);
         this._opcodeMap.motion_xposition.labelFn = () => this._translator(messages.motion_xposition);
         this._opcodeMap.motion_yposition.labelFn = () => this._translator(messages.motion_yposition);
+        this._opcodeMap.motion_rotationstyle.labelFn = () => this._translator(messages.motion_rotationstyle);
 
         // Looks
         this._opcodeMap.looks_size.labelFn = () => this._translator(messages.looks_size);
@@ -220,6 +279,24 @@ class OpcodeLabels {
             return this._translator(messages.looks_backdropname);
         };
         this._opcodeMap.looks_backdropname.labelFn = () => this._translator(messages.looks_backdropname);
+        this._opcodeMap.looks_effect.labelFn = params => {
+            switch (params.EFFECT.toLowerCase()) {
+            case 'color':
+                return this._translator(messages.looks_effectcolor);
+            case 'fisheye':
+                return this._translator(messages.looks_effectfisheye);
+            case 'whirl':
+                return this._translator(messages.looks_effectwhirl);
+            case 'pixelate':
+                return this._translator(messages.looks_effectpixelate);
+            case 'mosaic':
+                return this._translator(messages.looks_effectmosaic);
+            case 'brightness':
+                return this._translator(messages.looks_effectbrightness);
+            case 'ghost':
+                return this._translator(messages.looks_effectghost);
+            }
+        };
 
         // Data
         this._opcodeMap.data_variable.labelFn = params => params.VARIABLE;
@@ -256,6 +333,10 @@ class OpcodeLabels {
         };
         this._opcodeMap.sensing_timer.labelFn = () => this._translator(messages.sensing_timer);
         this._opcodeMap.sensing_dayssince2000.labelFn = () => this._translator(messages.sensing_dayssince2000);
+
+        // Camera
+        this._opcodeMap.camera_xposition.labelFn = () => this._translator(messages.camera_xposition);
+        this._opcodeMap.camera_yposition.labelFn = () => this._translator(messages.camera_yposition);
     }
 
     /**
