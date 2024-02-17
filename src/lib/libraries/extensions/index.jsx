@@ -55,7 +55,7 @@ import customExtensionInsetIcon from './custom/custom-small.svg';
 import returnIcon from './custom/return.svg';
 
 import galleryIcon from './gallery/gallery.svg';
-import galleryInsetIcon from './tw/tw-small.svg';
+import galleryInsetIcon from './gallery/tw-icon-small.svg';
 
 import {APP_NAME} from '../../brand';
 
