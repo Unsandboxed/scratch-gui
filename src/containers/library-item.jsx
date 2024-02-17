@@ -200,6 +200,7 @@ LibraryItem.propTypes = {
     id: PropTypes.number.isRequired,
     incompatibleWithScratch: PropTypes.bool,
     insetIconURL: PropTypes.string,
+    insetColor: PropTypes.string,
     internetConnectionRequired: PropTypes.bool,
     isPlaying: PropTypes.bool,
     name: PropTypes.oneOfType([
