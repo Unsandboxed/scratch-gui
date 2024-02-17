@@ -55,6 +55,7 @@ import customExtensionInsetIcon from './custom/custom-small.svg';
 import returnIcon from './custom/return.svg';
 
 import galleryIcon from './gallery/gallery.svg';
+import galleryInsetIcon from './tw/tw-small.svg';
 
 import {APP_NAME} from '../../brand';
 
@@ -404,6 +405,7 @@ export const galleryLoading = {
     href: 'https://extensions.turbowarp.org/',
     extensionId: 'gallery',
     iconURL: galleryIcon,
+    insetIconURL: galleryInsetIcon,
     description: (
         <FormattedMessage
             // eslint-disable-next-line max-len
@@ -430,6 +432,7 @@ export const galleryMore = {
     href: 'https://extensions.turbowarp.org/',
     extensionId: 'gallery',
     iconURL: galleryIcon,
+    insetIconURL: galleryInsetIcon,
     description: (
         <FormattedMessage
             // eslint-disable-next-line max-len
@@ -456,6 +459,7 @@ export const galleryError = {
     href: 'https://extensions.turbowarp.org/',
     extensionId: 'gallery',
     iconURL: galleryIcon,
+    insetIconURL: galleryInsetIcon,
     description: (
         <FormattedMessage
             // eslint-disable-next-line max-len
