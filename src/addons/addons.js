@@ -40,6 +40,7 @@ const addons = [
     'editor-colored-context-menus',
     'editor-stage-left',
     'editor-buttons-reverse-order',
+    "editor-block-chomping",
     'variable-manager',
     'search-sprites',
     'sprite-properties',
