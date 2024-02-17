@@ -15,7 +15,7 @@ const manifest = {
       "matches": ["projects"]
     }
   ],
-  "tags": ["editor", "codeEditor", "theme"],
+  "tags": ["editor", "codeEditor", "theme", "new"],
   "enabledByDefault": true,
   "dynamicEnable": true,
   "dynamicDisable": true,
