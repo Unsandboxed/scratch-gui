@@ -317,6 +317,7 @@ class LibraryComponent extends React.Component {
                                 favorite={this.state.favorites.includes(dataItem[this.props.persistableKey])}
                                 onFavorite={this.handleFavorite}
                                 insetIconURL={dataItem.insetIconURL}
+                                insetColor={dataItem.insetColor}
                                 internetConnectionRequired={dataItem.internetConnectionRequired}
                                 isPlaying={this.state.playingItem === index}
                                 key={dataItem.key || (
