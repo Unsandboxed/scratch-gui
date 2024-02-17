@@ -71,6 +71,7 @@ export default [
         extensionId: 'music',
         iconURL: musicIconURL,
         insetIconURL: musicInsetIconURL,
+        insetColor: '#cf63cf',
         description: (
             <FormattedMessage
                 defaultMessage="Play instruments and drums."
@@ -113,6 +114,7 @@ export default [
         extensionId: 'videoSensing',
         iconURL: videoSensingIconURL,
         insetIconURL: videoSensingInsetIconURL,
+        insetColor: '#5cb1d6',
         description: (
             <FormattedMessage
                 defaultMessage="Sense motion with the camera."
@@ -135,6 +137,7 @@ export default [
         collaborator: 'Amazon Web Services',
         iconURL: text2speechIconURL,
         insetIconURL: text2speechInsetIconURL,
+        insetColor: '#9966ff',
         description: (
             <FormattedMessage
                 defaultMessage="Make your projects talk."
@@ -158,6 +161,7 @@ export default [
         collaborator: 'Google',
         iconURL: translateIconURL,
         insetIconURL: translateInsetIconURL,
+        insetColor: '#5cb1d6',
         description: (
             <FormattedMessage
                 defaultMessage="Translate text into many languages."
@@ -175,6 +179,7 @@ export default [
         collaborator: 'JoyLabz',
         iconURL: makeymakeyIconURL,
         insetIconURL: makeymakeyInsetIconURL,
+        insetColor: '#e64d00',
         description: (
             <FormattedMessage
                 defaultMessage="Make anything into a key."
@@ -222,6 +227,7 @@ export default [
         collaborator: 'LEGO',
         iconURL: ev3IconURL,
         insetIconURL: ev3InsetIconURL,
+        insetColor: '#ffbf00',
         description: (
             <FormattedMessage
                 defaultMessage="Build interactive robots and more."
@@ -253,6 +259,7 @@ export default [
         collaborator: 'LEGO',
         iconURL: boostIconURL,
         insetIconURL: boostInsetIconURL,
+        insetColor: '#ffab19',
         description: (
             <FormattedMessage
                 defaultMessage="Bring robotic creations to life."
@@ -285,6 +292,7 @@ export default [
         collaborator: 'LEGO',
         iconURL: wedo2IconURL,
         insetIconURL: wedo2InsetIconURL,
+        insetColor: '#ff6680',
         description: (
             <FormattedMessage
                 defaultMessage="Build with motors and sensors."
@@ -317,6 +325,7 @@ export default [
         collaborator: 'Vernier',
         iconURL: gdxforIconURL,
         insetIconURL: gdxforInsetIconURL,
+        insetColor: '#4c97ff',
         description: (
             <FormattedMessage
                 defaultMessage="Sense push, pull, motion, and spin."
@@ -356,6 +365,7 @@ export default [
         extensionId: 'tw',
         iconURL: twIcon,
         insetIconURL: twInsetIcon,
+        insetColor: '#66757f',
         description: (
             <FormattedMessage
                 defaultMessage="Weird new blocks."
@@ -406,6 +416,7 @@ export const galleryLoading = {
     extensionId: 'gallery',
     iconURL: galleryIcon,
     insetIconURL: galleryInsetIcon,
+    insetColor: '#FF4C4C',
     description: (
         <FormattedMessage
             // eslint-disable-next-line max-len
@@ -433,6 +444,7 @@ export const galleryMore = {
     extensionId: 'gallery',
     iconURL: galleryIcon,
     insetIconURL: galleryInsetIcon,
+    insetColor: '#FF4C4C',
     description: (
         <FormattedMessage
             // eslint-disable-next-line max-len
@@ -460,6 +472,7 @@ export const galleryError = {
     extensionId: 'gallery',
     iconURL: galleryIcon,
     insetIconURL: galleryInsetIcon,
+    insetColor: '#FF4C4C',
     description: (
         <FormattedMessage
             // eslint-disable-next-line max-len
