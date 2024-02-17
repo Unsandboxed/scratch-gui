@@ -11,6 +11,7 @@ import extensionLibraryContent, {
     galleryMore
 } from '../lib/libraries/extensions/index.jsx';
 import extensionTags from '../lib/libraries/tw-extension-tags';
+import galleryInsetIcon from '../lib/libraries/extensions/gallery/tw-icon-small.svg';
 
 import LibraryComponent from '../components/library/library.jsx';
 import extensionIcon from '../components/action-menu/icon--sprite.svg';
@@ -55,6 +56,7 @@ const fetchLibrary = async () => {
         extensionId: extension.id,
         extensionURL: `https://extensions.turbowarp.org/${extension.slug}.js`,
         iconURL: `https://extensions.turbowarp.org/${extension.image || 'images/unknown.svg'}`,
+        insetIconURL: galleryInsetIcon,
         tags: ['tw'],
         credits: [
             ...(extension.by || []),
