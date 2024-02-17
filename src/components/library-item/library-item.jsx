@@ -77,7 +77,9 @@ class LibraryItemComponent extends React.PureComponent {
                     />
                 </div>
                 {this.props.insetIconURL ? (
-                    <div className={styles.libraryItemInsetImageContainer}>
+                    <div className={this.styles.libraryItemInsetImageContainer}
+                        style={{ backgroundColor: this.props.insetColor ?? "#0fbd8c" }}
+                    >
                         <img
                             className={styles.libraryItemInsetImage}
                             src={this.props.insetIconURL}
