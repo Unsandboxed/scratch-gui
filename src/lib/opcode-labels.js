@@ -178,12 +178,12 @@ const messages = defineMessages({
     camera_xposition: {
         defaultMessage: 'camera x',
         description: 'Label for the camera x position monitor when shown on the stage',
-        id: 'gui.opcodeLabels.xposition'
+        id: 'gui.opcodeLabels.camerax'
     },
     camera_yposition: {
         defaultMessage: 'camera y',
         description: 'Label for the camera y position monitor when shown on the stage',
-        id: 'gui.opcodeLabels.yposition'
+        id: 'gui.opcodeLabels.cameray'
     },
 });
 
