@@ -83,6 +83,7 @@ const addons = [
 ];
 
 const newAddons = [
+    "editor-block-chomping",
     'paint-skew',
     'editor-square-inputs',
     'copy-reporter',
