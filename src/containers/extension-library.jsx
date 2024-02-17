@@ -57,6 +57,7 @@ const fetchLibrary = async () => {
         extensionURL: `https://extensions.turbowarp.org/${extension.slug}.js`,
         iconURL: `https://extensions.turbowarp.org/${extension.image || 'images/unknown.svg'}`,
         insetIconURL: galleryInsetIcon,
+        insetColor: '#FF4C4C',
         tags: ['tw'],
         credits: [
             ...(extension.by || []),
