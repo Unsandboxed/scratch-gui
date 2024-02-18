@@ -1,2 +1,10 @@
-<!-- From https://github.com/google/material-design-icons -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24px" height="24px"><path d="M0 0h24v24H0z" fill="none"/><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+<!-- From https://www.svgrepo.com/svg/445482/warning-solid -->
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<g transform="translate(-228,-168)">
+<g stroke-dasharray="" stroke-miterlimit="10" style="mix-blend-mode:normal" data-paper-data='{"isPaintingLayer":true}'>
+<path d="m228 168h24v24h-24z" fill="none"/>
+<path d="m250.87 189.49c-0.175 0.30882-0.5004 0.50194-0.85531 0.5076h-20.029c-0.35491-0.00566-0.68031-0.19878-0.85531-0.5076s-0.17345-0.68721 0.00407-0.99458l10.015-18.026c0.19482-0.2937 0.52382-0.47027 0.87627-0.47027s0.68145 0.17657 0.87627 0.47027l9.9644 18.026c0.17752 0.30738 0.17907 0.68576 0.00407 0.99458zm-9.8684-3.9989c0-0.55308-0.44837-1.0014-1.0014-1.0014s-1.0014 0.44836-1.0014 1.0014c0 0.55308 0.44837 1.0014 1.0014 1.0014s1.0014-0.44837 1.0014-1.0014zm0-7.5109c0-0.55308-0.44837-1.0014-1.0014-1.0014s-1.0014 0.44836-1.0014 1.0014v4.5065c0 0.55308 0.44837 1.0014 1.0014 1.0014s1.0014-0.44836 1.0014-1.0014z" fill="#fff"/>
+</g>
+</g>
+</svg>
