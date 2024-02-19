@@ -13,6 +13,7 @@ class CustomProcedures extends React.Component {
             'handleAddLabel',
             'handleAddBoolean',
             'handleAddTextNumber',
+            'handleAddColor',
             'handleToggleWarp',
             'handleCancel',
             'handleOk',
@@ -123,6 +124,7 @@ class CustomProcedures extends React.Component {
         }
     }
     handleAddBoolean () {
+        console.log(this.mutationRoot);
         if (this.mutationRoot) {
             this.mutationRoot.addBooleanExternal();
         }
@@ -130,6 +132,13 @@ class CustomProcedures extends React.Component {
     handleAddTextNumber () {
         if (this.mutationRoot) {
             this.mutationRoot.addStringNumberExternal();
+        }
+    }
+    handleAddColor (color) {
+        if (this.mutationRoot) {
+            console.log(this.props);
+            this.mutationRoot.setColour(color.target.getAttribute("color"));
+            this.setState({colour: color.target.getAttribute("color")});
         }
     }
     handleToggleWarp () {
@@ -147,6 +156,7 @@ class CustomProcedures extends React.Component {
                 onAddBoolean={this.handleAddBoolean}
                 onAddLabel={this.handleAddLabel}
                 onAddTextNumber={this.handleAddTextNumber}
+                onAddColor={this.handleAddColor}
                 onCancel={this.handleCancel}
                 onOk={this.handleOk}
                 onToggleWarp={this.handleToggleWarp}
