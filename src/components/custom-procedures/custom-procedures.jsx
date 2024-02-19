@@ -56,7 +56,7 @@ const CustomProcedures = props => (
                     className={styles.optionCard}
                     role="button"
                     tabIndex="0"
-                    onClick={props.onAddTextNumber}
+                    onClick={props.onAddText}
                 >
                     <img
                         className={styles.optionIcon}
@@ -65,9 +65,28 @@ const CustomProcedures = props => (
                     />
                     <div className={styles.optionDescription}>
                         <FormattedMessage
-                            defaultMessage="number or text"
-                            description="Description of the number/text input type"
-                            id="gui.customProcedures.numberTextType"
+                            defaultMessage="text"
+                            description="Description of the text input type"
+                            id="gui.customProcedures.textType"
+                        />
+                    </div>
+                </div>
+                <div
+                    className={styles.optionCard}
+                    role="button"
+                    tabIndex="0"
+                    onClick={props.onAddNumber}
+                >
+                    <img
+                        className={styles.optionIcon}
+                        src={textInputIcon}
+                        draggable={false}
+                    />
+                    <div className={styles.optionDescription}>
+                        <FormattedMessage
+                            defaultMessage="number"
+                            description="Description of the number input type"
+                            id="gui.customProcedures.numberType"
                         />
                     </div>
                 </div>
@@ -241,7 +260,8 @@ CustomProcedures.propTypes = {
     intl: intlShape,
     onAddBoolean: PropTypes.func.isRequired,
     onAddLabel: PropTypes.func.isRequired,
-    onAddTextNumber: PropTypes.func.isRequired,
+    onAddText: PropTypes.func.isRequired,
+    onAddNumber: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     onOk: PropTypes.func.isRequired,
     onToggleWarp: PropTypes.func.isRequired,
