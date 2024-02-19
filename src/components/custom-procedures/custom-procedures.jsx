@@ -66,7 +66,7 @@ const CustomProcedures = props => (
                     <div className={styles.optionDescription}>
                         <FormattedMessage
                             defaultMessage="number or text"
-                            description="Description of the text input type"
+                            description="Description of the number/text input type"
                             id="gui.customProcedures.numberTextType"
                         />
                     </div>
