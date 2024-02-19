@@ -18,6 +18,20 @@ const messages = defineMessages({
     }
 });
 
+const colors = [
+    "#ff6680",
+    "#4c97ff",
+    "#9966ff",
+    "#cf63cf",
+    "#ffbf00",
+    "#ffab19",
+    "#5cb1d6",
+    "#ff4c4c",
+    "#59c059",
+    "#ff8c1a",
+    "#ff661a"
+]
+
 const CustomProcedures = props => (
     <Modal
         className={styles.modalContent}
@@ -30,6 +44,13 @@ const CustomProcedures = props => (
             componentRef={props.componentRef}
         />
         <Box className={styles.body}>
+            <div className={styles.optionTitle}>
+                <FormattedMessage
+                    defaultMessage="Add an input"
+                    description="Label for button to add a text input"
+                    id="gui.customProcedures.addAnInputText"
+                />
+            </div>
             <div className={styles.optionsRow}>
                 <div
                     className={styles.optionCard}
@@ -42,17 +63,10 @@ const CustomProcedures = props => (
                         src={textInputIcon}
                         draggable={false}
                     />
-                    <div className={styles.optionTitle}>
-                        <FormattedMessage
-                            defaultMessage="Add an input"
-                            description="Label for button to add a number/text input"
-                            id="gui.customProcedures.addAnInputNumberText"
-                        />
-                    </div>
                     <div className={styles.optionDescription}>
                         <FormattedMessage
                             defaultMessage="number or text"
-                            description="Description of the number/text input type"
+                            description="Description of the text input type"
                             id="gui.customProcedures.numberTextType"
                         />
                     </div>
@@ -68,13 +82,6 @@ const CustomProcedures = props => (
                         src={booleanInputIcon}
                         draggable={false}
                     />
-                    <div className={styles.optionTitle}>
-                        <FormattedMessage
-                            defaultMessage="Add an input"
-                            description="Label for button to add a boolean input"
-                            id="gui.customProcedures.addAnInputBoolean"
-                        />
-                    </div>
                     <div className={styles.optionDescription}>
                         <FormattedMessage
                             defaultMessage="boolean"
@@ -94,15 +101,101 @@ const CustomProcedures = props => (
                         src={labelIcon}
                         draggable={false}
                     />
-                    <div className={styles.optionTitle}>
+                    <div className={styles.optionDescription}>
                         <FormattedMessage
-                            defaultMessage="Add a label"
+                            defaultMessage="label"
                             description="Label for button to add a label"
-                            id="gui.customProcedures.addALabel"
+                            id="gui.customProcedures.addLabel"
                         />
                     </div>
                 </div>
             </div>
+            <div className={styles.optionTitle}>
+                <FormattedMessage
+                    defaultMessage="Select a color"
+                    description="Label for button to add a text input"
+                    id="gui.customProcedures.selectAColorText"
+                />
+            </div>
+            <Box className={styles.colorRow}>
+                <span style={{ backgroundColor: colors[0] }}
+                    className={styles.colorCard}
+                    role="button"
+                    color={colors[0]}
+                    draggable={false}
+                    onClick={props.onAddColor}
+                />
+                <span style={{ backgroundColor: colors[1] }}
+                    className={styles.colorCard}
+                    role="button"
+                    color={colors[1]}
+                    draggable={false}
+                    onClick={props.onAddColor}
+                />
+                <span style={{ backgroundColor: colors[2] }}
+                    className={styles.colorCard}
+                    role="button"
+                    color={colors[2]}
+                    draggable={false}
+                    onClick={props.onAddColor}
+                />
+                <span style={{ backgroundColor: colors[3] }}
+                    className={styles.colorCard}
+                    role="button"
+                    color={colors[3]}
+                    draggable={false}
+                    onClick={props.onAddColor}
+                />
+                <span style={{ backgroundColor: colors[4] }}
+                    className={styles.colorCard}
+                    role="button"
+                    color={colors[4]}
+                    draggable={false}
+                    onClick={props.onAddColor}
+                />
+                <span style={{ backgroundColor: colors[5] }}
+                    className={styles.colorCard}
+                    role="button"
+                    color={colors[5]}
+                    draggable={false}
+                    onClick={props.onAddColor}
+                />
+                <span style={{ backgroundColor: colors[6] }}
+                    className={styles.colorCard}
+                    role="button"
+                    color={colors[6]}
+                    draggable={false}
+                    onClick={props.onAddColor}
+                />
+                <span style={{ backgroundColor: colors[7] }}
+                    className={styles.colorCard}
+                    role="button"
+                    color={colors[7]}
+                    draggable={false}
+                    onClick={props.onAddColor}
+                />
+                <span style={{ backgroundColor: colors[8] }}
+                    className={styles.colorCard}
+                    role="button"
+                    color={colors[8]}
+                    draggable={false}
+                    onClick={props.onAddColor}
+                />
+                <span style={{ backgroundColor: colors[9] }}
+                    className={styles.colorCard}
+                    role="button"
+                    color={colors[9]}
+                    draggable={false}
+                    onClick={props.onAddColor}
+                />
+                <span style={{ backgroundColor: colors[10] }}
+                    className={styles.colorCard}
+                    role="button"
+                    color={colors[10]}
+                    draggable={false}
+                    onClick={props.onAddColor}
+                />
+            </Box>
             <div className={styles.checkboxRow}>
                 <label>
                     <input
