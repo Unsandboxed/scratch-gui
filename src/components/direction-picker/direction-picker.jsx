@@ -13,6 +13,7 @@ import styles from './direction-picker.css';
 
 import allAroundIcon from '!../../lib/tw-recolor/build!./icon--all-around.svg';
 import leftRightIcon from '!../../lib/tw-recolor/build!./icon--left-right.svg';
+import lookingIcon from '!../../lib/tw-recolor/build!./icon--looking.svg';
 import dontRotateIcon from '!../../lib/tw-recolor/build!./icon--dont-rotate.svg';
 
 const BufferedInput = BufferedInputHOC(Input);
@@ -28,6 +29,7 @@ const directionLabel = (
 const RotationStyles = {
     ALL_AROUND: 'all around',
     LEFT_RIGHT: 'left-right',
+    LOOKING: 'looking',
     DONT_ROTATE: "don't rotate"
 };
 
@@ -41,6 +43,11 @@ const messages = defineMessages({
         id: 'gui.directionPicker.rotationStyles.leftRight',
         description: 'Button to change to the left-right rotation style',
         defaultMessage: 'Left/Right'
+    },
+    looking: {
+        id: 'gui.directionPicker.rotationStyles.looking',
+        description: 'Button to change to the looking rotation style',
+        defaultMessage: 'Looking'
     },
     dontRotate: {
         id: 'gui.directionPicker.rotationStyles.dontRotate',
@@ -76,6 +83,12 @@ const DirectionPicker = props => (
                                 icon: leftRightIcon,
                                 isSelected: props.rotationStyle === RotationStyles.LEFT_RIGHT,
                                 title: props.intl.formatMessage(messages.leftRight)
+                            },
+                            {
+                                handleClick: props.onClickLooking,
+                                icon: lookingIcon,
+                                isSelected: props.rotationStyle === RotationStyles.LOOKING,
+                                title: props.intl.formatMessage(messages.looking)
                             },
                             {
                                 handleClick: props.onClickDontRotate,
@@ -115,6 +128,7 @@ DirectionPicker.propTypes = {
     onClickAllAround: PropTypes.func.isRequired,
     onClickDontRotate: PropTypes.func.isRequired,
     onClickLeftRight: PropTypes.func.isRequired,
+    onClickLooking: PropTypes.func.isRequired,
     onClosePopover: PropTypes.func.isRequired,
     onOpenPopover: PropTypes.func.isRequired,
     popoverOpen: PropTypes.bool.isRequired,
