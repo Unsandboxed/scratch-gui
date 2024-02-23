@@ -126,10 +126,6 @@
           }
         }
 
-        if (!theme) {
-          theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        }
-
         var splash = document.querySelector('.spash-waiting-for-js');
         splash.setAttribute('data-theme', theme);
         if (theme !== 'dark') {
