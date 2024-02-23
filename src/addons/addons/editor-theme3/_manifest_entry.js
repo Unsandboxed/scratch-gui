@@ -347,7 +347,7 @@ const manifest = {
         "events-color": "#c88330",
         "control-color": "#e1a91a",
         "sensing-color": "#2ca5e2",
-        "camera-color": "#e65454",
+        "camera-color": "#e63d3d",
         "operators-color": "#5cb712",
         "data-color": "#ee7d16",
         "data-lists-color": "#cc5b22",
