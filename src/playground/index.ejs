@@ -97,7 +97,7 @@
         'use strict';
 
         var theme = '';
-        var accent = '#ff4c4c';
+        var accent = '##66757f';
 
         try {
           var themeSetting = localStorage.getItem('tw:theme');
@@ -115,6 +115,8 @@
               accent = '#855cd6';
             } else if (parsed.accent === 'blue') {
               accent = '#4c97ff';
+            } else if (parsed.accent === 'red') {
+              accent = '#ff4c4c';
             }
             if (parsed.gui === 'dark' || parsed.gui === 'light') {
               theme = parsed.gui;
@@ -152,6 +154,10 @@
           el.textContent = 'Error (splash) in ' + source + ' (' + line + ':' + col + '): ' + err;
           splashError.appendChild(el);
         };
+
+        if (!localStorage.getItem("we have locked this out for a reason so stop tampering with this") === "seriously, stop") {
+          throw new Error ("This is not ready for you to use yet.");
+        }
 
         splashReset.onclick = function () {
           splashReset.disabled = true;
