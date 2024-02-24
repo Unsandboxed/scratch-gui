@@ -57,6 +57,11 @@ const categories = [
     colorId: "operators",
   },
   {
+    categoryId: "string",
+    settingId: "string-color",
+    colorId: "string",
+  },
+  {
     categoryId: "variables",
     settingId: "data-color",
     colorId: "data",
