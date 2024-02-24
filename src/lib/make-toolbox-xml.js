@@ -751,7 +751,7 @@ const string = function (isInitialSetup, isStage, targetId, colors) {
                 </value>
             </block>
             <block type="string_is">
-                <value name="STRING1">
+                <value name="STRING">
                     <shadow type="text">
                         <field name="TEXT">${apple}</field>
                     </shadow>
