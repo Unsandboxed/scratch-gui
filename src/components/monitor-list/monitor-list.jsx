@@ -8,6 +8,24 @@ import {stageSizeToTransform} from '../../lib/screen-utils';
 
 import styles from './monitor-list.css';
 
+const sanitizeValue = (value, mode) => {
+    if (mode === "list") {
+        const newValue = [];
+        for (const item of value) {
+            newValue.push(sanitize(item));
+        }
+        return newValue;
+    } else {
+        return sanitize(value);
+    }
+}
+
+const sanitize = (value) => {
+    if (typeof value === "object") {
+        return JSON.stringify(value);
+    } else return value;
+}
+
 const MonitorList = props => (
     <Box
         // Use static `monitor-overlay` class for bounds of draggables
@@ -36,7 +54,10 @@ const MonitorList = props => (
                         params={monitorData.params}
                         spriteName={monitorData.spriteName}
                         targetId={monitorData.targetId}
-                        value={monitorData.value}
+                        value={sanitizeValue(
+                            monitorData.value,
+                            monitorData.mode
+                        )}
                         width={monitorData.width}
                         x={monitorData.x}
                         y={monitorData.y}
