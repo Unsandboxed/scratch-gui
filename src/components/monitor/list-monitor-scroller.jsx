@@ -7,6 +7,12 @@ import {FormattedMessage} from 'react-intl';
 import styles from './monitor.css';
 import {List} from 'react-virtualized';
 
+const sanitize = (value) => {
+    if (typeof value === "object") {
+        return JSON.stringify(value);
+    } else return value;
+}
+
 class ListMonitorScroller extends React.Component {
     constructor (props) {
         super(props);
@@ -56,7 +62,7 @@ class ListMonitorScroller extends React.Component {
                                 spellCheck={false}
                                 style={{color: this.props.categoryColor.text}}
                                 type="text"
-                                value={this.props.activeValue}
+                                value={sanitize(this.props.activeValue)}
                                 onBlur={this.props.onDeactivate}
                                 onChange={this.props.onInput}
                                 onFocus={this.props.onFocus}
