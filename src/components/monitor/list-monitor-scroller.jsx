@@ -3,15 +3,10 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import bindAll from 'lodash.bindall';
 import {FormattedMessage} from 'react-intl';
+import {sanitize} from '../../lib/json-utils';
 
 import styles from './monitor.css';
 import {List} from 'react-virtualized';
-
-const sanitize = (value) => {
-    if (typeof value === "object") {
-        return JSON.stringify(value);
-    } else return value;
-}
 
 class ListMonitorScroller extends React.Component {
     constructor (props) {
