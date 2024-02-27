@@ -5,26 +5,9 @@ import Monitor from '../../containers/monitor.jsx';
 import PropTypes from 'prop-types';
 import {OrderedMap} from 'immutable';
 import {stageSizeToTransform} from '../../lib/screen-utils';
+import {sanitizeVariableValue} from '../../lib/json-utils';
 
 import styles from './monitor-list.css';
-
-const sanitizeValue = (value, mode) => {
-    if (mode === "list") {
-        const newValue = [];
-        for (const item of value) {
-            newValue.push(sanitize(item));
-        }
-        return newValue;
-    } else {
-        return sanitize(value);
-    }
-}
-
-const sanitize = (value) => {
-    if (typeof value === "object") {
-        return JSON.stringify(value);
-    } else return value;
-}
 
 const MonitorList = props => (
     <Box
@@ -54,7 +37,7 @@ const MonitorList = props => (
                         params={monitorData.params}
                         spriteName={monitorData.spriteName}
                         targetId={monitorData.targetId}
-                        value={sanitizeValue(
+                        value={sanitizeVariableValue(
                             monitorData.value,
                             monitorData.mode
                         )}
