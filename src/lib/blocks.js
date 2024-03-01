@@ -306,8 +306,10 @@ export default function (vm) {
 
     ScratchBlocks.Blocks.sensing_distancetomenu.init = function () {
         const mouse = ScratchBlocks.ScratchMsgs.translate('SENSING_DISTANCETO_POINTER', 'mouse-pointer');
+        const camera = ScratchBlocks.ScratchMsgs.translate('SENSING_DISTANCETO_CAMERA', 'camera');
         const json = jsonForMenuBlock('DISTANCETOMENU', spriteMenu, sensingColors, [
-            [mouse, '_mouse_']
+            [mouse, '_mouse_'],
+            [camera, '_camera_']
         ]);
         this.jsonInit(json);
     };
