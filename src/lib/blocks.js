@@ -181,8 +181,10 @@ export default function (vm) {
     ScratchBlocks.Blocks.motion_pointtowards_menu.init = function () {
         const random = ScratchBlocks.ScratchMsgs.translate('MOTION_POINTTOWARDS_RANDOM', 'random direction');
         const mouse = ScratchBlocks.ScratchMsgs.translate('MOTION_POINTTOWARDS_POINTER', 'mouse-pointer');
+        const camera = ScratchBlocks.ScratchMsgs.translate('MOTION_POINTTOWARDS_CAMERA', 'camera');
         const json = jsonForMenuBlock('TOWARDS', spriteMenu, motionColors, [
             [mouse, '_mouse_'],
+            [camera, '_camera_'],
             [random, '_random_']
         ]);
         this.jsonInit(json);
@@ -191,8 +193,10 @@ export default function (vm) {
     ScratchBlocks.Blocks.motion_goto_menu.init = function () {
         const random = ScratchBlocks.ScratchMsgs.translate('MOTION_GOTO_RANDOM', 'random position');
         const mouse = ScratchBlocks.ScratchMsgs.translate('MOTION_GOTO_POINTER', 'mouse-pointer');
+        const camera = ScratchBlocks.ScratchMsgs.translate('MOTION_GOTO_CAMERA', 'camera');
         const json = jsonForMenuBlock('TO', spriteMenu, motionColors, [
             [random, '_random_'],
+            [camera, '_camera_'],
             [mouse, '_mouse_']
         ]);
         this.jsonInit(json);
@@ -201,8 +205,10 @@ export default function (vm) {
     ScratchBlocks.Blocks.motion_glideto_menu.init = function () {
         const random = ScratchBlocks.ScratchMsgs.translate('MOTION_GLIDETO_RANDOM', 'random position');
         const mouse = ScratchBlocks.ScratchMsgs.translate('MOTION_GLIDETO_POINTER', 'mouse-pointer');
+        const camera = ScratchBlocks.ScratchMsgs.translate('MOTION_GLIDETO_CAMERA', 'camera');
         const json = jsonForMenuBlock('TO', spriteMenu, motionColors, [
             [random, '_random_'],
+            [camera, '_camera_'],
             [mouse, '_mouse_']
         ]);
         this.jsonInit(json);
