@@ -40,6 +40,8 @@ const addons = [
     'editor-colored-context-menus',
     'editor-stage-left',
     'editor-buttons-reverse-order',
+    "editor-block-chomping",
+    'expanded-backpack',
     'variable-manager',
     'search-sprites',
     'sprite-properties',
@@ -71,7 +73,6 @@ const addons = [
     'columns',
     'number-pad',
     'editor-number-arrow-keys',
-    'expanded-backpack',
     'script-snap',
     'fullscreen',
     'hide-stage',
@@ -84,6 +85,15 @@ const addons = [
 ];
 
 const newAddons = [
+    "editor-block-chomping",
+    'paint-skew',
+    'editor-square-inputs',
+    'copy-reporter',
+    'editor-number-arrow-keys',
+    'editor-compact',
+    'custom-menu-bar',
+    'move-to-top-layer',
+    'reorder-custom-inputs',
     'expanded-backpack'
 ];
 
