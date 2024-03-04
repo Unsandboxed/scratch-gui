@@ -8,10 +8,7 @@ const manifest = {
       "name": "TheKodeToad"
     }
   ],
-  "tags": [
-    "new"
-  ],
-  "enabledByDefault": true,
+  "tags": [],
   "userscripts": [
     {
       "url": "userscript.js"
@@ -22,6 +19,7 @@ const manifest = {
       "url": "style.css"
     }
   ],
-  "dynamicDisable": true
+  "dynamicDisable": true,
+  "enabledByDefault": true
 };
 export default manifest;
