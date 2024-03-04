@@ -1,5 +1,4 @@
 // This file is only used by pull.js to generate files. It is not used at runtime.
-
 const addons = [
     'cat-blocks',
     'editor-devtools',
@@ -40,7 +39,6 @@ const addons = [
     'editor-colored-context-menus',
     'editor-stage-left',
     'editor-buttons-reverse-order',
-    "editor-block-chomping",
     'variable-manager',
     'search-sprites',
     'sprite-properties',
@@ -72,6 +70,7 @@ const addons = [
     'columns',
     'number-pad',
     'editor-number-arrow-keys',
+    'expanded-backpack',
     'script-snap',
     'fullscreen',
     'hide-stage',
@@ -84,7 +83,6 @@ const addons = [
 ];
 
 const newAddons = [
-    "editor-block-chomping",
     'paint-skew',
     'editor-square-inputs',
     'copy-reporter',
@@ -93,6 +91,7 @@ const newAddons = [
     'custom-menu-bar',
     'move-to-top-layer',
     'reorder-custom-inputs'
+    'expanded-backpack'
 ];
 
 // eslint-disable-next-line import/no-commonjs
