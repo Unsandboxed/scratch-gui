@@ -2,8 +2,8 @@
 const manifest = {
   "editorOnly": true,
   "noTranslations": true,
-  "name": "Square block text inputs",
-  "description": "Makes text and color inputs on blocks rectangular instead of round, like in Scratch 2.0.",
+  "name": "Square block inputs",
+  "description": "Makes certain block input types (such as text or color) rectangular instead of round, like in Scratch 2.0.",
   "credits": [
     {
       "name": "CST1229",
@@ -11,8 +11,7 @@ const manifest = {
     }
   ],
   "tags": [
-    "theme",
-    "new"
+    "theme"
   ],
   "enabledByDefault": true,
   "userscripts": [
@@ -34,6 +33,12 @@ const manifest = {
       "id": "color",
       "type": "boolean",
       "default": true
+    },
+    {
+      "name": "Number inputs",
+      "id": "number",
+      "type": "boolean",
+      "default": false
     }
   ],
   "tags": [
