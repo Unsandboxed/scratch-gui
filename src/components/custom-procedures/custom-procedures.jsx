@@ -228,6 +228,18 @@ const CustomProcedures = props => (
                         id="gui.customProcedures.runWithoutScreenRefresh"
                     />
                 </label>
+                <label>      
+                    <input
+                        checked={props.hat}
+                        type="checkbox"
+                        onChange={props.onToggleHat}
+                    />
+                    <FormattedMessage
+                        defaultMessage="Hat block (this is probably temporary)"
+                        description="Temporary label for checkbox to make a hat block"
+                        id="gui.customProcedures.hatBlock"
+                    />
+                </label>
             </div>
             <Box className={styles.buttonRow}>
                 <button
@@ -265,6 +277,7 @@ CustomProcedures.propTypes = {
     onCancel: PropTypes.func.isRequired,
     onOk: PropTypes.func.isRequired,
     onToggleWarp: PropTypes.func.isRequired,
+    onToggleHat: PropTypes.func.isRequired,
     warp: PropTypes.bool.isRequired
 };
 
