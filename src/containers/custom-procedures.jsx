@@ -16,6 +16,7 @@ class CustomProcedures extends React.Component {
             'handleAddNumber',
             'handleAddColor',
             'handleToggleWarp',
+            'handleToggleHat',
             'handleCancel',
             'handleOk',
             'setBlocks'
@@ -152,6 +153,13 @@ class CustomProcedures extends React.Component {
             this.setState({warp: newWarp});
         }
     }
+    handleToggleHat () {
+        if (this.mutationRoot) {
+            const newHat = !this.mutationRoot.getHat();
+            this.mutationRoot.setHat(newHat);
+            this.setState({hat: newHat});
+        }
+    }
     render () {
         return (
             <CustomProceduresComponent
@@ -165,6 +173,7 @@ class CustomProcedures extends React.Component {
                 onCancel={this.handleCancel}
                 onOk={this.handleOk}
                 onToggleWarp={this.handleToggleWarp}
+                onToggleHat={this.handleToggleHat}
             />
         );
     }
