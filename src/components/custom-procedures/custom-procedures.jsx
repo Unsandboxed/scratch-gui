@@ -216,6 +216,32 @@ const CustomProcedures = props => (
                 />
             </Box>
             <div className={styles.checkboxRow}>
+                <label>      
+                    <input
+                        checked={!props.hat}
+                        type="radio"
+                        onChange={props.onToggleHat}
+                    />
+                    <FormattedMessage
+                        defaultMessage="Primitive"
+                        description="Label for checkbox to make a primitive"
+                        id="gui.customProcedures.primitive"
+                    />
+                </label>
+                <label>      
+                    <input
+                        checked={props.hat}
+                        type="radio"
+                        onChange={props.onToggleHat}
+                    />
+                    <FormattedMessage
+                        defaultMessage="Hat"
+                        description="Label for checkbox to make a hat block"
+                        id="gui.customProcedures.hatBlock"
+                    />
+                </label>
+            </div>
+            <div className={styles.checkboxRow}>
                 <label>
                     <input
                         checked={props.warp}
@@ -226,18 +252,6 @@ const CustomProcedures = props => (
                         defaultMessage="Run without screen refresh"
                         description="Label for checkbox to run without screen refresh"
                         id="gui.customProcedures.runWithoutScreenRefresh"
-                    />
-                </label>
-                <label>      
-                    <input
-                        checked={props.hat}
-                        type="checkbox"
-                        onChange={props.onToggleHat}
-                    />
-                    <FormattedMessage
-                        defaultMessage="Hat block (this is probably temporary)"
-                        description="Temporary label for checkbox to make a hat block"
-                        id="gui.customProcedures.hatBlock"
                     />
                 </label>
             </div>
