@@ -16,11 +16,13 @@ const ACCENT_PURPLE = 'purple';
 const ACCENT_BLUE = 'blue';
 const ACCENT_RED = 'red';
 const ACCENT_GRAY = 'gray';
+const ACCENT_GREEN = 'green';
 const ACCENT_MAP = {
     [ACCENT_PURPLE]: accentPurple,
     [ACCENT_BLUE]: accentBlue,
     [ACCENT_RED]: accentRed,
-    [ACCENT_GRAY]: accentGray
+    [ACCENT_GRAY]: accentGray,
+    [ACCENT_GREEN]: accentGreen
 };
 const ACCENT_DEFAULT = ACCENT_GRAY;
 
