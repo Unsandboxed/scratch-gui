@@ -319,7 +319,7 @@ class Interface extends React.Component {
                                 <p>
                                     <FormattedMessage
                                         // eslint-disable-next-line max-len
-                                        defaultMessage="{APP_NAME} is still in alpha. Please do not make projects with this. We cannot be held responsible for whatever happens to your projects."
+                                        defaultMessage="{APP_NAME} is a powerful in-browser tool for creating games."
 //                                        defaultMessage="{APP_NAME} is a TurboWarp mod with many changes to the editor. Unlike TurboWarp, we don't guarantee projects made in Unsandboxed will work in Scratch."
                                         description="Description of Unsandboxed on the homepage"
                                         id="tw.home.description"
@@ -331,7 +331,7 @@ class Interface extends React.Component {
                             </div>
                             <div className={styles.section}>
                                 <FeaturedProjects studio="27205657" />
-                            </div>
+                            </div> 
                         </React.Fragment>
                     ) : null}
                 </div>
