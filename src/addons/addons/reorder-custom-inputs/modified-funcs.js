@@ -57,6 +57,8 @@ export function modifiedUpdateDeclarationProcCode(prefixLabels = false) {
       this.argumentIds_.push(input.name);
       if (target.type == "argument_editor_boolean") {
         this.procCode_ += "%b";
+      } else if (target.type == "argument_editor_number") {
+        this.procCode_ += "%n";
       } else {
         this.procCode_ += "%s";
       }
