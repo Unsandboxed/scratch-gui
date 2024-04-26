@@ -7653,6 +7653,31 @@
         "rotationCenterY": 86
     },
     {
+        "name": "oden",
+        "tags": [
+            "food"
+        ],
+        "assetId": "4e4cbadf657a870cf6bec470844ac6a2",
+        "bitmapResolution": 1,
+        "md5ext": "4e4cbadf657a870cf6bec470844ac6a2.svg",
+        "dataFormat": "svg",
+        "rotationCenterX":43.999725341796875,
+        "rotationCenterY":44.000709533691406
+    },
+    {
+        "name": "oden dog",
+        "tags": [
+            "food",
+            "animals"
+        ],
+        "assetId": "898f74595ccbd04763d3c4976701c763",
+        "bitmapResolution": 1,
+        "md5ext": "898f74595ccbd04763d3c4976701c763.svg",
+        "dataFormat": "svg",
+        "rotationCenterX":32.22549819946289,
+        "rotationCenterY":58.8650016784668
+    },
+    {
         "name": "Orange",
         "tags": [
             "food",
