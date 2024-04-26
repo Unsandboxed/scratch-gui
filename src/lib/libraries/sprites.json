@@ -9564,6 +9564,49 @@
         ],
         "blocks": {}
     },
+        {
+        "name": "Oden",
+        "tags": [
+            "food"
+        ],
+        "isStage": false,
+        "variables": {},
+        "costumes": [
+            {
+                "assetId": "4e4cbadf657a870cf6bec470844ac6a2",
+                "name": "oden",
+                "bitmapResolution": 1,
+                "md5ext": "4e4cbadf657a870cf6bec470844ac6a2.svg",
+                "dataFormat": "svg",
+                "rotationCenterX":43.999725341796875,
+                "rotationCenterY":44.000709533691406
+            }
+        ],
+        "sounds": [],
+        "blocks": {}
+    },
+    {
+        "name": "Oden Dog",
+        "tags": [
+            "food",
+            "animals"
+        ],
+        "isStage": false,
+        "variables": {},
+        "costumes": [
+            {
+                "assetId": "898f74595ccbd04763d3c4976701c763",
+                "name": "oden dog",
+                "bitmapResolution": 1,
+                "md5ext": "898f74595ccbd04763d3c4976701c763.svg",
+                "dataFormat": "svg",
+                "rotationCenterX":32.22549819946289,
+                "rotationCenterY":58.8650016784668
+            }
+        ],
+        "sounds": [],
+        "blocks": {}
+    },
     {
         "name": "Orange",
         "tags": [
