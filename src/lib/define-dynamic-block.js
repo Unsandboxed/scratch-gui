@@ -134,7 +134,7 @@ const defineDynamicBlock = (ScratchBlocks, categoryInfo, staticBlockInfo, extend
     
             switch (blockInfo.blockType) {
             case BlockType.COMMAND:
-                this.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_SQUARE;
+                this.outputShape = ScratchBlocks.OUTPUT_SHAPE_SQUARE;
                 this.previousStatement = null; // null = available connection; undefined = hat
                 if (!blockInfo.isTerminal) {
                     this.nextStatement = null; // null = available connection; undefined = terminal
@@ -142,11 +142,11 @@ const defineDynamicBlock = (ScratchBlocks, categoryInfo, staticBlockInfo, extend
                 break;
             case BlockType.REPORTER:
                 this.output = blockInfo.allowDropAnywhere ? null : 'String'; // TODO: distinguish number & string here?
-                this.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_ROUND;
+                this.outputShape = ScratchBlocks.OUTPUT_SHAPE_ROUND;
                 break;
             case BlockType.BOOLEAN:
                 this.output = 'Boolean';
-                this.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_HEXAGONAL;
+                this.outputShape = ScratchBlocks.OUTPUT_SHAPE_HEXAGONAL;
                 break;
             case BlockType.HAT:
             case BlockType.EVENT:
@@ -154,13 +154,13 @@ const defineDynamicBlock = (ScratchBlocks, categoryInfo, staticBlockInfo, extend
                     // if absent, this property defaults to true
                     blockInfo.isEdgeActivated = true;
                 }
-                this.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_SQUARE;
+                this.outputShape = ScratchBlocks.OUTPUT_SHAPE_SQUARE;
                 this.nextStatement = null; // null = available connection; undefined = terminal
                 break;
             case BlockType.CONDITIONAL:
             case BlockType.LOOP:
                 blockInfo.branchCount = blockInfo.branchCount || 1;
-                this.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_SQUARE;
+                this.outputShape = ScratchBlocks.OUTPUT_SHAPE_SQUARE;
                 this.previousStatement = null; // null = available connection; undefined = hat
                 if (!blockInfo.isTerminal) {
                     this.nextStatement = null; // null = available connection; undefined = terminal
@@ -169,15 +169,15 @@ const defineDynamicBlock = (ScratchBlocks, categoryInfo, staticBlockInfo, extend
             case BlockType.INLINE:
                 blockInfo.branchCount = blockInfo.branchCount || 1;
                 this.output = blockInfo.allowDropAnywhere ? null : 'String'; // TODO: distinguish number & string here?
-                this.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_SQUARE;
+                this.outputShape = ScratchBlocks.OUTPUT_SHAPE_SQUARE;
                 break;
             case BlockType.ARRAY:
                 this.output = 'Array';
-                this.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_SQUARE;
+                this.outputShape = ScratchBlocks.OUTPUT_SHAPE_SQUARE;
                 break;
             case BlockType.OBJECT:
                 this.output = 'Object';
-                this.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_OBJECT;
+                this.outputShape = ScratchBlocks.OUTPUT_SHAPE_OBJECT;
                 break;
             }
     
