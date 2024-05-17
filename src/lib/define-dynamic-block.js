@@ -134,19 +134,19 @@ const defineDynamicBlock = (ScratchBlocks, categoryInfo, staticBlockInfo, extend
     
             switch (blockInfo.blockType) {
             case BlockType.COMMAND:
-                this.outputShape = ScratchBlocks.OUTPUT_SHAPE_SQUARE;
-                this.previousStatement = null; // null = available connection; undefined = hat
+                this.setOutputShape(ScratchBlocks.OUTPUT_SHAPE_SQUARE);
+                this.setPreviousStatement(null); // null = available connection; undefined = hat
                 if (!blockInfo.isTerminal) {
-                    this.nextStatement = null; // null = available connection; undefined = terminal
+                    this.setNextStatement(null); // null = available connection; undefined = terminal
                 }
                 break;
             case BlockType.REPORTER:
-                this.output = blockInfo.allowDropAnywhere ? null : 'String'; // TODO: distinguish number & string here?
-                this.outputShape = ScratchBlocks.OUTPUT_SHAPE_ROUND;
+                this.setOutput(blockInfo.allowDropAnywhere ? null : 'String'); // TODO: distinguish number & string here?
+                this.setOutputShape(ScratchBlocks.OUTPUT_SHAPE_ROUND);
                 break;
             case BlockType.BOOLEAN:
-                this.output = 'Boolean';
-                this.outputShape = ScratchBlocks.OUTPUT_SHAPE_HEXAGONAL;
+                this.setOutput('Boolean');
+                this.setOutputShape(ScratchBlocks.OUTPUT_SHAPE_HEXAGONAL);
                 break;
             case BlockType.HAT:
             case BlockType.EVENT:
@@ -154,30 +154,30 @@ const defineDynamicBlock = (ScratchBlocks, categoryInfo, staticBlockInfo, extend
                     // if absent, this property defaults to true
                     blockInfo.isEdgeActivated = true;
                 }
-                this.outputShape = ScratchBlocks.OUTPUT_SHAPE_SQUARE;
-                this.nextStatement = null; // null = available connection; undefined = terminal
+                this.setOutputShape(ScratchBlocks.OUTPUT_SHAPE_SQUARE);
+                this.setNextStatement(null); // null = available connection; undefined = terminal
                 break;
             case BlockType.CONDITIONAL:
             case BlockType.LOOP:
                 blockInfo.branchCount = blockInfo.branchCount || 1;
-                this.outputShape = ScratchBlocks.OUTPUT_SHAPE_SQUARE;
-                this.previousStatement = null; // null = available connection; undefined = hat
+                this.setOutputShape(ScratchBlocks.OUTPUT_SHAPE_SQUARE);
+                this.setPreviousStatement(null); // null = available connection; undefined = hat
                 if (!blockInfo.isTerminal) {
-                    this.nextStatement = null; // null = available connection; undefined = terminal
+                    this.setNextStatement(null); // null = available connection; undefined = terminal
                 }
                 break;
             case BlockType.INLINE:
                 blockInfo.branchCount = blockInfo.branchCount || 1;
-                this.output = blockInfo.allowDropAnywhere ? null : 'String'; // TODO: distinguish number & string here?
-                this.outputShape = ScratchBlocks.OUTPUT_SHAPE_SQUARE;
+                this.setOutput(blockInfo.allowDropAnywhere ? null : 'String'); // TODO: distinguish number & string here?
+                this.setOutputShape(ScratchBlocks.OUTPUT_SHAPE_SQUARE);
                 break;
             case BlockType.ARRAY:
-                this.output = 'Array';
-                this.outputShape = ScratchBlocks.OUTPUT_SHAPE_SQUARE;
+                this.setOutput('Array');
+                this.setOutputShape(ScratchBlocks.OUTPUT_SHAPE_SQUARE);
                 break;
             case BlockType.OBJECT:
-                this.output = 'Object';
-                this.outputShape = ScratchBlocks.OUTPUT_SHAPE_OBJECT;
+                this.setOutput('Object');
+                this.setOutputShape(ScratchBlocks.OUTPUT_SHAPE_OBJECT);
                 break;
             }
     
