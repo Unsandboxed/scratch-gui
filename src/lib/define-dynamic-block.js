@@ -150,16 +150,11 @@ const defineDynamicBlock = (ScratchBlocks, categoryInfo, staticBlockInfo, extend
                 break;
             case BlockType.HAT:
             case BlockType.EVENT:
-                if (!Object.prototype.hasOwnProperty.call(blockInfo, 'isEdgeActivated')) {
-                    // if absent, this property defaults to true
-                    blockInfo.isEdgeActivated = true;
-                }
                 this.setOutputShape(ScratchBlocks.OUTPUT_SHAPE_SQUARE);
                 this.setNextStatement(null); // null = available connection; undefined = terminal
                 break;
             case BlockType.CONDITIONAL:
             case BlockType.LOOP:
-                blockInfo.branchCount = blockInfo.branchCount || 1;
                 this.setOutputShape(ScratchBlocks.OUTPUT_SHAPE_SQUARE);
                 this.setPreviousStatement(null); // null = available connection; undefined = hat
                 if (!blockInfo.isTerminal) {
@@ -167,7 +162,6 @@ const defineDynamicBlock = (ScratchBlocks, categoryInfo, staticBlockInfo, extend
                 }
                 break;
             case BlockType.INLINE:
-                blockInfo.branchCount = blockInfo.branchCount || 1;
                 this.setOutput(blockInfo.allowDropAnywhere ? null : 'String'); // TODO: distinguish number & string here?
                 this.setOutputShape(ScratchBlocks.OUTPUT_SHAPE_SQUARE);
                 break;
