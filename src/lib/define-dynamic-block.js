@@ -134,27 +134,50 @@ const defineDynamicBlock = (ScratchBlocks, categoryInfo, staticBlockInfo, extend
     
             switch (blockInfo.blockType) {
             case BlockType.COMMAND:
-            case BlockType.CONDITIONAL:
-            case BlockType.LOOP:
-                this.setOutputShape(ScratchBlocks.OUTPUT_SHAPE_SQUARE);
-                this.setPreviousStatement(true);
-                this.setNextStatement(!blockInfo.isTerminal);
-                break;
-            case BlockType.REPORTER:
-                this.setOutput(true);
-                this.setOutputShape(ScratchBlocks.OUTPUT_SHAPE_ROUND);
-                if (!blockInfo.disableMonitor) {
-                    this.setCheckboxInFlyout(true);
+                blockJSON.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_SQUARE;
+                blockJSON.previousStatement = null; // null = available connection; undefined = hat
+                if (!blockInfo.isTerminal) {
+                    blockJSON.nextStatement = null; // null = available connection; undefined = terminal
                 }
                 break;
+            case BlockType.REPORTER:
+                blockJSON.output = blockInfo.allowDropAnywhere ? null : 'String'; // TODO: distinguish number & string here?
+                blockJSON.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_ROUND;
+                break;
             case BlockType.BOOLEAN:
-                this.setOutput(true);
-                this.setOutputShape(ScratchBlocks.OUTPUT_SHAPE_HEXAGONAL);
+                blockJSON.output = 'Boolean';
+                blockJSON.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_HEXAGONAL;
                 break;
             case BlockType.HAT:
             case BlockType.EVENT:
-                this.setOutputShape(ScratchBlocks.OUTPUT_SHAPE_SQUARE);
-                this.setNextStatement(true);
+                if (!Object.prototype.hasOwnProperty.call(blockInfo, 'isEdgeActivated')) {
+                    // if absent, this property defaults to true
+                    blockInfo.isEdgeActivated = true;
+                }
+                blockJSON.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_SQUARE;
+                blockJSON.nextStatement = null; // null = available connection; undefined = terminal
+                break;
+            case BlockType.CONDITIONAL:
+            case BlockType.LOOP:
+                blockInfo.branchCount = blockInfo.branchCount || 1;
+                blockJSON.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_SQUARE;
+                blockJSON.previousStatement = null; // null = available connection; undefined = hat
+                if (!blockInfo.isTerminal) {
+                    blockJSON.nextStatement = null; // null = available connection; undefined = terminal
+                }
+                break;
+            case BlockType.INLINE:
+                blockInfo.branchCount = blockInfo.branchCount || 1;
+                blockJSON.output = blockInfo.allowDropAnywhere ? null : 'String'; // TODO: distinguish number & string here?
+                blockJSON.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_SQUARE;
+                break;
+            case BlockType.ARRAY:
+                blockJSON.output = 'Array';
+                blockJSON.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_SQUARE;
+                break;
+            case BlockType.OBJECT:
+                blockJSON.output = 'Object';
+                blockJSON.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_OBJECT;
                 break;
             }
     
