@@ -79,7 +79,7 @@ const setupCustomContextMenu = (ScratchBlocks, contextMenuInfo, extendedOpcode) 
  * @param {Theme} theme - the current theme
  */
 // TODO: grow this until it can fully replace `_convertForScratchBlocks` in the VM runtime
-const defineDynamicBlock = (ScratchBlocks, categoryInfo, staticBlockInfo, extendedOpcode, theme) => ({
+const defineDynamicBlock = (ScratchBlocks, categoryInfo, staticBlockInfo, extendedOpcode, theme) => {
     // Set up context menus if any
     const contextMenuInfo = staticBlockInfo.info.customContextMenu;
     const contextMenuName = contextMenuInfo ?
@@ -183,6 +183,6 @@ const defineDynamicBlock = (ScratchBlocks, categoryInfo, staticBlockInfo, extend
             this.interpolate_(scratchBlocksStyleText, args);
         }
     });
-});
+};
 
 export default defineDynamicBlock;
