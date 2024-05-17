@@ -134,47 +134,30 @@ const defineDynamicBlock = (ScratchBlocks, categoryInfo, staticBlockInfo, extend
     
             switch (blockInfo.blockType) {
             case BlockType.COMMAND:
+            case BlockType.CONDITIONAL:
+            case BlockType.LOOP:
                 this.setOutputShape(ScratchBlocks.OUTPUT_SHAPE_SQUARE);
-                this.setPreviousStatement(null); // null = available connection; undefined = hat
-                if (!blockInfo.isTerminal) {
-                    this.setNextStatement(null); // null = available connection; undefined = terminal
-                }
+                this.setPreviousStatement(true);
+                this.setNextStatement(!blockInfo.isTerminal);
                 break;
             case BlockType.REPORTER:
-                this.setOutput(blockInfo.allowDropAnywhere ? null : 'String'); // TODO: distinguish number & string here?
+                this.setOutput(true);
                 this.setOutputShape(ScratchBlocks.OUTPUT_SHAPE_ROUND);
+                if (!blockInfo.disableMonitor) {
+                    this.setCheckboxInFlyout(true);
+                }
                 break;
             case BlockType.BOOLEAN:
-                this.setOutput('Boolean');
+                this.setOutput(true);
                 this.setOutputShape(ScratchBlocks.OUTPUT_SHAPE_HEXAGONAL);
                 break;
             case BlockType.HAT:
             case BlockType.EVENT:
                 this.setOutputShape(ScratchBlocks.OUTPUT_SHAPE_SQUARE);
-                this.setNextStatement(null); // null = available connection; undefined = terminal
-                break;
-            case BlockType.CONDITIONAL:
-            case BlockType.LOOP:
-                this.setOutputShape(ScratchBlocks.OUTPUT_SHAPE_SQUARE);
-                this.setPreviousStatement(null); // null = available connection; undefined = hat
-                if (!blockInfo.isTerminal) {
-                    this.setNextStatement(null); // null = available connection; undefined = terminal
-                }
-                break;
-            case BlockType.INLINE:
-                this.setOutput(blockInfo.allowDropAnywhere ? null : 'String'); // TODO: distinguish number & string here?
-                this.setOutputShape(ScratchBlocks.OUTPUT_SHAPE_SQUARE);
-                break;
-            case BlockType.ARRAY:
-                this.setOutput('Array');
-                this.setOutputShape(ScratchBlocks.OUTPUT_SHAPE_SQUARE);
-                break;
-            case BlockType.OBJECT:
-                this.setOutput('Object');
-                this.setOutputShape(ScratchBlocks.OUTPUT_SHAPE_OBJECT);
+                this.setNextStatement(true);
                 break;
             }
-    
+
             if (blockInfo.color1 || blockInfo.color2 || blockInfo.color3) {
                 // `setColour` handles undefined parameters by adjusting defined colors
                 this.setColour(blockInfo.color1, blockInfo.color2, blockInfo.color3);
