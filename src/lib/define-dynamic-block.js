@@ -134,19 +134,19 @@ const defineDynamicBlock = (ScratchBlocks, categoryInfo, staticBlockInfo, extend
     
             switch (blockInfo.blockType) {
             case BlockType.COMMAND:
-                blockJSON.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_SQUARE;
-                blockJSON.previousStatement = null; // null = available connection; undefined = hat
+                this.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_SQUARE;
+                this.previousStatement = null; // null = available connection; undefined = hat
                 if (!blockInfo.isTerminal) {
-                    blockJSON.nextStatement = null; // null = available connection; undefined = terminal
+                    this.nextStatement = null; // null = available connection; undefined = terminal
                 }
                 break;
             case BlockType.REPORTER:
-                blockJSON.output = blockInfo.allowDropAnywhere ? null : 'String'; // TODO: distinguish number & string here?
-                blockJSON.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_ROUND;
+                this.output = blockInfo.allowDropAnywhere ? null : 'String'; // TODO: distinguish number & string here?
+                this.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_ROUND;
                 break;
             case BlockType.BOOLEAN:
-                blockJSON.output = 'Boolean';
-                blockJSON.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_HEXAGONAL;
+                this.output = 'Boolean';
+                this.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_HEXAGONAL;
                 break;
             case BlockType.HAT:
             case BlockType.EVENT:
@@ -154,30 +154,30 @@ const defineDynamicBlock = (ScratchBlocks, categoryInfo, staticBlockInfo, extend
                     // if absent, this property defaults to true
                     blockInfo.isEdgeActivated = true;
                 }
-                blockJSON.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_SQUARE;
-                blockJSON.nextStatement = null; // null = available connection; undefined = terminal
+                this.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_SQUARE;
+                this.nextStatement = null; // null = available connection; undefined = terminal
                 break;
             case BlockType.CONDITIONAL:
             case BlockType.LOOP:
                 blockInfo.branchCount = blockInfo.branchCount || 1;
-                blockJSON.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_SQUARE;
-                blockJSON.previousStatement = null; // null = available connection; undefined = hat
+                this.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_SQUARE;
+                this.previousStatement = null; // null = available connection; undefined = hat
                 if (!blockInfo.isTerminal) {
-                    blockJSON.nextStatement = null; // null = available connection; undefined = terminal
+                    this.nextStatement = null; // null = available connection; undefined = terminal
                 }
                 break;
             case BlockType.INLINE:
                 blockInfo.branchCount = blockInfo.branchCount || 1;
-                blockJSON.output = blockInfo.allowDropAnywhere ? null : 'String'; // TODO: distinguish number & string here?
-                blockJSON.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_SQUARE;
+                this.output = blockInfo.allowDropAnywhere ? null : 'String'; // TODO: distinguish number & string here?
+                this.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_SQUARE;
                 break;
             case BlockType.ARRAY:
-                blockJSON.output = 'Array';
-                blockJSON.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_SQUARE;
+                this.output = 'Array';
+                this.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_SQUARE;
                 break;
             case BlockType.OBJECT:
-                blockJSON.output = 'Object';
-                blockJSON.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_OBJECT;
+                this.output = 'Object';
+                this.outputShape = ScratchBlocksConstants.OUTPUT_SHAPE_OBJECT;
                 break;
             }
     
