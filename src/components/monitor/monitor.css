@@ -75,6 +75,9 @@
 }
 
 .list-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     background: $ui-white-default;
     border-bottom: 1px solid $ui-black-transparent-default;
     text-align: center;
@@ -176,6 +179,15 @@
 .add-button {
     cursor: pointer;
     margin-right: 3px;
+}
+
+.lock-button {
+    cursor: pointer;
+    margin-right: 3px;
+}
+
+.padlock-icon {
+    width: 10px;
 }
 
 .resize-handle {

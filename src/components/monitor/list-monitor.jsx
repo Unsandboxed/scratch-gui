@@ -5,7 +5,10 @@ import {FormattedMessage} from 'react-intl';
 import styles from './monitor.css';
 import ListMonitorScroller from './list-monitor-scroller.jsx';
 
-const ListMonitor = ({draggable, label, width, height, value, onResizeMouseDown, onAdd, ...rowProps}) => (
+import lockedIcon from './icon--locked.svg';
+import unlockedIcon from './icon--unlocked.svg';
+
+const ListMonitor = ({draggable, label, locked, width, height, value, onResizeMouseDown, onAdd, onLock, ...rowProps}) => (
     <div
         className={styles.listMonitor}
         style={{
@@ -14,7 +17,21 @@ const ListMonitor = ({draggable, label, width, height, value, onResizeMouseDown,
         }}
     >
         <div className={styles.listHeader}>
+            <div
+                className={classNames(draggable ? styles.lockButton : null, 'no-drag')}
+                onClick={draggable ? onLock : null}
+            >
+                {(draggable) ? 
+                    <img className={styles.padlockIcon}
+                    draggable={false}
+                    src={(locked) ? lockedIcon : unlockedIcon}
+                />
+             : null}
+            </div>
             {label}
+            <div>
+                {/*empty div to center it all */}
+            </div>
         </div>
         <div className={styles.listBody}>
             <ListMonitorScroller
@@ -30,7 +47,7 @@ const ListMonitor = ({draggable, label, width, height, value, onResizeMouseDown,
                 className={classNames(draggable ? styles.addButton : null, 'no-drag')}
                 onClick={draggable ? onAdd : null}
             >
-                {'+' /* TODO waiting on asset */}
+                {(draggable) ? '+' : null /* TODO waiting on asset */}
             </div>
             <div className={styles.footerLength}>
                 <FormattedMessage
@@ -46,7 +63,7 @@ const ListMonitor = ({draggable, label, width, height, value, onResizeMouseDown,
                 className={classNames(draggable ? styles.resizeHandle : null, 'no-drag')}
                 onMouseDown={draggable ? onResizeMouseDown : null}
             >
-                {'=' /* TODO waiting on asset */}
+                {(draggable) ? '=' : null /* TODO waiting on asset */}
             </div>
         </div>
     </div>
@@ -63,6 +80,7 @@ ListMonitor.propTypes = {
     label: PropTypes.string.isRequired,
     onActivate: PropTypes.func,
     onAdd: PropTypes.func,
+    onLock: PropTypes.func,
     onResizeMouseDown: PropTypes.func,
     value: PropTypes.oneOfType([
         PropTypes.string,

@@ -4,7 +4,7 @@ import React from 'react';
 import VM from 'scratch-vm';
 import {connect} from 'react-redux';
 import {getEventXY} from '../lib/touch-utils';
-import {getVariableValue, setVariableValue} from '../lib/variable-utils';
+import {getVariable, getVariableValue, setVariableValue} from '../lib/variable-utils';
 import ListMonitorComponent from '../components/monitor/list-monitor.jsx';
 import {Map} from 'immutable';
 
@@ -19,12 +19,14 @@ class ListMonitor extends React.Component {
             'handleKeyPress',
             'handleFocus',
             'handleAdd',
+            'handleLock',
             'handleResizeMouseDown'
         ]);
 
         this.state = {
             activeIndex: null,
             activeValue: null,
+            locked: false,
             width: props.width || 100,
             height: props.height || 200
         };
@@ -122,6 +124,15 @@ class ListMonitor extends React.Component {
         this.setState({activeIndex: newListValue.length - 1, activeValue: ''});
     }
 
+    handleLock() {
+        const {vm, targetId, id: variableId} = this.props;
+        const list = getVariable(vm, targetId, variableId);
+        list.locked = !list.locked;
+        this.setState({
+            locked: list.locked
+        });
+    }
+
     handleResizeMouseDown (e) {
         this.initialPosition = getEventXY(e);
         this.initialWidth = this.state.width;
@@ -167,10 +178,12 @@ class ListMonitor extends React.Component {
                 {...props}
                 activeIndex={this.state.activeIndex}
                 activeValue={this.state.activeValue}
+                locked={this.state.locked}
                 height={this.state.height}
                 width={this.state.width}
                 onActivate={this.handleActivate}
                 onAdd={this.handleAdd}
+                onLock={this.handleLock}
                 onDeactivate={this.handleDeactivate}
                 onFocus={this.handleFocus}
                 onInput={this.handleInput}
@@ -185,6 +198,7 @@ class ListMonitor extends React.Component {
 ListMonitor.propTypes = {
     height: PropTypes.number,
     id: PropTypes.string,
+    locked: PropTypes.bool,
     customStageSize: PropTypes.shape({
         width: PropTypes.number,
         height: PropTypes.number
