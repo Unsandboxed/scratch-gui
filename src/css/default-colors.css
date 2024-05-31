@@ -52,6 +52,7 @@ $extensions-light-default: var(--extensions-light-default);
 $drop-highlight-default: var(--drop-highlight-default);
 
 $menu-bar-background-default: var(--menu-bar-background-default);
+$menu-bar-alternate-default: var(--menu-bar-background-default);
 $menu-bar-foreground-default: var(--menu-bar-foreground-default);
 
 $assets-background-default: var(--assets-background-default);

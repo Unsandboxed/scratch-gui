@@ -28,6 +28,7 @@
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: $menu-bar-standard-font-size;
     font-weight: bold;
+    background: $menu-bar-alternate;
     background-color: $menu-bar-background;
     color: $menu-bar-foreground;
 }
