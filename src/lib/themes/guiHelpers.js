@@ -66,11 +66,7 @@ const applyGuiColors = theme => {
         document.head.appendChild(metaThemeColor);
     }
     metaThemeColor.setAttribute('content', evaluateCSS(guiColors['menu-bar-background']));
-
-    // goofy hack to apply a rainbow gradient for pride month. will be removed after june.
-    if (guiColors['menu-bar-alternate']) {
-        metaThemeColor.setAttribute('content', evaluateCSS(guiColors['menu-bar-alternate']));
-    }
+    metaThemeColor.setAttribute('content', evaluateCSS(guiColors['menu-bar-alternate']));
 
     // a horrible hack for icons...
     window.Recolor = {
