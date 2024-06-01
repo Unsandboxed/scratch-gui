@@ -76,6 +76,7 @@
     flex-grow: 1;
     height: 80%;
     margin-bottom: 0;
+    transition: 0.15s ease-out;
 
     border-radius: 1rem 1rem 0 0;
     border: 1px solid $ui-black-transparent;

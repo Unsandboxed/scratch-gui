@@ -13,10 +13,12 @@ import {setTheme} from '../../reducers/theme.js';
 import {persistTheme} from '../../lib/themes/themePersistance.js';
 import styles from './settings-menu.css';
 
+import prideIcon from './tw-accent-pride.svg';
+
 const options = defineMessages({
     [ACCENT_RAINBOW]: {
-        defaultMessage: 'Rainbow',
-        description: 'Name of the rainbow color scheme, used by Unsandboxed by default during June.',
+        defaultMessage: 'Pride',
+        description: 'Name of the pride color scheme, used by Unsandboxed by default during June.',
         id: 'tw.accent.rainbow'
     },
     [ACCENT_GRAY]: {
@@ -46,14 +48,29 @@ const options = defineMessages({
     }
 });
 
-const ColorIcon = props => (
-    <div
-        className={styles.accentIconOuter}
-        style={{
-            backgroundColor: ACCENT_MAP[props.id].guiColors['looks-secondary']
-        }}
-    />
-);
+const icons = {
+    [ACCENT_RAINBOW]: prideIcon,
+};
+
+const ColorIcon = props => {
+    if (icons[props.id]) {
+        return (
+            <img
+                src={icons[props.id]}
+                draggable={false}
+                width={24}
+            />
+        )
+    }
+    return (
+        <div
+            className={styles.accentIconOuter}
+            style={{
+                backgroundColor: ACCENT_MAP[props.id].guiColors['looks-secondary']
+            }}
+        />
+    )
+};
 
 ColorIcon.propTypes = {
     id: PropTypes.string
