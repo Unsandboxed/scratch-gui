@@ -1,0 +1,6 @@
+[submodule "scratch-vm"]
+	path = scratch-vm
+	url = "https://github.com/Unsandboxed/scratch-vm#develop"
+[submodule "scratch-blocks"]
+	path = scratch-blocks
+	url = "https://github.com/Unsandboxed/scratch-blocks#develop-builds"
