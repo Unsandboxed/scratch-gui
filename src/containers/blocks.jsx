@@ -527,6 +527,7 @@ class Blocks extends React.Component {
         }
     }
     handleExtensionAdded (categoryInfo) {
+        const ScratchBlocks = this.ScratchBlocks;
         const defineBlocks = blockInfoArray => {
             if (blockInfoArray && blockInfoArray.length > 0) {
                 const staticBlocksJson = [];
@@ -553,7 +554,7 @@ class Blocks extends React.Component {
                         extendedOpcode,
                         this.props.theme
                     );
-                    this.ScratchBlocks.Blocks[extendedOpcode] = blockDefinition;
+                    ScratchBlocks.Blocks[extendedOpcode] = blockDefinition;
                 });
             }
         };
@@ -565,6 +566,17 @@ class Blocks extends React.Component {
                 .map(fieldTypeName => categoryInfo.customFieldTypes[fieldTypeName].scratchBlocksDefinition));
         defineBlocks(categoryInfo.menus);
         defineBlocks(categoryInfo.blocks);
+
+        window.blocksJSX = this;
+        console.log(categoryInfo);
+        for (const shapeName in categoryInfo.customBlockShapes) {
+          const shapeInfo = categoryInfo.customBlockShapes[shapeName];
+          try {
+            this.ScratchBlocks.Extensions.register(`output_${shapeInfo.extendedName}`, function(...args) {
+              return shapeInfo.shapeImplementation.mutator.call(this, ScratchBlocks, ...args);
+            });
+          } catch {}
+        }
 
         // Update the toolbox with new blocks if possible
         const toolboxXML = this.getToolboxXML();

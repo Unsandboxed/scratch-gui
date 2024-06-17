@@ -156,6 +156,11 @@ const defineDynamicBlock = (ScratchBlocks, categoryInfo, staticBlockInfo, extend
                 this.setOutputShape(ScratchBlocks.OUTPUT_SHAPE_SQUARE);
                 this.setNextStatement(true);
                 break;
+            default:
+                if (categoryInfo.customBlockShapes && categoryInfo.customBlockShapes[blockInfo.blockType]) {
+                    categoryInfo.customBlockShapes[blockInfo.blockType].shapeImplementation
+                        .mutator.call(this, ScratchBlocks);
+                }
             }
 
             if (blockInfo.color1 || blockInfo.color2 || blockInfo.color3) {
