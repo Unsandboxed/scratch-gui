@@ -113,6 +113,44 @@ const CustomProcedures = props => (
                     className={styles.optionCard}
                     role="button"
                     tabIndex="0"
+                    onClick={props.onAddBoolean}
+                >
+                    <img
+                        className={styles.optionIcon}
+                        src={booleanInputIcon}
+                        draggable={false}
+                    />
+                    <div className={styles.optionDescription}>
+                        <FormattedMessage
+                            defaultMessage="object"
+                            description="Description of the object input type"
+                            id="gui.customProcedures.objectType"
+                        />
+                    </div>
+                </div>
+                <div
+                    className={styles.optionCard}
+                    role="button"
+                    tabIndex="0"
+                    onClick={props.onAddBoolean}
+                >
+                    <img
+                        className={styles.optionIcon}
+                        src={booleanInputIcon}
+                        draggable={false}
+                    />
+                    <div className={styles.optionDescription}>
+                        <FormattedMessage
+                            defaultMessage="array"
+                            description="Description of the array input type"
+                            id="gui.customProcedures.arrayType"
+                        />
+                    </div>
+                </div>
+                <div
+                    className={styles.optionCard}
+                    role="button"
+                    tabIndex="0"
                     onClick={props.onAddLabel}
                 >
                     <img
@@ -258,6 +296,8 @@ const CustomProcedures = props => (
 CustomProcedures.propTypes = {
     componentRef: PropTypes.func.isRequired,
     intl: intlShape,
+    onAddArray: PropTypes.func.isRequired,
+    onAddObject: PropTypes.func.isRequired,
     onAddBoolean: PropTypes.func.isRequired,
     onAddLabel: PropTypes.func.isRequired,
     onAddText: PropTypes.func.isRequired,
