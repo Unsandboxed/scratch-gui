@@ -22,6 +22,8 @@ const availableModes = opcode => (
             return t !== 'list';
         } else if (opcode === 'data_listcontents') {
             return t === 'list';
+        } else if (opcode === 'data_listarraycontents') {
+            return t === 'list';
         }
         return t !== 'slider' && t !== 'list';
     })
