@@ -5,6 +5,7 @@ import VM from 'scratch-vm';
 
 import {connect} from 'react-redux';
 
+import {updateCamera} from '../reducers/camera';
 import {updateTargets} from '../reducers/targets';
 import {updateBlockDrag} from '../reducers/block-drag';
 import {updateMonitors} from '../reducers/monitors';
@@ -42,6 +43,7 @@ const vmListenerHOC = function (WrappedComponent) {
                 'handleKeyUp',
                 'handleProjectChanged',
                 'handleTargetsUpdate',
+                'handleCameraUpdate',
                 'handleCloudDataUpdate',
                 'handleCompileError'
             ]);
@@ -52,6 +54,7 @@ const vmListenerHOC = function (WrappedComponent) {
             // If the wrapped component uses the vm in componentDidMount, then
             // we need to start listening before mounting the wrapped component.
             this.props.vm.on('targetsUpdate', this.handleTargetsUpdate);
+            this.props.vm.on('cameraUpdate', this.handleCameraUpdate);
             this.props.vm.on('MONITORS_UPDATE', this.props.onMonitorsUpdate);
             this.props.vm.on('BLOCK_DRAG_UPDATE', this.props.onBlockDragUpdate);
             this.props.vm.on('TURBO_MODE_ON', this.props.onTurboModeOn);
@@ -150,6 +153,9 @@ const vmListenerHOC = function (WrappedComponent) {
                 this.props.onProjectChanged();
             }
         }
+        handleCameraUpdate (data) {
+            this.props.onCameraUpdate(data);
+        }
         handleTargetsUpdate (data) {
             if (this.props.shouldUpdateTargets) {
                 this.props.onTargetsUpdate(data);
@@ -210,6 +216,7 @@ const vmListenerHOC = function (WrappedComponent) {
                 onMicListeningUpdate,
                 onMonitorsUpdate,
                 onTargetsUpdate,
+                onCameraUpdate,
                 onProjectChanged,
                 onProjectRunStart,
                 onProjectRunStop,
@@ -251,6 +258,7 @@ const vmListenerHOC = function (WrappedComponent) {
         onRuntimeStopped: PropTypes.func.isRequired,
         onShowExtensionAlert: PropTypes.func.isRequired,
         onTargetsUpdate: PropTypes.func.isRequired,
+        onCameraUpdate: PropTypes.func.isRequired,
         onTurboModeOff: PropTypes.func.isRequired,
         onTurboModeOn: PropTypes.func.isRequired,
         hasCloudVariables: PropTypes.bool,
@@ -289,6 +297,9 @@ const vmListenerHOC = function (WrappedComponent) {
     const mapDispatchToProps = dispatch => ({
         onTargetsUpdate: data => {
             dispatch(updateTargets(data.targetList, data.editingTarget));
+        },
+        onCameraUpdate: data => {
+            dispatch(updateCamera(data.camera));
         },
         onMonitorsUpdate: monitorList => {
             dispatch(updateMonitors(monitorList));

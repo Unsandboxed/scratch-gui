@@ -20,6 +20,7 @@ const TargetPane = ({
     editingTarget,
     fileInputRef,
     hoveredTarget,
+    camera,
     spriteLibraryVisible,
     onActivateBlocksTab,
     onChangeSpriteDirection,
@@ -29,6 +30,8 @@ const TargetPane = ({
     onChangeSpriteVisibility,
     onChangeSpriteX,
     onChangeSpriteY,
+    onChangeCameraX,
+    onChangeCameraY,
     onDeleteSprite,
     onDrop,
     onDuplicateSprite,
@@ -55,6 +58,7 @@ const TargetPane = ({
         <SpriteSelectorComponent
             editingTarget={editingTarget}
             hoveredTarget={hoveredTarget}
+            camera={camera}
             raised={raiseSprites}
             selectedId={editingTarget}
             spriteFileInput={fileInputRef}
@@ -67,6 +71,8 @@ const TargetPane = ({
             onChangeSpriteVisibility={onChangeSpriteVisibility}
             onChangeSpriteX={onChangeSpriteX}
             onChangeSpriteY={onChangeSpriteY}
+            onChangeCameraX={onChangeCameraX}
+            onChangeCameraY={onChangeCameraY}
             onDeleteSprite={onDeleteSprite}
             onDrop={onDrop}
             onDuplicateSprite={onDuplicateSprite}
@@ -141,6 +147,8 @@ TargetPane.propTypes = {
     onChangeSpriteVisibility: PropTypes.func,
     onChangeSpriteX: PropTypes.func,
     onChangeSpriteY: PropTypes.func,
+    onChangeCameraX: PropTypes.func,
+    onChangeCameraY: PropTypes.func,
     onDeleteSprite: PropTypes.func,
     onDrop: PropTypes.func,
     onDuplicateSprite: PropTypes.func,

@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {intlShape, injectIntl} from 'react-intl';
+import VM from 'scratch-vm';
 
 import {
     openSpriteLibrary,
@@ -38,6 +39,8 @@ class TargetPane extends React.Component {
             'handleChangeSpriteVisibility',
             'handleChangeSpriteX',
             'handleChangeSpriteY',
+            'handleChangeCameraX',
+            'handleChangeCameraY',
             'handleDeleteSprite',
             'handleDrop',
             'handleDuplicateSprite',
@@ -77,6 +80,14 @@ class TargetPane extends React.Component {
     }
     handleChangeSpriteY (y) {
         this.props.vm.postSpriteInfo({y});
+    }
+    handleChangeCameraX (x) {
+        this.props.vm.runtime.camera.x = x;
+        this.props.vm.runtime.camera.emitCameraUpdate();
+    }
+    handleChangeCameraY (y) {
+        this.props.vm.runtime.camera.y = y;
+        this.props.vm.runtime.camera.emitCameraUpdate();
     }
     handleDeleteSprite (id) {
         const restoreSprite = this.props.vm.deleteSprite(id);
@@ -237,6 +248,8 @@ class TargetPane extends React.Component {
                 onChangeSpriteVisibility={this.handleChangeSpriteVisibility}
                 onChangeSpriteX={this.handleChangeSpriteX}
                 onChangeSpriteY={this.handleChangeSpriteY}
+                onChangeCameraX={this.handleChangeCameraX}
+                onChangeCameraY={this.handleChangeCameraY}
                 onDeleteSprite={this.handleDeleteSprite}
                 onDrop={this.handleDrop}
                 onDuplicateSprite={this.handleDuplicateSprite}
@@ -268,6 +281,7 @@ const mapStateToProps = state => ({
     editingTarget: state.scratchGui.targets.editingTarget,
     hoveredTarget: state.scratchGui.hoveredTarget,
     isRtl: state.locales.isRtl,
+    camera: state.scratchGui.camera,
     spriteLibraryVisible: state.scratchGui.modals.spriteLibrary,
     sprites: state.scratchGui.targets.sprites,
     stage: state.scratchGui.targets.stage,

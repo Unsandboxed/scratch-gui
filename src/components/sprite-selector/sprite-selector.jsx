@@ -3,6 +3,7 @@ import React from 'react';
 import {defineMessages, injectIntl, intlShape} from 'react-intl';
 
 import Box from '../box/box.jsx';
+import CameraInfo from '../../containers/camera-info.jsx';
 import SpriteInfo from '../../containers/sprite-info.jsx';
 import SpriteList from './sprite-list.jsx';
 import ActionMenu from '../action-menu/action-menu.jsx';
@@ -44,12 +45,15 @@ const SpriteSelectorComponent = function (props) {
     const {
         editingTarget,
         hoveredTarget,
+        camera,
         intl,
         onChangeSpriteDirection,
         onChangeSpriteName,
         onChangeSpriteRotationStyle,
         onChangeSpriteSize,
         onChangeSpriteVisibility,
+        onChangeCameraX,
+        onChangeCameraY,
         onChangeSpriteX,
         onChangeSpriteY,
         onDrop,
@@ -80,7 +84,12 @@ const SpriteSelectorComponent = function (props) {
             className={styles.spriteSelector}
             {...componentProps}
         >
-
+            <CameraInfo
+                x={camera.y}
+                y={camera.x}
+                onChangeX={onChangeCameraX}
+                onChangeY={onChangeCameraY}
+            />
             <SpriteInfo
                 direction={selectedSprite.direction}
                 disabled={spriteInfoDisabled}
@@ -158,6 +167,8 @@ SpriteSelectorComponent.propTypes = {
     onChangeSpriteRotationStyle: PropTypes.func,
     onChangeSpriteSize: PropTypes.func,
     onChangeSpriteVisibility: PropTypes.func,
+    onChangeCameraX: PropTypes.func,
+    onChangeCameraY: PropTypes.func,
     onChangeSpriteX: PropTypes.func,
     onChangeSpriteY: PropTypes.func,
     onDeleteSprite: PropTypes.func,
