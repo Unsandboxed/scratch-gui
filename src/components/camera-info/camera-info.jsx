@@ -21,7 +21,6 @@ const BufferedInput = BufferedInputHOC(Input);
 
 class CameraInfo extends React.Component {
     shouldComponentUpdate (nextProps) {
-        console.log(nextProps);
         return (
             this.props.stageSize !== nextProps.stageSize ||
             // Only update these if rounded value has changed
