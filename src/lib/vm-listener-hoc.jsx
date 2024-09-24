@@ -154,7 +154,7 @@ const vmListenerHOC = function (WrappedComponent) {
             }
         }
         handleCameraUpdate (data) {
-            this.props.onCameraUpdate(data);
+            this.props.onCameraUpdate(data.camera);
         }
         handleTargetsUpdate (data) {
             if (this.props.shouldUpdateTargets) {
