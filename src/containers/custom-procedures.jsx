@@ -10,6 +10,7 @@ class CustomProcedures extends React.Component {
     constructor (props) {
         super(props);
         bindAll(this, [
+            'handleAddStatement',
             'handleAddLabel',
             'handleAddBoolean',
             'handleAddText',
@@ -119,6 +120,11 @@ class CustomProcedures extends React.Component {
         const newMutation = this.mutationRoot ? this.mutationRoot.mutationToDom(true) : null;
         this.props.onRequestClose(newMutation);
     }
+    handleAddStatement () {
+        if (this.mutationRoot) {
+            this.mutationRoot.addStatementExternal();
+        }
+    }
     handleAddLabel () {
         if (this.mutationRoot) {
             this.mutationRoot.addLabelExternal();
@@ -157,6 +163,7 @@ class CustomProcedures extends React.Component {
             <CustomProceduresComponent
                 componentRef={this.setBlocks}
                 warp={this.state.warp}
+                onAddStatement={this.handleAddStatement}
                 onAddBoolean={this.handleAddBoolean}
                 onAddLabel={this.handleAddLabel}
                 onAddText={this.handleAddText}

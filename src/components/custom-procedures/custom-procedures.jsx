@@ -128,6 +128,25 @@ const CustomProcedures = props => (
                         />
                     </div>
                 </div>
+                <div
+                    className={styles.optionCard}
+                    role="button"
+                    tabIndex="0"
+                    onClick={props.onAddStatement}
+                >
+                    <img
+                        className={styles.optionIcon}
+                        src={labelIcon}
+                        draggable={false}
+                    />
+                    <div className={styles.optionDescription}>
+                        <FormattedMessage
+                            defaultMessage="statement"
+                            description="Label for button to add a statement"
+                            id="gui.customProcedures.addStatement"
+                        />
+                    </div>
+                </div>
             </div>
             <div className={styles.optionTitle}>
                 <FormattedMessage
@@ -258,6 +277,7 @@ const CustomProcedures = props => (
 CustomProcedures.propTypes = {
     componentRef: PropTypes.func.isRequired,
     intl: intlShape,
+    onAddStatement: PropTypes.func.isRequired,
     onAddBoolean: PropTypes.func.isRequired,
     onAddLabel: PropTypes.func.isRequired,
     onAddText: PropTypes.func.isRequired,
