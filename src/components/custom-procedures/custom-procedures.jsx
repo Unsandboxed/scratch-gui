@@ -216,6 +216,32 @@ const CustomProcedures = props => (
                 />
             </Box>
             <div className={styles.checkboxRow}>
+                <label>      
+                    <input
+                        checked={!props.hat}
+                        type="radio"
+                        onChange={props.onToggleHat}
+                    />
+                    <FormattedMessage
+                        defaultMessage="Primitive"
+                        description="Label for checkbox to make a primitive"
+                        id="gui.customProcedures.primitive"
+                    />
+                </label>
+                <label>      
+                    <input
+                        checked={props.hat}
+                        type="radio"
+                        onChange={props.onToggleHat}
+                    />
+                    <FormattedMessage
+                        defaultMessage="Hat"
+                        description="Label for checkbox to make a hat block"
+                        id="gui.customProcedures.hatBlock"
+                    />
+                </label>
+            </div>
+            <div className={styles.checkboxRow}>
                 <label>
                     <input
                         checked={props.warp}
@@ -265,6 +291,7 @@ CustomProcedures.propTypes = {
     onCancel: PropTypes.func.isRequired,
     onOk: PropTypes.func.isRequired,
     onToggleWarp: PropTypes.func.isRequired,
+    onToggleHat: PropTypes.func.isRequired,
     warp: PropTypes.bool.isRequired
 };
 

@@ -16,13 +16,15 @@ class CustomProcedures extends React.Component {
             'handleAddNumber',
             'handleAddColor',
             'handleToggleWarp',
+            'handleToggleHat',
             'handleCancel',
             'handleOk',
             'setBlocks'
         ]);
         this.state = {
             rtlOffset: 0,
-            warp: false
+            warp: false,
+            hat: false
         };
     }
     componentWillUnmount () {
@@ -40,6 +42,7 @@ class CustomProcedures extends React.Component {
         );
 
         const ScratchBlocks = LazyScratchBlocks.get();
+        this.ScratchBlocks = ScratchBlocks;
         // @todo This is a hack to make there be no toolbox.
         const oldDefaultToolbox = ScratchBlocks.Blocks.defaultToolbox;
         ScratchBlocks.Blocks.defaultToolbox = null;
@@ -107,6 +110,7 @@ class CustomProcedures extends React.Component {
         this.mutationRoot.initSvg();
         this.mutationRoot.render();
         this.setState({warp: this.mutationRoot.getWarp()});
+        this.setState({hat: this.mutationRoot.getHat()});
         // Allow the initial events to run to position this block, then focus.
         setTimeout(() => {
             this.mutationRoot.focusLastEditor_();
@@ -152,11 +156,20 @@ class CustomProcedures extends React.Component {
             this.setState({warp: newWarp});
         }
     }
+    handleToggleHat () {
+        if (this.mutationRoot) {
+            const newHat = !this.mutationRoot.getHat();
+            this.mutationRoot.setHat(newHat);
+            this.ScratchBlocks.WidgetDiv.hide(true);
+            this.setState({hat: newHat});
+        }
+    }
     render () {
         return (
             <CustomProceduresComponent
                 componentRef={this.setBlocks}
                 warp={this.state.warp}
+                hat={this.state.hat}
                 onAddBoolean={this.handleAddBoolean}
                 onAddLabel={this.handleAddLabel}
                 onAddText={this.handleAddText}
@@ -165,6 +178,7 @@ class CustomProcedures extends React.Component {
                 onCancel={this.handleCancel}
                 onOk={this.handleOk}
                 onToggleWarp={this.handleToggleWarp}
+                onToggleHat={this.handleToggleHat}
             />
         );
     }
