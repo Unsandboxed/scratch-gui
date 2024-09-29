@@ -6,6 +6,8 @@ import {defineMessages, injectIntl, intlShape, FormattedMessage} from 'react-int
 
 import booleanInputIcon from './icon--boolean-input.svg';
 import textInputIcon from './icon--text-input.svg';
+import numberInputIcon from './icon--number-input.svg';
+import statementIcon from './icon--statement-input.svg';
 import labelIcon from './icon--label.svg';
 
 import styles from './custom-procedures.css';
@@ -79,7 +81,7 @@ const CustomProcedures = props => (
                 >
                     <img
                         className={styles.optionIcon}
-                        src={textInputIcon}
+                        src={numberInputIcon}
                         draggable={false}
                     />
                     <div className={styles.optionDescription}>
@@ -136,7 +138,7 @@ const CustomProcedures = props => (
                 >
                     <img
                         className={styles.optionIcon}
-                        src={labelIcon}
+                        src={statementIcon}
                         draggable={false}
                     />
                     <div className={styles.optionDescription}>

@@ -83,7 +83,7 @@ export default async function ({ addon, console }) {
       if (isTargetField) {
         return {
           name: input.name,
-          index: i,
+          index: i
         };
       }
     }
@@ -91,9 +91,14 @@ export default async function ({ addon, console }) {
 
   function shiftInput(procedureBlock, inputNameToShift, newPosition) {
     const initialInputListLength = procedureBlock.inputList.length;
-
+    console.log(inputNameToShift);
     // return if inputNameToShift and newPosition are not valid
     if (!(inputNameToShift && newPosition >= 0 && newPosition <= initialInputListLength)) {
+      return false;
+    }
+
+    // there must be at least 1 field before a statement input
+    if (inputNameToShift.startsWith("SUBSTACK") && !(newPosition >= 1)) {
       return false;
     }
 
@@ -138,7 +143,7 @@ export default async function ({ addon, console }) {
     procedureDeclaration.onChangeFn = modifiedUpdateDeclarationProcCode;
     procedureDeclaration.removeFieldCallback = modifiedRemoveFieldCallback;
 
-    for (const inputFn of ["addLabelExternal", "addBooleanExternal", "addStringNumberExternal"]) {
+    for (const inputFn of ["addLabelExternal", "addBooleanExternal", "addStringExternal", "addNumberExternal", "addStatementExternal"]) {
       if (save_original) {
         originalAddFns[inputFn] = procedureDeclaration[inputFn];
       }

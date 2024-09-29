@@ -1,7 +1,7 @@
 // https://github.com/scratchfoundation/scratch-blocks/blob/f210e042988b91bcdc2abeca7a2d85e178edadb2/blocks_vertical/procedures.js#L205
 export function modifiedCreateAllInputs(connectionMap) {
-  // Split the proc into components, by %n, %b, %s and %l (ignoring escaped).
-  var procComponents = this.procCode_.split(/(?=[^\\]%[nbsl])/);
+  // Split the proc into components, by %n, %b, %s, %f and %l (ignoring escaped).
+  var procComponents = this.procCode_.split(/(?=[^\\]%[nbsfl])/);
   procComponents = procComponents.map(function (c) {
     return c.trim(); // Strip whitespace.
   });
@@ -13,16 +13,20 @@ export function modifiedCreateAllInputs(connectionMap) {
     // Don't treat %l as an argument
     if (component.substring(0, 1) == "%" && component.substring(1, 2) !== "l") {
       var argumentType = component.substring(1, 2);
-      if (!(argumentType == "n" || argumentType == "b" || argumentType == "s")) {
+      if (!(argumentType == "n" || argumentType == "b" || argumentType == "s" || argumentType == "f" )) {
         throw new Error("Found an custom procedure with an invalid type: " + argumentType);
       }
       labelText = component.substring(2).trim();
 
       var id = this.argumentIds_[argumentCount];
 
-      var input = this.appendValueInput(id);
-      if (argumentType == "b") {
-        input.setCheck("Boolean");
+      if (argumentType != 'f') {
+        var input = this.appendValueInput(id);
+        if (argumentType == 'b') {
+          input.setCheck("Boolean");
+        }
+      } else {
+        var input = this.appendStatementInput(id);
       }
       this.populateArgument_(argumentType, argumentCount, connectionMap, id, input);
       argumentCount++;
@@ -62,6 +66,11 @@ export function modifiedUpdateDeclarationProcCode(prefixLabels = false) {
       } else {
         this.procCode_ += "%s";
       }
+    } else if (input.type == 3) {
+      var target = input.connection.targetBlock();
+      this.displayNames_.push(target.getFieldValue("TEXT"));
+      this.argumentIds_.push(input.name);
+      this.procCode_ += "%f";
     } else {
       throw new Error("Unexpected input type on a procedure mutator root: " + input.type);
     }
