@@ -97,12 +97,18 @@ export default async function ({ addon, console }) {
       return false;
     }
 
-    // there must be at least 1 field before a statement input
+    // usb: there must be at least 1 field before a statement input.
     if (inputNameToShift.startsWith("SUBSTACK") && !(newPosition >= 1)) {
       return false;
     }
 
     const originalPosition = procedureBlock.inputList.findIndex((input) => input.name === inputNameToShift);
+
+    // usb: if a statement input would end up being first in the list, don't shift the input.
+    if (originalPosition === 0 && procedureBlock.inputList[newPosition].name.startsWith("SUBSTACK")) {
+      return false;
+    }
+
     const itemToMove = procedureBlock.inputList.splice(originalPosition, 1)[0];
     procedureBlock.inputList.splice(newPosition, 0, itemToMove);
 

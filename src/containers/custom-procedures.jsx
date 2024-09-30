@@ -149,6 +149,8 @@ class CustomProcedures extends React.Component {
         if (this.mutationRoot) {
             this.mutationRoot.setColour(color.target.getAttribute("color"));
             this.setState({colour: color.target.getAttribute("color")});
+            this.mutationRoot.updateDisplay_();
+            this.mutationRoot.focusLastEditor_();
         }
     }
     handleToggleWarp () {
