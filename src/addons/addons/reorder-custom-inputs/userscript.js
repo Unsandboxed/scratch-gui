@@ -47,7 +47,7 @@ export default async function ({ addon, console }) {
     }
     
     // There must be at least one field before a statement input.
-    if (this.inputList[1].type === Blockly.NEXT_STATEMENT && 
+    if (this.inputList[1].type === 3 && // Blockly.NEXT_STATEMENT
         inputNameIndex === 0) {
       return;
     }
@@ -104,7 +104,6 @@ export default async function ({ addon, console }) {
 
   function shiftInput(procedureBlock, inputNameToShift, newPosition) {
     const initialInputListLength = procedureBlock.inputList.length;
-    console.log(inputNameToShift);
     // return if inputNameToShift and newPosition are not valid
     if (!(inputNameToShift && newPosition >= 0 && newPosition <= initialInputListLength)) {
       return false;
