@@ -23,6 +23,10 @@ export default async function ({ addon, console }) {
     if (this.inputList.length === 1) {
       return;
     }
+      
+    var inputNameToRemove = null;
+    var inputNameIndex;
+
     var inputNameToRemove = null;
     for (var n = 0; n < this.inputList.length; n++) {
       var input = this.inputList[n];
@@ -30,15 +34,24 @@ export default async function ({ addon, console }) {
         var target = input.connection.targetBlock();
         if (target.getField(field.name) == field) {
           inputNameToRemove = input.name;
+          inputNameIndex = n;
         }
       } else {
         for (var j = 0; j < input.fieldRow.length; j++) {
           if (input.fieldRow[j] == field) {
             inputNameToRemove = input.name;
+            inputNameIndex = n;
           }
         }
       }
     }
+    
+    // There must be at least one field before a statement input.
+    if (this.inputList[1].type === Blockly.NEXT_STATEMENT && 
+        inputNameIndex === 0) {
+      return;
+    }
+
     if (inputNameToRemove) {
       Blockly.WidgetDiv.hide(true);
       this.removeInput(inputNameToRemove);
