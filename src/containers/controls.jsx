@@ -11,6 +11,7 @@ class Controls extends React.Component {
         super(props);
         bindAll(this, [
             'handleGreenFlagClick',
+            'handlePauseClick',
             'handleStopAllClick'
         ]);
     }
@@ -35,16 +36,22 @@ class Controls extends React.Component {
             this.props.vm.greenFlag();
         }
     }
+    handlePauseClick (e) {
+        e.preventDefault();
+        this.props.vm.runtime.setPause(!this.props.vm.runtime.paused);
+    }
     handleStopAllClick (e) {
         e.preventDefault();
         this.props.vm.stopAll();
     }
     render () {
+        console.log(this.props);
         const {
             vm, // eslint-disable-line no-unused-vars
             isStarted, // eslint-disable-line no-unused-vars
             projectRunning,
             turbo,
+            paused,
             ...props
         } = this.props;
         return (
@@ -52,7 +59,9 @@ class Controls extends React.Component {
                 {...props}
                 active={projectRunning && isStarted}
                 turbo={turbo}
+                paused={paused}
                 onGreenFlagClick={this.handleGreenFlagClick}
+                onPauseClick={this.handlePauseClick}
                 onStopAllClick={this.handleStopAllClick}
             />
         );
@@ -66,6 +75,8 @@ Controls.propTypes = {
     framerate: PropTypes.number.isRequired,
     interpolation: PropTypes.bool.isRequired,
     isSmall: PropTypes.bool,
+    isHidden: PropTypes.bool,
+    paused: PropTypes.bool,
     vm: PropTypes.instanceOf(VM)
 };
 
@@ -74,7 +85,8 @@ const mapStateToProps = state => ({
     projectRunning: state.scratchGui.vmStatus.running,
     framerate: state.scratchGui.tw.framerate,
     interpolation: state.scratchGui.tw.interpolation,
-    turbo: state.scratchGui.vmStatus.turbo
+    turbo: state.scratchGui.vmStatus.turbo,
+    paused: state.scratchGui.vm.paused
 });
 // no-op function to prevent dispatch prop being passed to component
 const mapDispatchToProps = () => ({});

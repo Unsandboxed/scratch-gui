@@ -75,7 +75,6 @@ import _editor_number_arrow_keys from "../addons/editor-number-arrow-keys/_manif
 import _expanded_backpack from "../addons/expanded-backpack/_manifest_entry.js";
 import _script_snap from "../addons/script-snap/_manifest_entry.js";
 import _fullscreen from "../addons/fullscreen/_manifest_entry.js";
-import _hide_stage from "../addons/hide-stage/_manifest_entry.js";
 import _tw_straighten_comments from "../addons/tw-straighten-comments/_manifest_entry.js";
 import _tw_remove_backpack from "../addons/tw-remove-backpack/_manifest_entry.js";
 import _tw_remove_feedback from "../addons/tw-remove-feedback/_manifest_entry.js";
@@ -159,7 +158,6 @@ export default {
   "expanded-backpack": _expanded_backpack,
   "script-snap": _script_snap,
   "fullscreen": _fullscreen,
-  "hide-stage": _hide_stage,
   "tw-straighten-comments": _tw_straighten_comments,
   "tw-remove-backpack": _tw_remove_backpack,
   "tw-remove-feedback": _tw_remove_feedback,

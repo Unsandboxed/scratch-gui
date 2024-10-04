@@ -376,7 +376,7 @@ const TWStateManager = function (WrappedComponent) {
             window.addEventListener('popstate', this.handlePopState);
         }
         componentDidUpdate (prevProps) {
-            if (this.props.username !== prevProps.username && this.props.username !== this.doNotPersistUsername) {
+            if (this.props.username !== prevProps.useArname && this.props.username !== this.doNotPersistUsername) {
                 // TODO: this always restores the current username once at startup, which is unnecessary
                 setLocalStorage(USERNAME_KEY, this.props.username);
             }
@@ -405,7 +405,8 @@ const TWStateManager = function (WrappedComponent) {
                 this.props.highQualityPen !== prevProps.highQualityPen ||
                 this.props.framerate !== prevProps.framerate ||
                 this.props.interpolation !== prevProps.interpolation ||
-                this.props.turbo !== prevProps.turbo
+                this.props.turbo !== prevProps.turbo /* ||
+                this.props.paused !== prevProps.paused */
             ) {
                 const searchParams = new URLSearchParams(location.search);
                 const runtimeOptions = this.props.runtimeOptions;
@@ -523,6 +524,7 @@ const TWStateManager = function (WrappedComponent) {
                 framerate,
                 interpolation,
                 turbo,
+                paused,
                 onSetIsFullScreen,
                 onSetIsPlayerOnly,
                 onSetProjectId,
@@ -565,6 +567,7 @@ const TWStateManager = function (WrappedComponent) {
         framerate: PropTypes.number,
         interpolation: PropTypes.bool,
         turbo: PropTypes.bool,
+        paused: PropTypes.bool,
         onSetIsFullScreen: PropTypes.func,
         onSetIsPlayerOnly: PropTypes.func,
         onSetProjectId: PropTypes.func,
@@ -590,6 +593,7 @@ const TWStateManager = function (WrappedComponent) {
         framerate: state.scratchGui.tw.framerate,
         interpolation: state.scratchGui.tw.interpolation,
         turbo: state.scratchGui.vmStatus.turbo,
+        paused: state.scratchGui.vmStatus.paused,
         username: state.scratchGui.tw.username,
         vm: state.scratchGui.vm
     });

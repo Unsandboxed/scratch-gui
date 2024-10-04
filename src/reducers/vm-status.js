@@ -1,11 +1,13 @@
 const SET_RUNNING_STATE = 'scratch-gui/vm-status/SET_RUNNING_STATE';
 const SET_TURBO_STATE = 'scratch-gui/vm-status/SET_TURBO_STATE';
 const SET_STARTED_STATE = 'scratch-gui/vm-status/SET_STARTED_STATE';
+const UPDATE_PAUSE_STATE = 'sctatch-gui/vm-status/UPDATE_PAUSE_STATE';
 
 const initialState = {
     running: false,
     started: false,
-    turbo: false
+    turbo: false,
+    paused: false
 };
 
 const reducer = function (state, action) {
@@ -22,6 +24,10 @@ const reducer = function (state, action) {
     case SET_TURBO_STATE:
         return Object.assign({}, state, {
             turbo: action.turbo
+        });
+    case UPDATE_PAUSE_STATE:
+        return Object.assign({}, state, {
+            paused: action.paused
         });
     default:
         return state;
@@ -50,10 +56,18 @@ const setTurboState = function (turbo) {
     };
 };
 
+const updatePauseState = function (paused) {
+    return {
+        type: UPDATE_PAUSE_STATE,
+        paused: paused
+    };
+};
+
 export {
     reducer as default,
     initialState as vmStatusInitialState,
     setRunningState,
     setStartedState,
-    setTurboState
+    setTurboState,
+    updatePauseState
 };
