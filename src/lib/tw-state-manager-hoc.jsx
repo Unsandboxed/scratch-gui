@@ -568,6 +568,7 @@ const TWStateManager = function (WrappedComponent) {
         interpolation: PropTypes.bool,
         turbo: PropTypes.bool,
         paused: PropTypes.bool,
+        volume: PropTypes.number,
         onSetIsFullScreen: PropTypes.func,
         onSetIsPlayerOnly: PropTypes.func,
         onSetProjectId: PropTypes.func,
@@ -594,6 +595,7 @@ const TWStateManager = function (WrappedComponent) {
         interpolation: state.scratchGui.tw.interpolation,
         turbo: state.scratchGui.vmStatus.turbo,
         paused: state.scratchGui.vmStatus.paused,
+        volume: state.scratchGui.vmStatus.volume,
         username: state.scratchGui.tw.username,
         vm: state.scratchGui.vm
     });

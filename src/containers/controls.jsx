@@ -44,6 +44,10 @@ class Controls extends React.Component {
         e.preventDefault();
         this.props.vm.stopAll();
     }
+    handleVolumeClick (e) {
+        e.preventDefault();
+    }
+    handleVolumeChange (e) {}
     render () {
         console.log(this.props);
         const {
@@ -52,17 +56,18 @@ class Controls extends React.Component {
             projectRunning,
             turbo,
             paused,
+            volume,
             ...props
         } = this.props;
         return (
             <ControlsComponent
                 {...props}
                 active={projectRunning && isStarted}
-                turbo={turbo}
-                paused={paused}
                 onGreenFlagClick={this.handleGreenFlagClick}
                 onPauseClick={this.handlePauseClick}
                 onStopAllClick={this.handleStopAllClick}
+                onVolumeChange={this.handleVolumeChange}
+                onVolumeClick={this.handleVolumeClick}
             />
         );
     }
@@ -77,6 +82,7 @@ Controls.propTypes = {
     isSmall: PropTypes.bool,
     isHidden: PropTypes.bool,
     paused: PropTypes.bool,
+    volume: PropTypes.number,
     vm: PropTypes.instanceOf(VM)
 };
 
@@ -86,7 +92,12 @@ const mapStateToProps = state => ({
     framerate: state.scratchGui.tw.framerate,
     interpolation: state.scratchGui.tw.interpolation,
     turbo: state.scratchGui.vmStatus.turbo,
+<<<<<<< Updated upstream
     paused: state.scratchGui.vm.runtime.paused
+=======
+    paused: state.scratchGui.vmStatus.paused,
+    volume: state.scratchGui.vmStatus.volume
+>>>>>>> Stashed changes
 });
 // no-op function to prevent dispatch prop being passed to component
 const mapDispatchToProps = () => ({});
