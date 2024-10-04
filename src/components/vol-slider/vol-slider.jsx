@@ -34,6 +34,7 @@ const VolumeComponent = function (props) {
                     max={"1"}
                     step={"0.02"}
                     onChange={onChange}
+                    value={volume}
                 />
             </div>
         </div>
