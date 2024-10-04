@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import greenFlagIcon from './icon--green-flag.svg';
+import orangeFlagIcon from './icon--orange-flag.svg';
 import styles from './green-flag.css';
 
 const GreenFlagComponent = function (props) {
@@ -11,6 +12,7 @@ const GreenFlagComponent = function (props) {
         className,
         onClick,
         title,
+        turboMode,
         ...componentProps
     } = props;
     return (
@@ -23,7 +25,7 @@ const GreenFlagComponent = function (props) {
                 }
             )}
             draggable={false}
-            src={greenFlagIcon}
+            src={turboMode ? orangeFlagIcon : greenFlagIcon}
             title={title}
             onClick={onClick}
             // tw: also fire click when opening context menu (right click on all systems and alt+click on chromebooks)
@@ -36,10 +38,12 @@ GreenFlagComponent.propTypes = {
     active: PropTypes.bool,
     className: PropTypes.string,
     onClick: PropTypes.func.isRequired,
-    title: PropTypes.string
+    title: PropTypes.string,
+    turboMode: PropTypes.bool.isRequired
 };
 GreenFlagComponent.defaultProps = {
     active: false,
-    title: 'Go'
+    title: 'Go',
+    turboMode: false
 };
 export default GreenFlagComponent;

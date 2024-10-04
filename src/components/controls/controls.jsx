@@ -45,15 +45,13 @@ const Controls = function (props) {
                 active={active}
                 title={intl.formatMessage(messages.goTitle)}
                 onClick={onGreenFlagClick}
+                turboMode={turbo}
             />
             <StopAll
                 active={active}
                 title={intl.formatMessage(messages.stopTitle)}
                 onClick={onStopAllClick}
             />
-            {turbo ? (
-                <TurboMode isSmall={isSmall} />
-            ) : null}
             {!isSmall && (
                 <FramerateIndicator
                     framerate={framerate}
