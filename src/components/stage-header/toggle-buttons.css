@@ -18,11 +18,13 @@
     z-index: 32767;
     background-color: $ui-primary;
     --button-display: none;
+    top: 40px;
     right: 34px;
     border: 4px solid $ui-primary;
     border-top: none !important;
     border-bottom-left-radius: $form-radius;
     border-bottom-right-radius: $form-radius;
+    padding-top: 2px;
 }
 
 .dropdown .button {
@@ -46,18 +48,9 @@
     border-radius: $form-radius;
 }
 
-
-.button:first-child {
-    margin-bottom: 3px;
-}
-
 .button:not(:first-child) {
     margin-top: 2px;
     margin-bottom: 1px;
-}
-
-.button:nth-child(2) {
-    margin-top: 0px;
 }
 
 .button > img {
