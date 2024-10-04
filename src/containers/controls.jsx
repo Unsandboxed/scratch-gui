@@ -12,7 +12,9 @@ class Controls extends React.Component {
         bindAll(this, [
             'handleGreenFlagClick',
             'handlePauseClick',
-            'handleStopAllClick'
+            'handleStopAllClick',
+            'handleVolumeClick',
+            'handleVolumeChange'
         ]);
     }
     handleGreenFlagClick (e) {
@@ -48,6 +50,7 @@ class Controls extends React.Component {
         e.preventDefault();
     }
     handleVolumeChange (e) {
+        console.log(e.value);
         e.preventDefault();
     }
     render () {
