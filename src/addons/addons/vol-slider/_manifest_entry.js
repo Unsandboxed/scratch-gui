@@ -13,6 +13,10 @@ const manifest = {
     },
     {
       "name": "DNin01"
+    },
+    {
+      "name": "0znzw",
+      "link": "https://scratch.mit.edu/users/0znzw/"
     }
   ],
   "userscripts": [
