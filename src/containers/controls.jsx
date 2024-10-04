@@ -86,7 +86,7 @@ const mapStateToProps = state => ({
     framerate: state.scratchGui.tw.framerate,
     interpolation: state.scratchGui.tw.interpolation,
     turbo: state.scratchGui.vmStatus.turbo,
-    paused: state.scratchGui.vm.paused
+    paused: state.scratchGui.vm.runtime.paused
 });
 // no-op function to prevent dispatch prop being passed to component
 const mapDispatchToProps = () => ({});

@@ -62,7 +62,7 @@ const Controls = function (props) {
                     turboMode={turbo}
                 />
             )}
-            {!isHidden && false && (
+            {!isHidden && (
                 <Pause
                     active={active}
                     title={intl.formatMessage(paused ? messages.playTitle : messages.pauseTitle)}
