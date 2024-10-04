@@ -152,11 +152,11 @@ const HighQualityPen = props => (
 
 const CustomFPS = props => (
     <BooleanSetting
-        value={props.framerate !== 30}
+        value={props.framerate !== 60}
         onChange={props.onChange}
         label={
             <FormattedMessage
-                defaultMessage="60 FPS (Custom FPS)"
+                defaultMessage="30 FPS (Custom FPS)"
                 description="FPS setting"
                 id="tw.settingsModal.fps"
             />
@@ -164,7 +164,7 @@ const CustomFPS = props => (
         help={
             <FormattedMessage
                 // eslint-disable-next-line max-len
-                defaultMessage="Runs scripts 60 times per second instead of 30. Most projects will not work properly with this enabled. You should try Interpolation with 60 FPS mode disabled if that is the case. {customFramerate}."
+                defaultMessage="Runs scripts 30 times per second instead of 60. Most projects made in Scratch or TurboWarp will require this feature. {customFramerate}."
                 description="FPS setting help"
                 id="tw.settingsModal.fpsHelp"
                 values={{
@@ -235,25 +235,25 @@ const InfiniteClones = props => (
     />
 );
 
-const RemoveFencing = props => (
+const EnableFencing = props => (
     <BooleanSetting
         {...props}
         label={
             <FormattedMessage
-                defaultMessage="Remove Fencing"
-                description="Remove Fencing setting"
-                id="tw.settingsModal.removeFencing"
+                defaultMessage="Enable Fencing"
+                description="Enable Fencing setting"
+                id="tw.settingsModal.enableFencing"
             />
         }
         help={
             <FormattedMessage
                 // eslint-disable-next-line max-len
-                defaultMessage="Allows sprites to move offscreen, become as large or as small as they want, and makes touching blocks work offscreen."
-                description="Remove Fencing setting help"
-                id="tw.settingsModal.removeFencingHelp"
+                defaultMessage="Legacy setting that keeps sprites from going off-screen. Might not work with Unsandboxed's Camera."
+                description="Enable Fencing setting help"
+                id="tw.settingsModal.enableFencingHelp"
             />
         }
-        slug="remove-fencing"
+        slug="enable-fencing"
     />
 );
 
@@ -447,14 +447,15 @@ const SettingsModalComponent = props => (
                     id="tw.settingsModal.featured"
                 />
             </Header>
+            {!props.isEmbedded && (
+                <CustomStageSize
+                    {...props}
+                />
+            )}
             <CustomFPS
                 framerate={props.framerate}
                 onChange={props.onFramerateChange}
                 onCustomizeFramerate={props.onCustomizeFramerate}
-            />
-            <Interpolation
-                value={props.interpolation}
-                onChange={props.onInterpolationChange}
             />
             <HighQualityPen
                 value={props.highQualityPen}
@@ -475,10 +476,6 @@ const SettingsModalComponent = props => (
                 value={props.infiniteClones}
                 onChange={props.onInfiniteClonesChange}
             />
-            <RemoveFencing
-                value={props.removeFencing}
-                onChange={props.onRemoveFencingChange}
-            />
             <RemoveMiscLimits
                 value={props.removeLimits}
                 onChange={props.onRemoveLimitsChange}
@@ -490,14 +487,17 @@ const SettingsModalComponent = props => (
                     id="tw.settingsModal.dangerZone"
                 />
             </Header>
-            {!props.isEmbedded && (
-                <CustomStageSize
-                    {...props}
-                />
-            )}
             <DisableCompiler
                 value={props.disableCompiler}
                 onChange={props.onDisableCompilerChange}
+            />
+            <EnableFencing
+                value={props.enableFencing}
+                onChange={props.onEnableFencingChange}
+            />
+            <Interpolation
+                value={props.interpolation}
+                onChange={props.onInterpolationChange}
             />
             {!props.isEmbedded && (
                 <StoreProjectOptions
@@ -521,8 +521,8 @@ SettingsModalComponent.propTypes = {
     onInterpolationChange: PropTypes.func,
     infiniteClones: PropTypes.bool,
     onInfiniteClonesChange: PropTypes.func,
-    removeFencing: PropTypes.bool,
-    onRemoveFencingChange: PropTypes.func,
+    enableFencing: PropTypes.bool,
+    onEnableFencingChange: PropTypes.func,
     removeLimits: PropTypes.bool,
     onRemoveLimitsChange: PropTypes.func,
     warpTimer: PropTypes.bool,

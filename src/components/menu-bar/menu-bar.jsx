@@ -219,6 +219,7 @@ class MenuBar extends React.Component {
             'handleClickSaveAsCopy',
             'handleClickPackager',
             'handleClickDesktopSettings',
+            'handleClickSettingsModal',
             'handleClickRestorePoints',
             'handleClickSeeCommunity',
             'handleClickShare',
@@ -272,6 +273,10 @@ class MenuBar extends React.Component {
     }
     handleClickDesktopSettings () {
         this.props.onClickDesktopSettings();
+        this.props.onRequestCloseSettings();
+    }
+    handleClickSettingsModal () {
+        this.props.onClickSettingsModal();
         this.props.onRequestCloseSettings();
     }
     handleClickRestorePoints () {
@@ -545,6 +550,10 @@ class MenuBar extends React.Component {
                             onClickDesktopSettings={
                                 this.props.onClickDesktopSettings &&
                                 this.handleClickDesktopSettings
+                            }
+                            onClickSettingsModal={
+                                this.props.onClickSettingsModal &&
+                                this.handleClickSettingsModal
                             }
                             // eslint-disable-next-line react/jsx-no-bind
                             onOpenCustomSettings={this.props.onClickAddonSettings.bind(null, 'editor-theme3')}
@@ -821,15 +830,6 @@ class MenuBar extends React.Component {
                                         </MenuItem>
                                     )}</CloudVariablesToggler>
                                 </MenuSection>
-                                <MenuSection>
-                                    <MenuItem onClick={this.props.onClickSettingsModal}>
-                                        <FormattedMessage
-                                            defaultMessage="Advanced Settings"
-                                            description="Menu bar item for advanced settings"
-                                            id="tw.menuBar.moreSettings"
-                                        />
-                                    </MenuItem>
-                                </MenuSection>
                             </MenuBarMenu>
                         </MenuLabel>
                         {this.props.isTotallyNormal && (
@@ -896,7 +896,7 @@ class MenuBar extends React.Component {
                                 </span>
                             </div>
                         )}
-                        {this.props.onClickSettingsModal && (
+                        {/* {this.props.onClickSettingsModal && (
                             <div
                                 className={classNames(styles.menuBarItem, styles.hoverable)}
                                 onClick={this.props.onClickSettingsModal}
@@ -915,7 +915,7 @@ class MenuBar extends React.Component {
                                     />
                                 </span>
                             </div>
-                        )}
+                        )} */}
                     </div>
 
                     <Divider className={styles.divider} />
