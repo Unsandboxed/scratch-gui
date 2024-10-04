@@ -61,13 +61,6 @@ class SpriteInfo extends React.Component {
             stageSize
         } = this.props;
 
-        const sprite = (
-            <FormattedMessage
-                defaultMessage="Sprite"
-                description="Sprite info label"
-                id="gui.SpriteInfo.sprite"
-            />
-        );
         const sizeLabel = (
             <FormattedMessage
                 defaultMessage="Size"
@@ -171,12 +164,7 @@ class SpriteInfo extends React.Component {
             <Box className={styles.spriteInfo}>
                 <div className={classNames(styles.row, styles.rowPrimary)}>
                     <div className={styles.group}>
-                        <Label
-                            above={labelAbove}
-                            text={sprite}
-                        >
-                            {spriteNameInput}
-                        </Label>
+                        {spriteNameInput}
                     </div>
                     {xPosition}
                     {yPosition}
