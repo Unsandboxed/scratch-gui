@@ -22,7 +22,7 @@ const VolumeComponent = function (props) {
             <div className={styles.volSliderInner}>
                 <img
                     className={styles.volumeSliderIcon}
-                    src={muteIcon}
+                    src={volume === 0 ? muteIcon : (volume < 0.5 ? quietIcon : loudIcon)}
                     onClick={onClick}
                 />
                 <input

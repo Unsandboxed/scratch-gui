@@ -50,8 +50,8 @@ class Controls extends React.Component {
         e.preventDefault();
     }
     handleVolumeChange (e) {
+
         e.preventDefault();
-        this.props.vm.runtime.setVolume(Number(e.target.value));        
     }
     render () {
         const {
