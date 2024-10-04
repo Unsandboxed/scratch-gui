@@ -49,7 +49,6 @@ class Controls extends React.Component {
     }
     handleVolumeChange (e) {}
     render () {
-        console.log(this.props);
         const {
             vm, // eslint-disable-line no-unused-vars
             isStarted, // eslint-disable-line no-unused-vars
@@ -63,6 +62,9 @@ class Controls extends React.Component {
             <ControlsComponent
                 {...props}
                 active={projectRunning && isStarted}
+                turbo={turbo}
+                paused={paused}
+                volume={volume}
                 onGreenFlagClick={this.handleGreenFlagClick}
                 onPauseClick={this.handlePauseClick}
                 onStopAllClick={this.handleStopAllClick}

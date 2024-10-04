@@ -82,6 +82,12 @@ const Controls = function (props) {
                 />
             )}
             {!(isSmall || isHidden) && (
+                <FramerateIndicator
+                    framerate={framerate}
+                    interpolation={interpolation}
+                />
+            )}
+            {!(isSmall || isHidden) && (
                 <VolumeSlider onChange={onVolumeChange} onClick={onVolumeClick} volume={volume} />
             )}
         </div>
