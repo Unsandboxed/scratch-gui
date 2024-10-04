@@ -47,7 +47,9 @@ class Controls extends React.Component {
     handleVolumeClick (e) {
         e.preventDefault();
     }
-    handleVolumeChange (e) {}
+    handleVolumeChange (e) {
+        e.preventDefault();
+    }
     render () {
         const {
             vm, // eslint-disable-line no-unused-vars

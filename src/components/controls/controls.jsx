@@ -88,7 +88,11 @@ const Controls = function (props) {
                 />
             )}
             {!(isSmall || isHidden) && (
-                <VolumeSlider onChange={onVolumeChange} onClick={onVolumeClick} volume={volume} />
+                <VolumeSlider
+                    onChange={onVolumeChange} 
+                    onClick={onVolumeClick} 
+                    volume={volume} 
+                />
             )}
         </div>
     );
