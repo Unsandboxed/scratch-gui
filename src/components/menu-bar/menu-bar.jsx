@@ -219,7 +219,6 @@ class MenuBar extends React.Component {
             'handleClickSaveAsCopy',
             'handleClickPackager',
             'handleClickDesktopSettings',
-            'handleClickSettingsModal',
             'handleClickRestorePoints',
             'handleClickSeeCommunity',
             'handleClickShare',
@@ -273,10 +272,6 @@ class MenuBar extends React.Component {
     }
     handleClickDesktopSettings () {
         this.props.onClickDesktopSettings();
-        this.props.onRequestCloseSettings();
-    }
-    handleClickSettingsModal () {
-        this.props.onClickSettingsModal();
         this.props.onRequestCloseSettings();
     }
     handleClickRestorePoints () {
@@ -551,12 +546,9 @@ class MenuBar extends React.Component {
                                 this.props.onClickDesktopSettings &&
                                 this.handleClickDesktopSettings
                             }
-                            onClickSettingsModal={
-                                this.props.onClickSettingsModal &&
-                                this.handleClickSettingsModal
-                            }
                             // eslint-disable-next-line react/jsx-no-bind
                             onOpenCustomSettings={this.props.onClickAddonSettings.bind(null, 'editor-theme3')}
+                            onClickAddonSettings={this.props.onClickAddonSettings}
                             onRequestClose={this.props.onRequestCloseSettings}
                             onRequestOpen={this.props.onClickSettings}
                             settingsMenuOpen={this.props.settingsMenuOpen}
@@ -776,16 +768,16 @@ class MenuBar extends React.Component {
                                     )}</TurboMode>
                                     <FramerateChanger>{(changeFramerate, {framerate}) => (
                                         <MenuItem onClick={changeFramerate}>
-                                            {framerate === 60 ? (
+                                            {framerate === 30 ? (
                                                 <FormattedMessage
-                                                    defaultMessage="Turn off 60 FPS Mode"
-                                                    description="Menu bar item for turning off 60 FPS mode"
+                                                    defaultMessage="Turn off 30 FPS Mode"
+                                                    description="Menu bar item for turning off 30 FPS mode"
                                                     id="tw.menuBar.60off"
                                                 />
                                             ) : (
                                                 <FormattedMessage
-                                                    defaultMessage="Turn on 60 FPS Mode"
-                                                    description="Menu bar item for turning on 60 FPS mode"
+                                                    defaultMessage="Turn on 30 FPS Mode"
+                                                    description="Menu bar item for turning on 30 FPS mode"
                                                     id="tw.menuBar.60on"
                                                 />
                                             )}
@@ -829,6 +821,15 @@ class MenuBar extends React.Component {
                                             )}
                                         </MenuItem>
                                     )}</CloudVariablesToggler>
+                                    <MenuSection>
+                                        <MenuItem onClick={this.props.onClickSettingsModal}>
+                                            <FormattedMessage
+                                                defaultMessage="Advanced Settings"
+                                                description="Menu bar item for advanced settings"
+                                                id="tw.menuBar.moreSettings"
+                                            />
+                                        </MenuItem>
+                                    </MenuSection>
                                 </MenuSection>
                             </MenuBarMenu>
                         </MenuLabel>

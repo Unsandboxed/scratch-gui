@@ -22,7 +22,7 @@ const SettingsMenu = ({
     canChangeTheme,
     isRtl,
     onClickDesktopSettings,
-    onClickSettingsModal,
+    onClickAddonSettings,
     onOpenCustomSettings,
     onRequestClose,
     onRequestOpen,
@@ -67,9 +67,9 @@ const SettingsMenu = ({
                         />
                         <TWAccentThemeMenu />
                         <MenuSection>
-                            <MenuItem onClick={onClickSettingsModal}>
+                            <MenuItem onClick={onClickAddonSettings}>
                                 <FormattedMessage
-                                    defaultMessage="Advanced Settings"
+                                    defaultMessage="Addons"
                                     description="Menu bar item for advanced settings"
                                     id="tw.menuBar.moreSettings"
                                 />
@@ -88,7 +88,7 @@ SettingsMenu.propTypes = {
     canChangeTheme: PropTypes.bool,
     isRtl: PropTypes.bool,
     onClickDesktopSettings: PropTypes.func,
-    onClickSettingsModal: PropTypes.func,
+    onClickAddonSettings: PropTypes.func,
     onOpenCustomSettings: PropTypes.func,
     onRequestClose: PropTypes.func,
     onRequestOpen: PropTypes.func,
