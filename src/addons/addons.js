@@ -15,8 +15,6 @@ const addons = [
     'drag-drop',
     'debugger',
     'pause',
-    'mute-project',
-    'vol-slider',
     'clones',
     'mouse-pos',
     'color-picker',

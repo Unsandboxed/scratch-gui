@@ -13,8 +13,6 @@ import _mediarecorder from "../addons/mediarecorder/_manifest_entry.js";
 import _drag_drop from "../addons/drag-drop/_manifest_entry.js";
 import _debugger from "../addons/debugger/_manifest_entry.js";
 import _pause from "../addons/pause/_manifest_entry.js";
-import _mute_project from "../addons/mute-project/_manifest_entry.js";
-import _vol_slider from "../addons/vol-slider/_manifest_entry.js";
 import _usb_anarchy from "../addons/usb-anarchy/_manifest_entry.js";
 import _usb_scroll from "../addons/usb-scroll/_manifest_entry.js";
 import _clones from "../addons/clones/_manifest_entry.js";
@@ -96,8 +94,6 @@ export default {
   "drag-drop": _drag_drop,
   "debugger": _debugger,
   "pause": _pause,
-  "mute-project": _mute_project,
-  "vol-slider": _vol_slider,
   "usb-anarchy": _usb_anarchy,
   "usb-scroll": _usb_scroll,
   "clones": _clones,

@@ -66,6 +66,17 @@ const contributors = [
     {
         userID: '16426047',
         username: 'Maximouse'
+    },
+    {
+        userID: '61409215',
+        username: 'TheColaber'
+    },
+    {
+        username: 'DNin01'
+    },
+    {
+        userID: '65550396',
+        name: 'samq64'
     }
 ].map(fromHardcoded);
 
