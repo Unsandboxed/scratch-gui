@@ -8,23 +8,29 @@ import loudIcon from './loud.svg';
 import styles from './vol-slider.css';
 
 const VolumeComponent = function (props) {
-    const {
-        className,
-        volume,
-        onChange,
-        onClick,
-        ...componentProps
-    } = props;
-    return (
-        <div 
-            className={styles.volSlider}
-        >
-            <div className={styles.volSliderInner}>
-                <img
-                    className={styles.volSliderIcon}
-                    src={volume === 0 ? muteIcon : (volume < 0.5 ? quietIcon : loudIcon)}
-                    onClick={onClick}
-                />
+        const {
+            className,
+            volume,
+            onChange,
+            onClick,
+            onBlur,
+            ...componentProps
+        } = props;
+        const imageRef = React.useRef(0);
+        const image = (<img
+            ref={imageRef}
+            icons={[muteIcon, quietIcon, loudIcon]}
+            className={styles.volSliderIcon}
+            src={imageRef.current}
+            onClick={onClick}
+        />);
+        imageRef.current = volume === 0 ? muteIcon : (volume < 0.5 ? quietIcon : loudIcon);
+        return (
+            <div 
+                className={styles.volSlider}
+            >
+                <div className={styles.volSliderInner}>
+                    {image}
                 <input
                     className={classNames(
                         styles.volSliderInput
@@ -33,18 +39,19 @@ const VolumeComponent = function (props) {
                     min={"0"}
                     max={"1"}
                     step={"0.02"}
-                    onChange={onChange}
+                    onChange={(...args) => onChange(image, ...args)}
                     value={volume}
                 />
+                </div>
             </div>
-        </div>
-    );
-};
+        );
+}
 
 VolumeComponent.propTypes = {
     className: PropTypes.string,
-    onChange: PropTypes.func,
-    onClick: PropTypes.func,
+    onChange: PropTypes.func.isRequired,
+    onClick: PropTypes.func.isRequired,
+    onBlur: PropTypes.func.isRequired,
     volume: PropTypes.number
 };
 

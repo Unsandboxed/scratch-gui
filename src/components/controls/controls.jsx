@@ -44,6 +44,7 @@ const Controls = function (props) {
         onStopAllClick,
         onVolumeClick,
         onVolumeChange,
+        onVolumeBlur,
         turbo,
         paused,
         volume,
@@ -89,9 +90,10 @@ const Controls = function (props) {
             )}
             {!(isSmall || isHidden) && (
                 <VolumeSlider
-                    onChange={onVolumeChange} 
-                    onClick={onVolumeClick} 
-                    volume={volume} 
+                    onChange={onVolumeChange}
+                    onClick={onVolumeClick}
+                    onBlur={onVolumeBlur}
+                    volume={volume}
                 />
             )}
         </div>

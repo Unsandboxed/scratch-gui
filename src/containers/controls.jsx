@@ -14,7 +14,8 @@ class Controls extends React.Component {
             'handlePauseClick',
             'handleStopAllClick',
             'handleVolumeClick',
-            'handleVolumeChange'
+            'handleVolumeChange',
+            'handleVolumeBlur'
         ]);
     }
     handleGreenFlagClick (e) {
@@ -61,9 +62,17 @@ class Controls extends React.Component {
              this.props.vm.runtime.setVolume(0);
         }
     }
-    handleVolumeChange (e) {
+    handleVolumeChange (image, e) {
         e.preventDefault();
-        this.props.vm.runtime.setVolume(Number(e.target.value));        
+        // do not fire the event every single time we change,
+        // only fire it when we blur (are done changing!!)
+        const volume = Number(e.target.value), icons = image.props.icons;
+        this.props.vm.runtime.setVolume(volume, false);
+        image.props.src = volume === 0 ? icons[0] : (volume < 0.5 ? icons[1] : icons[2]);
+    }
+    handleVolumeBlur (e) {
+        e.preventDefault();
+        this.props.vm.runtime.setVolume(Number(e.target.value), true);
     }
     render () {
         const {
@@ -87,6 +96,7 @@ class Controls extends React.Component {
                 onStopAllClick={this.handleStopAllClick}
                 onVolumeChange={this.handleVolumeChange}
                 onVolumeClick={this.handleVolumeClick}
+                onVolumeBlur={this.handleVolumeBlur}
             />
         );
     }
