@@ -16,8 +16,6 @@ export default {
   "pause": () => require("../addons/pause/_runtime_entry.js"),
   "usb-anarchy": () => import(/* webpackChunkName: "addon-entry-usb-anarchy" */ "../addons/usb-anarchy/_runtime_entry.js"),
   "usb-scroll": () => import(/* webpackChunkName: "addon-entry-usb-scroll" */ "../addons/usb-scroll/_runtime_entry.js"),
-  "clones": () => import(/* webpackChunkName: "addon-entry-clones" */ "../addons/clones/_runtime_entry.js"),
-  "mouse-pos": () => import(/* webpackChunkName: "addon-entry-mouse-pos" */ "../addons/mouse-pos/_runtime_entry.js"),
   "color-picker": () => import(/* webpackChunkName: "addon-default-entry" */ "../addons/color-picker/_runtime_entry.js"),
   "remove-sprite-confirm": () => import(/* webpackChunkName: "addon-entry-remove-sprite-confirm" */ "../addons/remove-sprite-confirm/_runtime_entry.js"),
   "block-count": () => import(/* webpackChunkName: "addon-entry-block-count" */ "../addons/block-count/_runtime_entry.js"),

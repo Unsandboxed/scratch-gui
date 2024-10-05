@@ -15,8 +15,6 @@ import _debugger from "../addons/debugger/_manifest_entry.js";
 import _pause from "../addons/pause/_manifest_entry.js";
 import _usb_anarchy from "../addons/usb-anarchy/_manifest_entry.js";
 import _usb_scroll from "../addons/usb-scroll/_manifest_entry.js";
-import _clones from "../addons/clones/_manifest_entry.js";
-import _mouse_pos from "../addons/mouse-pos/_manifest_entry.js";
 import _color_picker from "../addons/color-picker/_manifest_entry.js";
 import _remove_sprite_confirm from "../addons/remove-sprite-confirm/_manifest_entry.js";
 import _block_count from "../addons/block-count/_manifest_entry.js";
@@ -96,8 +94,6 @@ export default {
   "pause": _pause,
   "usb-anarchy": _usb_anarchy,
   "usb-scroll": _usb_scroll,
-  "clones": _clones,
-  "mouse-pos": _mouse_pos,
   "color-picker": _color_picker,
   "remove-sprite-confirm": _remove_sprite_confirm,
   "block-count": _block_count,
