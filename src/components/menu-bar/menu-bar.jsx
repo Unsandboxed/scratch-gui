@@ -705,25 +705,16 @@ class MenuBar extends React.Component {
                                 </MenuBarMenu>
                             </MenuLabel>
                         )}
-                        {(this.props.canChangeTheme || this.props.canChangeLanguage) && (<EditMenu
-                            canChangeLanguage={this.props.canChangeLanguage}
-                            canChangeTheme={this.props.canChangeTheme}
+                        <EditMenu
                             isRtl={this.props.isRtl}
+                            onClickSettingsModal={this.props.onClickSettingsModal}
+                            onRequestClose={this.props.onRequestCloseEdit}
+                            onRequestOpen={this.props.onClickEdit}
                             isPlayerOnly={this.props.isPlayerOnly}
-                            onClickDesktopSettings={
-                                this.props.onClickDesktopSettings &&
-                                this.handleClickDesktopSettings
-                            }
                             handleRestoreOption={this.handleRestoreOption}
                             restoreOptionMessage={this.restoreOptionMessage}
-                            // eslint-disable-next-line react/jsx-no-bind
-                            onOpenCustomSettings={this.props.onClickAddonSettings.bind(null, 'editor-theme3')}
-                            onClickAddonSettings={this.props.onClickAddonSettings}
-                            onRequestClose={this.props.onRequestCloseEdit}
-                            onClickSettingsModal={this.props.onClickSettingsModal}
-                            onRequestOpen={this.props.onClickEdit}
                             editMenuOpen={this.props.editMenuOpen}
-                        />)}
+                        />
                         {this.props.isTotallyNormal && (
                             <MenuLabel
                                 open={this.props.modeMenuOpen}
