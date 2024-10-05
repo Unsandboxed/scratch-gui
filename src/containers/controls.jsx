@@ -32,6 +32,12 @@ class Controls extends React.Component {
             } else if (e.shiftKey) {
                 this.props.vm.setTurboMode(!this.props.turbo);
             }
+            if (e.ctrlKey) {
+                const muted = this.props.vm.runtime.audioSettings.muted;
+                const volume = this.props.vm.runtime.audioSettings.muted;
+                this.props.vm.runtime.setVolume(volume * -1);
+                this.props.vm.runtime.audioSettings.muted = !muted;
+            }
             if (e.altKey || e.type === 'contextmenu') {
                 if (this.props.framerate === 30) {
                     this.props.vm.setFramerate(60);
