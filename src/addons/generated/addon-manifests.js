@@ -13,8 +13,6 @@ import _mediarecorder from "../addons/mediarecorder/_manifest_entry.js";
 import _drag_drop from "../addons/drag-drop/_manifest_entry.js";
 import _debugger from "../addons/debugger/_manifest_entry.js";
 import _pause from "../addons/pause/_manifest_entry.js";
-import _mute_project from "../addons/mute-project/_manifest_entry.js";
-import _vol_slider from "../addons/vol-slider/_manifest_entry.js";
 import _usb_anarchy from "../addons/usb-anarchy/_manifest_entry.js";
 import _usb_scroll from "../addons/usb-scroll/_manifest_entry.js";
 import _clones from "../addons/clones/_manifest_entry.js";
@@ -75,7 +73,6 @@ import _editor_number_arrow_keys from "../addons/editor-number-arrow-keys/_manif
 import _expanded_backpack from "../addons/expanded-backpack/_manifest_entry.js";
 import _script_snap from "../addons/script-snap/_manifest_entry.js";
 import _fullscreen from "../addons/fullscreen/_manifest_entry.js";
-import _hide_stage from "../addons/hide-stage/_manifest_entry.js";
 import _tw_straighten_comments from "../addons/tw-straighten-comments/_manifest_entry.js";
 import _tw_remove_backpack from "../addons/tw-remove-backpack/_manifest_entry.js";
 import _tw_remove_feedback from "../addons/tw-remove-feedback/_manifest_entry.js";
@@ -97,8 +94,6 @@ export default {
   "drag-drop": _drag_drop,
   "debugger": _debugger,
   "pause": _pause,
-  "mute-project": _mute_project,
-  "vol-slider": _vol_slider,
   "usb-anarchy": _usb_anarchy,
   "usb-scroll": _usb_scroll,
   "clones": _clones,
@@ -159,7 +154,6 @@ export default {
   "expanded-backpack": _expanded_backpack,
   "script-snap": _script_snap,
   "fullscreen": _fullscreen,
-  "hide-stage": _hide_stage,
   "tw-straighten-comments": _tw_straighten_comments,
   "tw-remove-backpack": _tw_remove_backpack,
   "tw-remove-feedback": _tw_remove_feedback,

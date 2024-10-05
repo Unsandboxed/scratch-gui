@@ -16,6 +16,7 @@ import styles from './settings-menu.css';
 
 import dropdownCaret from './dropdown-caret.svg';
 import settingsIcon from './icon--settings.svg';
+import addonsIcon from './icon--addons.svg';
 
 const SettingsMenu = ({
     canChangeLanguage,
@@ -68,11 +69,18 @@ const SettingsMenu = ({
                         <TWAccentThemeMenu />
                         <MenuSection>
                             <MenuItem onClick={onClickAddonSettings}>
-                                <FormattedMessage
-                                    defaultMessage="Addons"
-                                    description="Menu bar item for advanced settings"
-                                    id="tw.menuBar.moreSettings"
-                                />
+				<div className={styles.option}>
+				    <img
+				        src={addonsIcon}
+				        draggable={false}
+                                        className={styles.icon}
+				    />
+                                    <FormattedMessage
+                                        defaultMessage="Addons"
+                                        description="Menu bar item for addons"
+                                        id="tw.menuBar.addons"
+                                    />
+                                </div>
                             </MenuItem>
                         </MenuSection>
                     </React.Fragment>

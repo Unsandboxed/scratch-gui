@@ -1,0 +1,101 @@
+@import "../../css/units.css";
+@import "../../css/colors.css";
+@import "../../css/filters.css";
+
+.row {
+    display: inline;
+}
+
+.row:hover .dropdown {
+    display: flex;
+    --button-display: flex;
+}
+
+.dropdown {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    z-index: 32767;
+    background-color: $ui-primary;
+    --button-display: none;
+    top: 40px;
+    right: 34px;
+    border: 4px solid $ui-primary;
+    border-top: none !important;
+    border-bottom-left-radius: $form-radius;
+    border-bottom-right-radius: $form-radius;
+    padding-top: 2px;
+}
+
+.dropdown .button {
+    display: var(--button-display);
+}
+
+.button {
+    margin: 0;
+    padding: 0.25rem;
+    border: 1px solid $ui-black-transparent;
+    background: none;
+    outline: none;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: $form-radius;
+}
+
+.button:not(:first-child) {
+    margin-top: 2px;
+    margin-bottom: 1px;
+}
+
+.button > img {
+    display: block;
+    transition: transform 0.1s;
+    filter: $filter-icon-gray;
+}
+
+.button:not(:last-child) {
+    border-right: none;
+}
+
+[dir="rtl"] .button:not(:last-child) {
+    border-left: none;
+    border-right: 1px solid $ui-black-transparent;
+}
+
+.button:focus::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    bottom: -1px;
+    left: -1px;
+    border: 1px solid $looks-secondary;
+}
+
+/* selected button styling */
+
+.button[aria-pressed='true'] {
+    background-color: $looks-light-transparent;
+}
+
+.button[aria-pressed='true'] > img {
+    filter: none;
+}
+
+/* pressed button styling */
+
+.button:active {
+    background-color: $looks-transparent;
+}
+
+/* disabled styling */
+
+.disabled .button {
+    cursor: default;
+}
