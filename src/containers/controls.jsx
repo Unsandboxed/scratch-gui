@@ -68,13 +68,13 @@ class Controls extends React.Component {
              this.props.vm.runtime.setVolume(0);
         }
     }
-    handleVolumeChange (image, e) {
+    handleVolumeChange (e) {
         e.preventDefault();
+        // todo:
         // do not fire the event every single time we change,
         // only fire it when we blur (are done changing!!)
-        const volume = Number(e.target.value), icons = image.props.icons;
-        this.props.vm.runtime.setVolume(volume, false);
-        image.props.src = volume === 0 ? icons[0] : (volume < 0.5 ? icons[1] : icons[2]);
+        const volume = Number(e.target.value);
+        this.props.vm.runtime.setVolume(volume, true);
     }
     handleVolumeBlur (e) {
         e.preventDefault();

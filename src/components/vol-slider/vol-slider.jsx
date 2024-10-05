@@ -17,14 +17,12 @@ const VolumeComponent = function (props) {
             ...componentProps
         } = props;
         const imageRef = React.useRef(0);
+        imageRef.current = volume === 0 ? muteIcon : (volume < 0.5 ? quietIcon : loudIcon);
         const image = (<img
-            ref={imageRef}
-            icons={[muteIcon, quietIcon, loudIcon]}
             className={styles.volSliderIcon}
             src={imageRef.current}
             onClick={onClick}
         />);
-        imageRef.current = volume === 0 ? muteIcon : (volume < 0.5 ? quietIcon : loudIcon);
         return (
             <div 
                 className={styles.volSlider}
@@ -39,7 +37,7 @@ const VolumeComponent = function (props) {
                     min={"0"}
                     max={"1"}
                     step={"0.02"}
-                    onChange={(...args) => onChange(image, ...args)}
+                    onChange={onChange}
                     value={volume}
                 />
                 </div>
