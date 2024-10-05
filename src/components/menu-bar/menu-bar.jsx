@@ -23,14 +23,10 @@ import {MenuItem, MenuSection} from '../menu/menu.jsx';
 import ProjectTitleInput from './project-title-input.jsx';
 import AuthorInfo from './author-info.jsx';
 import SB3Downloader from '../../containers/sb3-downloader.jsx';
-import DeletionRestorer from '../../containers/deletion-restorer.jsx';
-import TurboMode from '../../containers/turbo-mode.jsx';
 import MenuBarHOC from '../../containers/menu-bar-hoc.jsx';
 import SettingsMenu from './settings-menu.jsx';
+import EditMenu from './edit-menu.jsx';
 
-import FramerateChanger from '../../containers/tw-framerate-changer.jsx';
-import ChangeUsername from '../../containers/tw-change-username.jsx';
-import CloudVariablesToggler from '../../containers/tw-cloud-toggler.jsx';
 import TWSaveStatus from './tw-save-status.jsx';
 
 import {openTipsLibrary, openSettingsModal, openRestorePointModal} from '../../reducers/modals';
@@ -709,130 +705,25 @@ class MenuBar extends React.Component {
                                 </MenuBarMenu>
                             </MenuLabel>
                         )}
-                        <MenuLabel
-                            open={this.props.editMenuOpen}
-                            onOpen={this.props.onClickEdit}
-                            onClose={this.props.onRequestCloseEdit}
-                        >
-                            <img
-                                src={editIcon}
-                                draggable={false}
-                                width={20}
-                                height={20}
-                            />
-                            <span className={styles.collapsibleLabel}>
-                                <FormattedMessage
-                                    defaultMessage="Edit"
-                                    description="Text for edit dropdown menu"
-                                    id="gui.menuBar.edit"
-                                />
-                            </span>
-                            <img
-                                src={dropdownCaret}
-                                draggable={false}
-                                width={8}
-                                height={5}
-                            />
-                            <MenuBarMenu
-                                className={classNames(styles.menuBarMenu)}
-                                open={this.props.editMenuOpen}
-                                place={this.props.isRtl ? 'left' : 'right'}
-                            >
-                                {this.props.isPlayerOnly ? null : (
-                                    <DeletionRestorer>{(handleRestore, {restorable, deletedItem}) => (
-                                        <MenuItem
-                                            className={classNames({[styles.disabled]: !restorable})}
-                                            onClick={this.handleRestoreOption(handleRestore)}
-                                        >
-                                            {this.restoreOptionMessage(deletedItem)}
-                                        </MenuItem>
-                                    )}</DeletionRestorer>
-                                )}
-                                <MenuSection>
-                                    <TurboMode>{(toggleTurboMode, {turboMode}) => (
-                                        <MenuItem onClick={toggleTurboMode}>
-                                            {turboMode ? (
-                                                <FormattedMessage
-                                                    defaultMessage="Turn off Turbo Mode"
-                                                    description="Menu bar item for turning off turbo mode"
-                                                    id="gui.menuBar.turboModeOff"
-                                                />
-                                            ) : (
-                                                <FormattedMessage
-                                                    defaultMessage="Turn on Turbo Mode"
-                                                    description="Menu bar item for turning on turbo mode"
-                                                    id="gui.menuBar.turboModeOn"
-                                                />
-                                            )}
-                                        </MenuItem>
-                                    )}</TurboMode>
-                                    <FramerateChanger>{(changeFramerate, {framerate}) => (
-                                        <MenuItem onClick={changeFramerate}>
-                                            {framerate === 30 ? (
-                                                <FormattedMessage
-                                                    defaultMessage="Turn off 30 FPS Mode"
-                                                    description="Menu bar item for turning off 30 FPS mode"
-                                                    id="tw.menuBar.60off"
-                                                />
-                                            ) : (
-                                                <FormattedMessage
-                                                    defaultMessage="Turn on 30 FPS Mode"
-                                                    description="Menu bar item for turning on 30 FPS mode"
-                                                    id="tw.menuBar.60on"
-                                                />
-                                            )}
-                                        </MenuItem>
-                                    )}</FramerateChanger>
-                                    <ChangeUsername>{changeUsername => (
-                                        <MenuItem onClick={changeUsername}>
-                                            <FormattedMessage
-                                                defaultMessage="Change Username"
-                                                description="Menu bar item for changing the username"
-                                                id="tw.menuBar.changeUsername"
-                                            />
-                                        </MenuItem>
-                                    )}</ChangeUsername>
-                                    <CloudVariablesToggler>{(toggleCloudVariables, {enabled, canUseCloudVariables}) => (
-                                        <MenuItem
-                                            className={classNames({[styles.disabled]: !canUseCloudVariables})}
-                                            onClick={toggleCloudVariables}
-                                        >
-                                            {canUseCloudVariables ? (
-                                                enabled ? (
-                                                    <FormattedMessage
-                                                        defaultMessage="Disable Cloud Variables"
-                                                        description="Menu bar item for disabling cloud variables"
-                                                        id="tw.menuBar.cloudOff"
-                                                    />
-                                                ) : (
-                                                    <FormattedMessage
-                                                        defaultMessage="Enable Cloud Variables"
-                                                        description="Menu bar item for enabling cloud variables"
-                                                        id="tw.menuBar.cloudOn"
-                                                    />
-                                                )
-                                            ) : (
-                                                <FormattedMessage
-                                                    defaultMessage="Cloud Variables are not Available"
-                                                    // eslint-disable-next-line max-len
-                                                    description="Menu bar item for when cloud variables are not available"
-                                                    id="tw.menuBar.cloudUnavailable"
-                                                />
-                                            )}
-                                        </MenuItem>
-                                    )}</CloudVariablesToggler>
-                                    <MenuSection>
-                                        <MenuItem onClick={this.props.onClickSettingsModal}>
-                                            <FormattedMessage
-                                                defaultMessage="Advanced Settings"
-                                                description="Menu bar item for advanced settings"
-                                                id="tw.menuBar.moreSettings"
-                                            />
-                                        </MenuItem>
-                                    </MenuSection>
-                                </MenuSection>
-                            </MenuBarMenu>
-                        </MenuLabel>
+                        {(this.props.canChangeTheme || this.props.canChangeLanguage) && (<EditMenu
+                            canChangeLanguage={this.props.canChangeLanguage}
+                            canChangeTheme={this.props.canChangeTheme}
+                            isRtl={this.props.isRtl}
+                            isPlayerOnly={this.props.isPlayerOnly}
+                            onClickDesktopSettings={
+                                this.props.onClickDesktopSettings &&
+                                this.handleClickDesktopSettings
+                            }
+                            handleRestoreOption={this.handleRestoreOption}
+                            restoreOptionMessage={this.restoreOptionMessage}
+                            // eslint-disable-next-line react/jsx-no-bind
+                            onOpenCustomSettings={this.props.onClickAddonSettings.bind(null, 'editor-theme3')}
+                            onClickAddonSettings={this.props.onClickAddonSettings}
+                            onRequestClose={this.props.onRequestCloseEdit}
+                            onClickSettingsModal={this.props.onClickSettingsModal}
+                            onRequestOpen={this.props.onClickEdit}
+                            editMenuOpen={this.props.editMenuOpen}
+                        />)}
                         {this.props.isTotallyNormal && (
                             <MenuLabel
                                 open={this.props.modeMenuOpen}
@@ -1156,7 +1047,6 @@ const mapStateToProps = (state, ownProps) => {
         accountMenuOpen: accountMenuOpen(state),
         currentLocale: state.locales.locale,
         fileMenuOpen: fileMenuOpen(state),
-        editMenuOpen: editMenuOpen(state),
         errors: state.scratchGui.tw.compileErrors,
         errorsMenuOpen: errorsMenuOpen(state),
         isPlayerOnly: state.scratchGui.mode.isPlayerOnly,
@@ -1169,6 +1059,7 @@ const mapStateToProps = (state, ownProps) => {
         projectTitle: state.scratchGui.projectTitle,
         sessionExists: state.session && typeof state.session.session !== 'undefined',
         settingsMenuOpen: settingsMenuOpen(state),
+        editMenuOpen: editMenuOpen(state),
         username: user ? user.username : null,
         userOwnsProject: ownProps.authorUsername && user &&
             (ownProps.authorUsername === user.username),
