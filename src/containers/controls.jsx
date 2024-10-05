@@ -20,8 +20,15 @@ class Controls extends React.Component {
     handleGreenFlagClick (e) {
         e.preventDefault();
         // tw: implement alt+click and right click to toggle FPS
-        if (e.shiftKey || e.altKey || e.ctrlKey || e.type === 'contextmenu') {
-            if (e.shiftKey) {
+        // usb: implement ctrl+click to toggle muted status for volume
+        if (e.ctrlKey || e.shiftKey || e.altKey || e.type === 'contextmenu') {
+            if (e.ctrlKey) {
+                if (this.props.vm.runtime.audioSettings.muted) {
+                    this.props.vm.runtime.setVolume(-1);
+                } else {
+                    this.props.vm.runtime.setVolume(0);
+                }
+            } else if (e.shiftKey) {
                 this.props.vm.setTurboMode(!this.props.turbo);
             }
             if (e.ctrlKey) {
@@ -54,6 +61,11 @@ class Controls extends React.Component {
     }
     handleVolumeClick (e) {
         e.preventDefault();
+        if (this.props.vm.runtime.audioSettings.muted) {
+             this.props.vm.runtime.setVolume(-1);
+        } else {
+             this.props.vm.runtime.setVolume(0);
+        }
     }
     handleVolumeChange (e) {
         e.preventDefault();
