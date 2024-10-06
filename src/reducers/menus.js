@@ -12,6 +12,7 @@ const MENU_SETTINGS = 'settingsMenu';
 const MENU_ACCENT = 'accentMenu';
 const MENU_BLOCKS_THEME = 'blocksThemeMenu';
 const MENU_ERRORS = 'errorsMenu';
+const MENU_FPS = 'fpsMenu';
 
 class Menu {
     constructor (id) {
@@ -58,7 +59,10 @@ const rootMenu = new Menu('root')
             .addChild(new Menu(MENU_BLOCKS_THEME))
     )
     .addChild(new Menu(MENU_FILE))
-    .addChild(new Menu(MENU_EDIT))
+    .addChild(
+        new Menu(MENU_EDIT)
+            .addChild(new Menu(MENU_FPS))
+    )
     .addChild(new Menu(MENU_MODE))
     .addChild(new Menu(MENU_SETTINGS))
     .addChild(new Menu(MENU_LOGIN))
@@ -76,7 +80,8 @@ const initialState = {
     [MENU_SETTINGS]: false,
     [MENU_ACCENT]: false,
     [MENU_BLOCKS_THEME]: false,
-    [MENU_ERRORS]: false
+    [MENU_ERRORS]: false,
+    [MENU_FPS]: false
 };
 
 const reducer = function (state, action) {
@@ -152,6 +157,10 @@ const openAccentMenu = () => openMenu(MENU_ACCENT);
 const closeAccentMenu = () => closeMenu(MENU_ACCENT);
 const accentMenuOpen = state => state.scratchGui.menus[MENU_ACCENT];
 
+const openFPSMenu = () => openMenu(MENU_FPS);
+const closeFPSMenu = () => closeMenu(MENU_FPS);
+const FPSMenuOpen = state => state.scratchGui.menus[MENU_FPS];
+
 const openBlocksThemeMenu = () => openMenu(MENU_BLOCKS_THEME);
 const closeBlocksThemeMenu = () => closeMenu(MENU_BLOCKS_THEME);
 const blocksThemeMenuOpen = state => state.scratchGui.menus[MENU_BLOCKS_THEME];
@@ -190,6 +199,9 @@ export {
     openAccentMenu,
     closeAccentMenu,
     accentMenuOpen,
+    openFPSMenu,
+    closeFPSMenu,
+    FPSMenuOpen,
     openBlocksThemeMenu,
     closeBlocksThemeMenu,
     blocksThemeMenuOpen,

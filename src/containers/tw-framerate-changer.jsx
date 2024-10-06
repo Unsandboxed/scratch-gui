@@ -17,11 +17,11 @@ class FramerateChanger extends React.Component {
     constructor (props) {
         super(props);
         bindAll(this, [
-            'changeFramerate'
+            'changeFramerateFromValue'
         ]);
     }
-    async changeFramerate (e) {
-        if (e && (e.ctrlKey || e.shiftKey)) {
+    async changeFramerateFromValue (value) {
+        if (value == "custom") {
             // prompt() returns Promise in desktop app
             // eslint-disable-next-line no-alert
             const newFPS = await prompt(this.props.intl.formatMessage(messages.newFramerate), this.props.framerate);
@@ -32,10 +32,8 @@ class FramerateChanger extends React.Component {
             if (isFinite(fps) && fps > 0) {
                 this.props.vm.setFramerate(fps);
             }
-        } else if (this.props.framerate === 60) {
-            this.props.vm.setFramerate(30);
         } else {
-            this.props.vm.setFramerate(60);
+            this.props.vm.setFramerate(Number(value));
         }
     }
     render () {
@@ -47,7 +45,7 @@ class FramerateChanger extends React.Component {
             /* eslint-enable no-unused-vars */
             ...props
         } = this.props;
-        return this.props.children(this.changeFramerate, props);
+        return this.props.children(this.changeFramerateFromValue, props);
     }
 }
 

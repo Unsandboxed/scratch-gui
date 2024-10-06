@@ -6,6 +6,7 @@ import {FormattedMessage} from 'react-intl';
 import MenuBarMenu from './menu-bar-menu.jsx';
 import {MenuItem, MenuSection} from '../menu/menu.jsx';
 import MenuLabel from './tw-menu-label.jsx';
+import FPSEditMenu from './usb-edit-fps.jsx';
 
 import TurboMode from '../../containers/turbo-mode.jsx';
 import DeletionRestorer from '../../containers/deletion-restorer.jsx';
@@ -18,6 +19,12 @@ import styles from './settings-menu.css';
 
 import dropdownCaret from './dropdown-caret.svg';
 import editIcon from './icon--edit.svg';
+import usernameIcon from './icon--username.svg';
+import turboModeIcon from './icon--turbo-bolt.svg';
+
+EditMenuIcon.propTypes = {
+    id: PropTypes.string
+};
 
 const EditMenu = ({
     isRtl,
@@ -86,23 +93,11 @@ const EditMenu = ({
                         )}
                     </MenuItem>
                 )}</TurboMode>
-                <FramerateChanger>{(changeFramerate, {framerate}) => (
-                    <MenuItem 
-                        onClick={changeFramerate}>
-                        {framerate === 30 ? (
-                            <FormattedMessage
-                                defaultMessage="Turn off 30 FPS Mode"
-                                description="Menu bar item for turning off 30 FPS mode"
-                                id="tw.menuBar.60off"
-                            />
-                        ) : (
-                            <FormattedMessage
-                                defaultMessage="Turn on 30 FPS Mode"
-                                description="Menu bar item for turning on 30 FPS mode"
-                                id="tw.menuBar.60on"
-                            />
-                        )}
-                    </MenuItem>
+                <FramerateChanger>{(changeFramerateFromValue, {framerate}) => (
+                    <FPSEditMenu 
+                        framerate={framerate}
+                        changeFramerateFromValue={changeFramerateFromValue}
+                    />
                 )}</FramerateChanger>
                 <ChangeUsername>{changeUsername => (
                     <MenuItem onClick={changeUsername}>
@@ -165,7 +160,7 @@ EditMenu.propTypes = {
     onOpenCustomSettings: PropTypes.func,
     handleRestoreOption: PropTypes.func,
     restoreOptionMessage: PropTypes.func,
-    onClickSettingsModal: PropTypes.bool,
+    onClickSettingsModal: PropTypes.func,
     onRequestClose: PropTypes.func,
     onRequestOpen: PropTypes.func,
     editMenuOpen: PropTypes.bool,
