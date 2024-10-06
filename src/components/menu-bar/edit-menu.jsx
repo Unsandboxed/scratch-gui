@@ -22,10 +22,6 @@ import editIcon from './icon--edit.svg';
 import usernameIcon from './icon--username.svg';
 import turboModeIcon from './icon--turbo-bolt.svg';
 
-EditMenuIcon.propTypes = {
-    id: PropTypes.string
-};
-
 const EditMenu = ({
     isRtl,
     onClickSettingsModal,
