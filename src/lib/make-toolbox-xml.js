@@ -555,7 +555,7 @@ const camera = function (isInitialSetup, isStage, targetId, colors) {
         </block>
         <block type="camera_sety">
             <value name="Y">
-                <shadow id="movex" type="math_number">
+                <shadow type="math_number">
                     <field name="NUM">0</field>
                 </shadow>
             </value>
@@ -570,6 +570,22 @@ const camera = function (isInitialSetup, isStage, targetId, colors) {
         ${blockSeparator}
         <block type="camera_xposition"/>
         <block type="camera_yposition"/>
+        ${blockSeparator}
+        <block type="camera_zoom"/>
+        <block type="camera_setzoom">
+            <value name="ZOOM">
+                <shadow type="math_number">
+                    <field name="NUM">0</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="camera_changezoom">
+            <value name="ZOOM">
+                <shadow type="math_number">
+                    <field name="NUM">10</field>
+                </shadow>
+            </value>
+        </block>
         ${categorySeparator}
     </category>
     `;
