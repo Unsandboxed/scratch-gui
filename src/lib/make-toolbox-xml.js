@@ -423,6 +423,8 @@ const control = function (isInitialSetup, isStage, targetId, colors) {
         <block id="all_at_once" type="control_all_at_once"/>
         ${blockSeparator}
         <block type="control_stop"/>
+        <block type="control_break"/>
+        <block type="control_continue"/>
         ${blockSeparator}
         ${isStage ? `
             <block type="control_create_clone_of">
