@@ -116,6 +116,7 @@ class Blocks extends React.Component {
             'handleMonitorsUpdate',
             'handleExtensionAdded',
             'handleBlocksInfoUpdate',
+            'handleBlockUpdate',
             'onTargetsUpdate',
             'onVisualReport',
             'onWorkspaceUpdate',
@@ -367,6 +368,7 @@ class Blocks extends React.Component {
         this.props.vm.addListener('MONITORS_UPDATE', this.handleMonitorsUpdate);
         this.props.vm.addListener('EXTENSION_ADDED', this.handleExtensionAdded);
         this.props.vm.addListener('BLOCKSINFO_UPDATE', this.handleBlocksInfoUpdate);
+        this.props.vm.addListener('BLOCK_UPDATE', this.handleBlockUpdate);
         this.props.vm.addListener('PERIPHERAL_CONNECTED', this.handleStatusButtonUpdate);
         this.props.vm.addListener('PERIPHERAL_DISCONNECTED', this.handleStatusButtonUpdate);
     }
@@ -558,6 +560,7 @@ class Blocks extends React.Component {
                     // Anything else will be picked up from the XML attached to the block instance.
                     const extendedOpcode = `${categoryInfo.id}_${blockInfo.info.opcode}`;
                     const blockDefinition = defineDynamicBlock(
+                        this,
                         this.ScratchBlocks,
                         categoryInfo,
                         blockInfo,
@@ -589,6 +592,12 @@ class Blocks extends React.Component {
     handleBlocksInfoUpdate (categoryInfo) {
         // @todo Later we should replace this to avoid all the warnings from redefining blocks.
         this.handleExtensionAdded(categoryInfo);
+    }
+    handleBlockUpdate (blockId, blockInfo) {
+        const block = this.workspace.getBlockById(blockId);
+        if (block && block.setBlockInfo) {
+            block.setBlockInfo(blockInfo);
+        }
     }
     handleCategorySelected (categoryId) {
         const extension = extensionData.find(ext => ext.extensionId === categoryId);

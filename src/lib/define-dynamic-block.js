@@ -6,7 +6,7 @@ import ContextMenuContext from 'scratch-vm/src/extension-support/context-menu-co
 import log from './log.js';
 import {injectExtensionBlockTheme} from './themes/blockHelpers';
 
-const setupCustomContextMenu = (ScratchBlocks, contextMenuInfo, extendedOpcode) => {
+const setupCustomContextMenu = (guiContext, ScratchBlocks, contextMenuInfo, extendedOpcode) => {
     // Handle custom context menu options
     const customContextMenuForBlock = {
         /**
@@ -22,17 +22,50 @@ const setupCustomContextMenu = (ScratchBlocks, contextMenuInfo, extendedOpcode) 
                     enabled: true,
                     text: contextOption.text,
                     callback: () => {
+                        const blockInfo = JSON.parse(this.blockInfoText);
+                        const contextOptionCallbackData = {
+                            blockInfo: blockInfo,
+                            blockId: this.id,
+                            state: this,
+                        };
                         if (contextOption.builtInCallback) {
                             switch (contextOption.builtInCallback) {
                             case 'EDIT_A_PROCEDURE':
                                 // TODO FILL THIS IN
+                                // E.g. make use of guiContext here to bring up
+                                // the edit custom proc modal
                                 break;
-                            case 'RENAME_A_VARIABLE':
-                                // TODO FILL THIS IN
+                            case 'RENAME_A_VARIABLE': {
+                                // Extract variable info from this block
+                                const varName = blockInfo.text;
+                                // TODO it's not great that the following is hard coded...
+                                // We could use ScratchBlocks.SCALAR_VARIABLE_TYPE and
+                                // ScratchBlocks.LIST_VARIABLE_TYPE here instead, but
+                                // given that we eventually want to decouple this code from
+                                // using ScratchBlocks variables, we ultimately want these
+                                // strings to come from scratch-vm instead
+                                const varType = blockInfo.opcode === 'variable' ? '' : 'list';
+
+                                const renameCallback = newName => {
+                                    // Pass in additional information about the variable renaming to the
+                                    // extension callback
+                                    contextOptionCallbackData.newName = newName;
+                                    contextOptionCallbackData.varType = varType;
+                                    contextOption.callback(contextOptionCallbackData);
+                                };
+
+                                // Use scratch-blocks to open the variable rename modal
+                                // TODO change this to open the variable prompt directly
+                                // from GUI instead of going through scratch-blocks.
+                                // Will then need to handle name validation and throw up an alert, etc.
+                                const workspace = guiContext.workspace;
+                                const variable = workspace.getVariable(varName, varType);
+                                ScratchBlocks.Variables.renameVariable(workspace, variable, renameCallback);
                                 break;
                             }
+                            }
                         } else if (contextOption.callback) {
-                            contextOption.callback({blockInfo: JSON.parse(this.blockInfoText), sourceBlock: this});
+                            contextOption.callback(contextOptionCallbackData);
                         }
                     }
                 };
@@ -68,6 +101,32 @@ const setupCustomContextMenu = (ScratchBlocks, contextMenuInfo, extendedOpcode) 
 };
 
 /**
+ * Create a field validator function for dynamic block field dropdowns.
+ * This validator function is responsible for keeping the selected field
+ * value and the block mutation stay in sync. This validator function also
+ * emits a mutation change event so that the VM can stay
+ * in sync with these changes.
+ * @param {object} ScratchBlocks - The ScratchBlocks name space.
+ * @param {string} argName - The name of the field dropdown getting the validator function
+ * @returns {function} The validator function for the field
+ */
+const makeFieldValidator = (ScratchBlocks, argName) => function (selectedItem) {
+    // Disabling this lint rule since this function will get attached
+    // to the field_dropdown prototype appropriately.
+    /* eslint-disable no-invalid-this */
+    const oldMutation = ScratchBlocks.Xml.domToText(this.sourceBlock_.mutationToDom());
+    const currBlockInfo = JSON.parse(this.sourceBlock_.blockInfoText);
+    currBlockInfo.arguments[argName].selectedValue = selectedItem;
+    this.sourceBlock_.blockInfoText = JSON.stringify(currBlockInfo);
+    const newMutation = ScratchBlocks.Xml.domToText(this.sourceBlock_.mutationToDom());
+    ScratchBlocks.Events.fire(new ScratchBlocks.Events.BlockChange(this.sourceBlock_,
+        'mutation', null, oldMutation, newMutation));
+    this.setValue(selectedItem);
+    return null;
+    /* eslint-enable no-invalid-this */
+};
+
+/**
  * Define a block using extension info which has the ability to dynamically determine (and update) its layout.
  * This functionality is used for extension blocks which can change its properties based on different state
  * information. For example, the `control_stop` block changes its shape based on which menu item is selected
@@ -79,11 +138,11 @@ const setupCustomContextMenu = (ScratchBlocks, contextMenuInfo, extendedOpcode) 
  * @param {Theme} theme - the current theme
  */
 // TODO: grow this until it can fully replace `_convertForScratchBlocks` in the VM runtime
-const defineDynamicBlock = (ScratchBlocks, categoryInfo, staticBlockInfo, extendedOpcode, theme) => {
+const defineDynamicBlock = (guiContext, ScratchBlocks, categoryInfo, staticBlockInfo, extendedOpcode, theme) => {
     // Set up context menus if any
     const contextMenuInfo = staticBlockInfo.info.customContextMenu;
     const contextMenuName = contextMenuInfo ?
-        setupCustomContextMenu(ScratchBlocks, staticBlockInfo.info.customContextMenu, extendedOpcode) : '';
+        setupCustomContextMenu(guiContext, ScratchBlocks, staticBlockInfo.info.customContextMenu, extendedOpcode) : '';
 
     return ({
         init: function () {
@@ -116,6 +175,8 @@ const defineDynamicBlock = (ScratchBlocks, categoryInfo, staticBlockInfo, extend
             this.blockInfoText = '{}';
             // we need a block info update (through `domToMutation`) before we have a completely initialized block
             this.needsBlockInfoUpdate = true;
+            // Keep track of menu info for use in laying out the block and its menus
+            this.menus = categoryInfo.convertedMenuInfo;
         },
         mutationToDom: function () {
             const container = document.createElement('mutation');
@@ -150,6 +211,9 @@ const defineDynamicBlock = (ScratchBlocks, categoryInfo, staticBlockInfo, extend
             case BlockType.BOOLEAN:
                 this.setOutput(true);
                 this.setOutputShape(ScratchBlocks.OUTPUT_SHAPE_HEXAGONAL);
+                if (!blockInfo.disableMonitor) {
+                    this.setCheckboxInFlyout(true);
+                }
                 break;
             case BlockType.HAT:
             case BlockType.EVENT:
@@ -162,7 +226,7 @@ const defineDynamicBlock = (ScratchBlocks, categoryInfo, staticBlockInfo, extend
                 // `setColour` handles undefined parameters by adjusting defined colors
                 this.setColour(blockInfo.color1, blockInfo.color2, blockInfo.color3);
             }
-    
+
             // Layout block arguments
             // TODO handle E/C Blocks
             const blockText = blockInfo.text;
@@ -172,6 +236,14 @@ const defineDynamicBlock = (ScratchBlocks, categoryInfo, staticBlockInfo, extend
                 const arg = blockInfo.arguments[argName];
                 switch (arg.type) {
                 case ArgumentType.STRING:
+                    if (arg.menu && !this.menus[arg.menu].acceptReporters) {
+                        const options = this.menus[arg.menu].items;
+                        args.push({type: 'field_dropdown', name: argName, options: options});
+                    } else {
+                        args.push({type: 'input_value', name: argName});
+                    }
+                    break;
+                case ArgumentType.NUMBER:
                     args.push({type: 'input_value', name: argName});
                     break;
                 case ArgumentType.BOOLEAN:
@@ -180,9 +252,90 @@ const defineDynamicBlock = (ScratchBlocks, categoryInfo, staticBlockInfo, extend
                 }
                 return `%${++argCount}`;
             });
+
+            const wasRendered = this.rendered;
+            this.rendered = false;
+            const connectionMap = this.disconnectOldBlocks_();
+            this.removeAllInputs_();
+
             this.interpolate_(scratchBlocksStyleText, args);
-        }
+
+            // Interpolate takes care of laying out the base block,
+            // now we need to reconnect blocks into the inputs
+            // with the same name.
+            let inputIndex = -1;
+            args.forEach(arg => {
+                let type;
+                if (arg.type === 'input_value') {
+                    inputIndex++;
+                    if (arg.check) switch (arg.check) {
+                        case "boolean": {
+                            type = "b"; 
+                            break;
+                        }
+                        default: {
+                            type = "s";
+                            break;
+                        }
+                    }
+                    if (inputIndex < this.inputList.length) {
+                        const input = this.inputList[inputIndex];
+                        this.populateArgument_(type, inputIndex, connectionMap, input.name, input);
+                    }
+                }
+            });
+
+            const fieldValidator = makeFieldValidator.bind(null, ScratchBlocks);
+
+            // Set values on any args that have selectedValue specified
+            args.forEach(arg => {
+                if (arg.type === 'field_dropdown') {
+                    const field = this.getField(arg.name);
+                    if (!field) return;
+                    // Add a validator function to each field_dropdown which is responsible
+                    // for keeping the mutation and the field value in sync. Emit a change
+                    // event for the mutation so that the VM can also stay in sync with
+                    // these changes.
+                    field.setValidator(fieldValidator(arg.name));
+                    if (blockInfo.arguments[arg.name].selectedValue) {
+                        field.setValue(blockInfo.arguments[arg.name].selectedValue);
+                    } else {
+                        // Update the block info to keep track of the selected value for the
+                        // next time this block gets rendered without any external forces
+                        // changing it (e.g. switching sprites or switching between editor tabs)
+                        // See generic blockInfoText update below.
+                        // This prevents block arguments accidentally getting updated because
+                        // they don't have a selectedValue in their block info, and the
+                        // defaultValue is also dynamic and changed (e.g. a new variable is
+                        // added that is sorted first alphabetically)
+                        blockInfo.arguments[arg.name].selectedValue = field.getValue();
+                    }
+                }
+            });
+
+            this.rendered = wasRendered;
+            if (wasRendered && !this.isInsertionMarker()) {
+                this.initSvg();
+                this.render();
+            }
+
+            // Update the blockInfoText with any changes we may have made to the block for next time it gets rendered.
+            this.blockInfoText = JSON.stringify(blockInfo);
+        },
+        setBlockInfo: function (blockInfo) {
+            this.needsBlockInfoUpdate = true;
+            this.blockInfoText = JSON.stringify(blockInfo);
+            const mutation = this.mutationToDom();
+            this.domToMutation(mutation);
+        },
+        // Extra functions for dynamically updating the layout of a block and reconnecting
+        // inputs and shadow blocks.
+        removeAllInputs_: ScratchBlocks.ScratchBlocks.ProcedureUtils.removeAllInputs_,
+        disconnectOldBlocks_: ScratchBlocks.ScratchBlocks.ProcedureUtils.disconnectOldBlocks_,
+        deleteShadows_: ScratchBlocks.ScratchBlocks.ProcedureUtils.deleteShadows_,
+        populateArgument_: ScratchBlocks.ScratchBlocks.ProcedureUtils.populateArgumentOnCaller_,
+        attachShadow_: ScratchBlocks.ScratchBlocks.ProcedureUtils.attachShadow_,
+        buildShadowDom_: ScratchBlocks.ScratchBlocks.ProcedureUtils.buildShadowDom_
     });
 };
-
 export default defineDynamicBlock;
