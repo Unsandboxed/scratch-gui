@@ -23,6 +23,10 @@ export default async function ({ addon, console }) {
     if (this.inputList.length === 1) {
       return;
     }
+      
+    var inputNameToRemove = null;
+    var inputNameIndex;
+
     var inputNameToRemove = null;
     for (var n = 0; n < this.inputList.length; n++) {
       var input = this.inputList[n];
@@ -30,15 +34,24 @@ export default async function ({ addon, console }) {
         var target = input.connection.targetBlock();
         if (target.getField(field.name) == field) {
           inputNameToRemove = input.name;
+          inputNameIndex = n;
         }
       } else {
         for (var j = 0; j < input.fieldRow.length; j++) {
           if (input.fieldRow[j] == field) {
             inputNameToRemove = input.name;
+            inputNameIndex = n;
           }
         }
       }
     }
+    
+    // There must be at least one field before a statement input.
+    if (this.inputList[1].type === 3 && // Blockly.NEXT_STATEMENT
+        inputNameIndex === 0) {
+      return;
+    }
+
     if (inputNameToRemove) {
       Blockly.WidgetDiv.hide(true);
       this.removeInput(inputNameToRemove);
@@ -83,7 +96,7 @@ export default async function ({ addon, console }) {
       if (isTargetField) {
         return {
           name: input.name,
-          index: i,
+          index: i
         };
       }
     }
@@ -91,13 +104,23 @@ export default async function ({ addon, console }) {
 
   function shiftInput(procedureBlock, inputNameToShift, newPosition) {
     const initialInputListLength = procedureBlock.inputList.length;
-
     // return if inputNameToShift and newPosition are not valid
     if (!(inputNameToShift && newPosition >= 0 && newPosition <= initialInputListLength)) {
       return false;
     }
 
+    // usb: there must be at least 1 field before a statement input.
+    if (inputNameToShift.startsWith("SUBSTACK") && !(newPosition >= 1)) {
+      return false;
+    }
+
     const originalPosition = procedureBlock.inputList.findIndex((input) => input.name === inputNameToShift);
+
+    // usb: if a statement input would end up being first in the list, don't shift the input.
+    if (originalPosition === 0 && procedureBlock.inputList[newPosition].name.startsWith("SUBSTACK")) {
+      return false;
+    }
+
     const itemToMove = procedureBlock.inputList.splice(originalPosition, 1)[0];
     procedureBlock.inputList.splice(newPosition, 0, itemToMove);
 
@@ -138,7 +161,7 @@ export default async function ({ addon, console }) {
     procedureDeclaration.onChangeFn = modifiedUpdateDeclarationProcCode;
     procedureDeclaration.removeFieldCallback = modifiedRemoveFieldCallback;
 
-    for (const inputFn of ["addLabelExternal", "addBooleanExternal", "addStringNumberExternal"]) {
+    for (const inputFn of ["addLabelExternal", "addBooleanExternal", "addStringExternal", "addNumberExternal", "addStatementExternal"]) {
       if (save_original) {
         originalAddFns[inputFn] = procedureDeclaration[inputFn];
       }

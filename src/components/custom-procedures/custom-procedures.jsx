@@ -6,6 +6,8 @@ import {defineMessages, injectIntl, intlShape, FormattedMessage} from 'react-int
 
 import booleanInputIcon from './icon--boolean-input.svg';
 import textInputIcon from './icon--text-input.svg';
+import numberInputIcon from './icon--number-input.svg';
+import statementIcon from './icon--statement-input.svg';
 import labelIcon from './icon--label.svg';
 
 import styles from './custom-procedures.css';
@@ -79,7 +81,7 @@ const CustomProcedures = props => (
                 >
                     <img
                         className={styles.optionIcon}
-                        src={textInputIcon}
+                        src={numberInputIcon}
                         draggable={false}
                     />
                     <div className={styles.optionDescription}>
@@ -125,6 +127,25 @@ const CustomProcedures = props => (
                             defaultMessage="label"
                             description="Label for button to add a label"
                             id="gui.customProcedures.addLabel"
+                        />
+                    </div>
+                </div>
+                <div
+                    className={styles.optionCard}
+                    role="button"
+                    tabIndex="0"
+                    onClick={props.onAddStatement}
+                >
+                    <img
+                        className={styles.optionIcon}
+                        src={statementIcon}
+                        draggable={false}
+                    />
+                    <div className={styles.optionDescription}>
+                        <FormattedMessage
+                            defaultMessage="statement"
+                            description="Label for button to add a statement"
+                            id="gui.customProcedures.addStatement"
                         />
                     </div>
                 </div>
@@ -258,6 +279,7 @@ const CustomProcedures = props => (
 CustomProcedures.propTypes = {
     componentRef: PropTypes.func.isRequired,
     intl: intlShape,
+    onAddStatement: PropTypes.func.isRequired,
     onAddBoolean: PropTypes.func.isRequired,
     onAddLabel: PropTypes.func.isRequired,
     onAddText: PropTypes.func.isRequired,
