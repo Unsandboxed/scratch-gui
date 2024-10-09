@@ -575,6 +575,23 @@ const camera = function (isInitialSetup, isStage, targetId, colors) {
     `;
 };
 
+/* eslint-disable no-unused-vars */
+const scenes = function (isInitialSetup, isStage, targetId, colors) {
+    return `
+    <category name="%{BKY_CATEGORY_SCENES}" id="scenes" colour="${colors.primary}" secondaryColour="${colors.tertiary}">
+        <block type="scenes_switch">
+            <value name="SCENES">
+                <shadow type="text">
+                    <field name="TEXT">my scene</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="scenes_scene"/>
+        ${categorySeparator}
+    </category>
+    `;
+};
+
 const string = function (isInitialSetup, isStage, targetId, colors) {
     const apple = translate('OPERATORS_JOIN_APPLE', 'apple');
     const banana = translate('OPERATORS_JOIN_BANANA', 'banana');
@@ -1069,6 +1086,7 @@ const makeToolboxXML = function (isInitialSetup, isStage = true, targetId, categ
     const controlXML = moveCategory('control') || control(isInitialSetup, isStage, targetId, colors.control);
     const sensingXML = moveCategory('sensing') || sensing(isInitialSetup, isStage, targetId, colors.sensing);
     const cameraXML = moveCategory('camera') || camera(isInitialSetup, isStage, targetId, colors.camera);
+    const scenesXML = moveCategory('scenes') || scenes(isInitialSetup, isStage, targetId, colors.scenes);
     const operatorsXML = moveCategory('operators') || operators(isInitialSetup, isStage, targetId, colors.operators);
     const stringXML = moveCategory('string') || string(isInitialSetup, isStage, targetId, colors.string);
     const variablesXML = moveCategory('data') || variables(isInitialSetup, isStage, targetId, colors.data);
@@ -1090,6 +1108,7 @@ const makeToolboxXML = function (isInitialSetup, isStage = true, targetId, categ
         controlXML, gap,
         sensingXML, gap,
         cameraXML, gap,
+        scenesXML, gap,
         operatorsXML, gap,
         stringXML, gap,
         variablesXML, gap,

@@ -185,6 +185,13 @@ const messages = defineMessages({
         description: 'Label for the camera y position monitor when shown on the stage',
         id: 'gui.opcodeLabels.cameray'
     },
+
+    // Scenes
+    scenes_scene: {
+        defaultMessage: 'current scene',
+        description: 'Label for the current scene monitor when shown on the stage',
+        id: 'gui.opcodeLabels.scene'
+    },
 });
 
 class OpcodeLabels {
@@ -237,7 +244,10 @@ class OpcodeLabels {
 
             // Camera
             camera_xposition: {category: 'camera'},
-            camera_yposition: {category: 'camera'}
+            camera_yposition: {category: 'camera'},
+
+            // Scenes
+            scenes_scene: {category: 'camera'}
         };
 
         // Initialize opcodeMap with default strings
@@ -339,6 +349,9 @@ class OpcodeLabels {
         // Camera
         this._opcodeMap.camera_xposition.labelFn = () => this._translator(messages.camera_xposition);
         this._opcodeMap.camera_yposition.labelFn = () => this._translator(messages.camera_yposition);
+
+        // Scenes
+        this._opcodeMap.scenes_scene.labelFn = () => this._translator(messages.scenes_scene);
     }
 
     /**

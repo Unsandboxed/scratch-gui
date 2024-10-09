@@ -41,6 +41,12 @@ const blockColors = {
         tertiary: '#C73A3A',
         quaternary: '#C73A3A'
     },
+    scenes: {
+        primary: '#FF4C4C',
+        secondary: '#E64444',
+        tertiary: '#C73A3A',
+        quaternary: '#C73A3A'
+    },
     pen: {
         primary: '#0fBD8C',
         secondary: '#0DA57A',
