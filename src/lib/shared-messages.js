@@ -11,6 +11,11 @@ export default defineMessages({
         description: 'Default name for a new costume, scratch will automatically adjust the number if necessary',
         id: 'gui.sharedMessages.costume'
     },
+    scene: {
+        defaultMessage: 'scene{index}',
+        description: 'Default name for a new scene, scratch will automatically adjust the number if necessary',
+        id: 'gui.sharedMessages.scene'
+    },
     sprite: {
         defaultMessage: 'Sprite{index}',
         description: 'Default name for a new sprite, scratch will automatically adjust the number if necessary',
