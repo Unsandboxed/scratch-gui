@@ -20,9 +20,6 @@ class SceneSelectorItem extends React.PureComponent {
             'setRef',
             'handleClick',
             'handleDelete',
-            'handleDuplicate',
-            'handleExport',
-            'handleRename',
             'handleMouseEnter',
             'handleMouseLeave',
             'handleMouseDown',
@@ -94,24 +91,11 @@ class SceneSelectorItem extends React.PureComponent {
         e.stopPropagation(); // To prevent from bubbling back to handleClick
         this.props.onDeleteButtonClick(this.props.id);
     }
-    handleDuplicate (e) {
-        e.stopPropagation(); // To prevent from bubbling back to handleClick
-        this.props.onDuplicateButtonClick(this.props.id);
-    }
-    handleExport (e) {
-        e.stopPropagation();
-        this.props.onExportButtonClick(this.props.id);
-    }
-    handleRename (e) {
-        e.stopPropagation();
-        this.props.onRenameButtonClick(this.props.id);
-    }
-    handleMouseLeave () {
-        this.props.dispatchSetHoveredSprite(null);
-    }
-    handleMouseEnter () {
-        this.props.dispatchSetHoveredSprite(this.props.id);
-    }
+
+    handleMouseLeave () {}
+
+    handleMouseEnter () {}
+
     setRef (component) {
         // Access the DOM node using .elem because it is going through ContextMenuTrigger
         this.ref = component && component.elem;
@@ -124,9 +108,6 @@ class SceneSelectorItem extends React.PureComponent {
             index,
             onClick,
             onDeleteButtonClick,
-            onDuplicateButtonClick,
-            onExportButtonClick,
-            onRenameButtonClick,
             dragPayload,
             receivedBlocks,
             costumeURL,
@@ -141,9 +122,6 @@ class SceneSelectorItem extends React.PureComponent {
                 preventContextMenu={this.dragRecognizer.gestureInProgress()}
                 onClick={this.handleClick}
                 onDeleteButtonClick={onDeleteButtonClick ? this.handleDelete : null}
-                onDuplicateButtonClick={onDuplicateButtonClick ? this.handleDuplicate : null}
-                onExportButtonClick={onExportButtonClick ? this.handleExport : null}
-                onRenameButtonClick={onRenameButtonClick ? this.handleRename : null}
                 onMouseDown={this.handleMouseDown}
                 onMouseEnter={this.handleMouseEnter}
                 onMouseLeave={this.handleMouseLeave}
@@ -169,11 +147,7 @@ SceneSelectorItem.propTypes = {
     name: PropTypes.any,
     onClick: PropTypes.func,
     onDeleteButtonClick: PropTypes.func,
-    onRenameButtonClick: PropTypes.func,
     onDrag: PropTypes.func.isRequired,
-    onDuplicateButtonClick: PropTypes.func,
-    onExportButtonClick: PropTypes.func,
-    receivedBlocks: PropTypes.bool.isRequired,
     selected: PropTypes.bool,
     vm: PropTypes.instanceOf(VM).isRequired
 };

@@ -35,6 +35,7 @@ class ScenesTab extends React.Component {
             'handleAddScene',
             'handleDrop',
             'handleSelectScene',
+            'handleDeleteScene',
         ]);
         this.state = {selectedSceneId: vm.runtime.scene};
     }
@@ -63,10 +64,16 @@ class ScenesTab extends React.Component {
 
     handleAddScene() {
         const name = this.props.intl.formatMessage(messages.scene, {index: 1});
-        vm.runtime.createScene(name);
+        vm.runtime.scene = vm.runtime.createScene(name).id;
+        this.setState({selectedSceneId: vm.runtime.scene});
     }
 
     handleDrop() {}
+
+    handleDeleteScene(sceneId) {
+        vm.runtime.removeScene(sceneId);
+        this.setState({selectedSceneId: vm.runtime.scene});
+    }
 
     render () {
         const {
@@ -85,7 +92,7 @@ class ScenesTab extends React.Component {
 
         const scenes = runtimeScenes ? runtimeScenes.map(scene => (
             {
-                url: scene.preview,
+                url: scene.preview ?? addLibraryBackdropIcon,
                 name: scene.name,
                 details: "",
                 dragPayload: scene,
@@ -108,6 +115,7 @@ class ScenesTab extends React.Component {
                 selectedSceneId={this.state.selectedSceneId}
                 onItemClick={this.handleSelectScene}
                 onDrop={this.handleDrop}
+                onDeleteClick={this.handleDeleteScene}
             >
             </ScenesPanel>
         );
