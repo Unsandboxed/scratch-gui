@@ -2,7 +2,7 @@
 @import "../../css/units.css";
 
 .wrapper {
-    width: 300px;
+    width: 200px;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -62,8 +62,8 @@ $fade-out-distance: 100px;
 }
 
 .list-item {
-    width: 15rem;
-    height: 9rem;
+    width: 10rem;
+    height: 7rem;
     margin: 0.5rem auto;
 }
 

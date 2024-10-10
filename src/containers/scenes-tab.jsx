@@ -2,8 +2,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import bindAll from 'lodash.bindall';
 import {defineMessages, intlShape, injectIntl} from 'react-intl';
-import soundIcon from '../components/asset-panel/icon--sound.svg';
-import soundIconRtl from '../components/asset-panel/icon--sound-rtl.svg';
 import VM from 'scratch-vm';
 
 import addLibraryBackdropIcon from '../components/asset-panel/icon--add-backdrop-lib.svg';
@@ -90,7 +88,9 @@ class ScenesTab extends React.Component {
         const isSupported = true;
         const runtimeScenes = Object.values(vm.runtime.scenes);
 
-        const scenes = runtimeScenes ? runtimeScenes.map(scene => (
+        const scenes = runtimeScenes ? runtimeScenes.filter(
+           scene => !scene.temporary
+        ).map(scene => (
             {
                 url: scene.preview ?? addLibraryBackdropIcon,
                 name: scene.name,
@@ -115,7 +115,8 @@ class ScenesTab extends React.Component {
                 selectedSceneId={this.state.selectedSceneId}
                 onItemClick={this.handleSelectScene}
                 onDrop={this.handleDrop}
-                onDeleteClick={this.handleDeleteScene}
+                onDeleteClick={Object.keys(vm.runtime.scenes).length > 1 ?
+                    this.handleDeleteScene : null}
             >
             </ScenesPanel>
         );
