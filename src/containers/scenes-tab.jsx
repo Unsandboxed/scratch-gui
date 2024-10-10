@@ -36,7 +36,7 @@ class ScenesTab extends React.Component {
             'handleDrop',
             'handleSelectScene',
         ]);
-        this.state = {selectedSceneName: vm.runtime.scene};
+        this.state = {selectedSceneId: vm.runtime.scene};
     }
 
     componentWillReceiveProps (nextProps) {
@@ -51,14 +51,14 @@ class ScenesTab extends React.Component {
             return;
         }
 
-        if (this.state.selectedSceneName !== vm.runtime.scene) {
-            this.setState({selectedSceneName: vm.runtime.scene});
+        if (this.state.selectedSceneId !== vm.runtime.scene) {
+            this.setState({selectedSceneId: vm.runtime.scene});
         }
     }
 
     handleSelectScene(sceneId) {
         vm.runtime.loadScene(sceneId);
-        this.setState({selectedSceneName: vm.runtime.scene});
+        this.setState({selectedSceneId: vm.runtime.scene});
     }
 
     handleAddScene() {
@@ -89,6 +89,7 @@ class ScenesTab extends React.Component {
                 name: scene.name,
                 details: "",
                 dragPayload: scene,
+                id: scene.id
             }
         )) : [];
 
@@ -104,7 +105,7 @@ class ScenesTab extends React.Component {
                 ] : []}
                 isRtl={isRtl}
                 items={scenes}
-                selectedItemIndex={this.state.selectedSceneName}
+                selectedSceneId={this.state.selectedSceneId}
                 onItemClick={this.handleSelectScene}
                 onDrop={this.handleDrop}
             >

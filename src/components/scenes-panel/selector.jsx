@@ -17,7 +17,7 @@ const Selector = props => {
         dragType,
         isRtl,
         items,
-        selectedItemIndex,
+        selectedSceneId,
         draggingIndex,
         draggingType,
         ordering,
@@ -72,11 +72,11 @@ const Selector = props => {
                             details={item.details}
                             dragPayload={item.dragPayload}
                             dragType={dragType}
-                            id={index}
+                            id={item.id}
                             index={index}
                             name={item.name}
                             number={index + 1 /* 1-indexed */}
-                            selected={item.name === selectedItemIndex}
+                            selected={item.id === selectedSceneId}
                             onClick={onItemClick}
                             onDeleteButtonClick={onDeleteClick}
                             onDuplicateButtonClick={onDuplicateClick}
@@ -112,7 +112,7 @@ Selector.propTypes = {
     onItemClick: PropTypes.func.isRequired,
     onRemoveSortable: PropTypes.func,
     ordering: PropTypes.arrayOf(PropTypes.number),
-    selectedItemIndex: PropTypes.string.isRequired
+    selectedSceneId: PropTypes.string.isRequired
 };
 
 export default SortableHOC(Selector);
