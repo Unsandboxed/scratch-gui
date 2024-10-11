@@ -23,7 +23,9 @@ const categoryColorMap = {
     motion: 'motion',
     list: 'data_lists',
     extension: 'pen',
-    camera: 'camera'
+    camera: 'camera',
+    string: 'string',
+    scenes: 'scenes'
 };
 
 const modes = {

@@ -247,7 +247,7 @@ class OpcodeLabels {
             camera_yposition: {category: 'camera'},
 
             // Scenes
-            scenes_scene: {category: 'camera'}
+            scenes_scene: {category: 'scenes'}
         };
 
         // Initialize opcodeMap with default strings
