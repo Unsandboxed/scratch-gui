@@ -4,10 +4,12 @@ import bindAll from 'lodash.bindall';
 import {defineMessages, intlShape, injectIntl} from 'react-intl';
 import VM from 'scratch-vm';
 
-import addLibraryBackdropIcon from '../components/asset-panel/icon--add-backdrop-lib.svg';
+import scenesIcon from '../components/scenes-panel/icon--scenes.svg';
+import addSceneIcon from '../components/scenes-panel/icon--add-scene.svg';
 import ScenesPanel from '../components/scenes-panel/scenes-panel.jsx';
 import errorBoundaryHOC from '../lib/error-boundary-hoc.jsx';
 import sharedMessages from '../lib/shared-messages';
+import LayerEditor from './layer-editor.jsx';
 
 import {connect} from 'react-redux';
 
@@ -92,7 +94,7 @@ class ScenesTab extends React.Component {
            scene => !scene.temporary
         ).map(scene => (
             {
-                url: scene.preview ?? addLibraryBackdropIcon,
+                url: scene.preview ?? scenesIcon,
                 name: scene.name,
                 details: "",
                 dragPayload: scene,
@@ -106,7 +108,7 @@ class ScenesTab extends React.Component {
                 [
                     {
                         title: intl.formatMessage(messages.createScene),
-                        img: addLibraryBackdropIcon,
+                        img: addSceneIcon,
                         onClick: this.handleAddScene
                     },
                 ] : []}
@@ -118,6 +120,9 @@ class ScenesTab extends React.Component {
                 onDeleteClick={Object.keys(vm.runtime.scenes).length > 1 ?
                     this.handleDeleteScene : null}
             >
+                <LayerEditor
+                    selectedSceneId={this.state.selectedSceneId}
+                />
             </ScenesPanel>
         );
     }
