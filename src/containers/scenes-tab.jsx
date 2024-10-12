@@ -37,7 +37,9 @@ class ScenesTab extends React.Component {
             'handleSelectScene',
             'handleDeleteScene',
         ]);
-        this.state = {selectedSceneId: vm.runtime.scene};
+        this.state = {
+            selectedSceneId: vm.runtime.scene
+        };
     }
 
     componentWillReceiveProps (nextProps) {
@@ -48,7 +50,7 @@ class ScenesTab extends React.Component {
         } = nextProps;
 
         const target = editingTarget && sprites[editingTarget] ? sprites[editingTarget] : stage;
-        if (!target || !target.sounds) {
+        if (!target) {
             return;
         }
 
@@ -88,8 +90,8 @@ class ScenesTab extends React.Component {
         }
 
         const isSupported = true;
-        const runtimeScenes = Object.values(vm.runtime.scenes);
 
+        const runtimeScenes = Object.values(vm.runtime.scenes);
         const scenes = runtimeScenes ? runtimeScenes.filter(
            scene => !scene.temporary
         ).map(scene => (

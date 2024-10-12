@@ -12,26 +12,17 @@ class LayerEditor extends React.Component {
     constructor (props) {
         super(props);
         bindAll(this, [
-            "handleContainerClick",
             "handleChangeName"
         ]);
         this.state = {
+            selectedSceneName: this.props.name
         };
-    }
-    componentDidMount () {
-    }
-    shouldComponentUpdate (nextProps, nextState) {
-        return this.props.rtl !== nextProps.rtl ||
-            this.props.name !== nextProps.name ||
-            this.props.theme !== nextProps.theme ||
-            this.props.customStageSize !== nextProps.customStageSize
-    }
-    componentWillUnmount () {
-    }
-    handleContainerClick (e) {
     }
     handleChangeName (name) {
         this.props.vm.runtime.renameScene(this.props.selectedSceneId, name);
+        this.setState({
+            selectedSceneName: name
+        })
     }
     render () {
         if (this.props.vm.runtime.scene !== this.props.selectedSceneId) return null;
@@ -45,13 +36,12 @@ class LayerEditor extends React.Component {
         return (
             <LayerEditorComponent
                 {...componentProps}
-                onContainerClick={this.handleContainerClick}
                 onChangeName={this.handleChangeName}
                 theme={this.props.theme.isDark() ? 'dark' : 'light'}
                 width={this.props.customStageSize.width}
                 height={this.props.customStageSize.height}
                 selectedSceneId={this.props.selectedSceneId}
-                name={this.props.name}
+                name={this.state.selectedSceneName}
                 vm={this.props.vm}
             />
         );
