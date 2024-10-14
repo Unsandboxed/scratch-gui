@@ -66,7 +66,7 @@ class ScenesTab extends React.Component {
 
     handleAddScene() {
         const name = this.props.intl.formatMessage(messages.scene, {index: 1});
-        vm.runtime.scene = vm.runtime.createScene(name).id;
+        vm.runtime.loadScene(vm.runtime.createScene(name).id);
         this.setState({selectedSceneId: vm.runtime.scene});
     }
 

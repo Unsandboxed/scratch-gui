@@ -903,6 +903,9 @@ class MenuBar extends React.Component {
                             </Button>
                         </a>
                     </div>
+                    <Divider className={styles.divider} />
+
+                    {`USB Test Candidate - "Scenes"`}
                 </div>
 
                 <div className={styles.accountInfoGroup}>

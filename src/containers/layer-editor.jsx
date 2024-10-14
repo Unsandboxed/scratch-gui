@@ -14,15 +14,13 @@ class LayerEditor extends React.Component {
         bindAll(this, [
             "handleChangeName"
         ]);
-        this.state = {
-            selectedSceneName: this.props.name
-        };
+    }
+    shouldComponentUpdate (nextProps, nextState) {
+        return this.props.name !== nextProps.name;
     }
     handleChangeName (name) {
-        this.props.vm.runtime.renameScene(this.props.selectedSceneId, name);
-        this.setState({
-            selectedSceneName: name
-        })
+        const sceneId = this.props.selectedSceneId;
+        this.props.vm.runtime.renameScene(sceneId, name);
     }
     render () {
         if (this.props.vm.runtime.scene !== this.props.selectedSceneId) return null;
@@ -41,7 +39,7 @@ class LayerEditor extends React.Component {
                 width={this.props.customStageSize.width}
                 height={this.props.customStageSize.height}
                 selectedSceneId={this.props.selectedSceneId}
-                name={this.state.selectedSceneName}
+                name={this.props.name}
                 vm={this.props.vm}
             />
         );

@@ -23,6 +23,7 @@ class SceneSelectorItem extends React.PureComponent {
             'handleMouseEnter',
             'handleMouseLeave',
             'handleMouseDown',
+            'handleRename',
             'handleDragEnd',
             'handleDrag',
             'handleTouchEnd'
@@ -92,9 +93,16 @@ class SceneSelectorItem extends React.PureComponent {
         this.props.onDeleteButtonClick(this.props.id);
     }
 
-    handleMouseLeave () {}
-
-    handleMouseEnter () {}
+    handleRename (e) {
+        e.stopPropagation();
+        this.props.onRenameButtonClick(this.props.id);
+    }
+    handleMouseLeave () {
+        this.props.dispatchSetHoveredSprite(null);
+    }
+    handleMouseEnter () {
+        this.props.dispatchSetHoveredSprite(this.props.id);
+    }
 
     setRef (component) {
         // Access the DOM node using .elem because it is going through ContextMenuTrigger
@@ -108,6 +116,7 @@ class SceneSelectorItem extends React.PureComponent {
             index,
             onClick,
             onDeleteButtonClick,
+            onRenameButtonClick,
             dragPayload,
             receivedBlocks,
             costumeURL,
@@ -125,6 +134,7 @@ class SceneSelectorItem extends React.PureComponent {
                 onMouseDown={this.handleMouseDown}
                 onMouseEnter={this.handleMouseEnter}
                 onMouseLeave={this.handleMouseLeave}
+                onRenameButtonClick={onRenameButtonClick ? this.handleRename : null}
                 {...props}
             />
         );
@@ -147,6 +157,7 @@ SceneSelectorItem.propTypes = {
     name: PropTypes.any,
     onClick: PropTypes.func,
     onDeleteButtonClick: PropTypes.func,
+    onRenameButtonClick: PropTypes.func,
     onDrag: PropTypes.func.isRequired,
     selected: PropTypes.bool,
     vm: PropTypes.instanceOf(VM).isRequired

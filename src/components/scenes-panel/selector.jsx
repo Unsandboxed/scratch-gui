@@ -26,6 +26,7 @@ const Selector = props => {
         onDeleteClick,
         onDuplicateClick,
         onExportClick,
+        onRenameClick,
         onItemClick
     } = props;
 
@@ -79,6 +80,7 @@ const Selector = props => {
                             selected={item.id === selectedSceneId}
                             onClick={onItemClick}
                             onDeleteButtonClick={onDeleteClick}
+                            onRenameButtonClick={onRenameClick}
                             onDuplicateButtonClick={onDuplicateClick}
                             onExportButtonClick={onExportClick}
                         />
@@ -109,6 +111,7 @@ Selector.propTypes = {
     onDeleteClick: PropTypes.func,
     onDuplicateClick: PropTypes.func,
     onExportClick: PropTypes.func,
+    onRenameClick: PropTypes.func,
     onItemClick: PropTypes.func.isRequired,
     onRemoveSortable: PropTypes.func,
     ordering: PropTypes.arrayOf(PropTypes.number),
