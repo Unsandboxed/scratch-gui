@@ -404,13 +404,14 @@ export default async function ({ addon, console, msg }) {
     if (
       block.opcode === "data_variable" ||
       block.opcode === "data_listcontents" ||
+      block.opcode === "data_listarraycontents" ||
       block.opcode === "argument_reporter_string_number" ||
       block.opcode === "argument_reporter_boolean"
     ) {
       text = Object.values(block.fields)[0].value;
       if (block.opcode === "data_variable") {
         category = "data";
-      } else if (block.opcode === "data_listcontents") {
+      } else if (block.opcode === "data_listcontents" || block.opcode === "data_listarraycontents") {
         category = "list";
       } else {
         category = "more";
