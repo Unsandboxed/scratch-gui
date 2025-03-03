@@ -349,7 +349,7 @@ Monitor.propTypes = {
     width: PropTypes.number,
     x: PropTypes.number,
     y: PropTypes.number,
-    locked: PropTypes.boolean,
+    locked: PropTypes.bool,
 };
 Monitor.defaultProps = {
     theme: Theme.light
