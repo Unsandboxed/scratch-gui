@@ -60,8 +60,8 @@ const fetchLibrary = async () => {
         insetColor: '#FF4C4C',
         tags: ['tw'],
         credits: [
-            ...(extension.by || []),
-            ...(extension.original || [])
+            ...(extension.original || []),
+            ...(extension.by || [])
         ].map(credit => {
             if (credit.link) {
                 return (
