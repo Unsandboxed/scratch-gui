@@ -6,7 +6,7 @@ import {injectIntl, intlShape, defineMessages} from 'react-intl';
 import monitorAdapter from '../lib/monitor-adapter.js';
 import MonitorComponent, {monitorModes} from '../components/monitor/monitor.jsx';
 import {addMonitorRect, getInitialPosition, resizeMonitorRect, removeMonitorRect} from '../reducers/monitor-layout';
-import {getVariable, setVariableValue} from '../lib/variable-utils';
+import {getVariable, getMonitorValue, setVariableValue} from '../lib/variable-utils';
 import importCSV from '../lib/import-csv';
 import downloadBlob from '../lib/download-blob';
 import {Theme} from '../lib/themes';
@@ -55,13 +55,13 @@ class Monitor extends React.Component {
             'setElement',
             'handleEdit',
             'handleEditDone',
-            'handleConversion'
+            'handleConversion',
+            'getType'
         ]);
         this.state = {
             sliderPrompt: false,
             locked: false,
-            editing: false,
-            boundType: false
+            editing: false
         };
     }
     componentDidMount () {
@@ -91,8 +91,6 @@ class Monitor extends React.Component {
         }
         this.element.style.top = `${rect.upperStart.y}px`;
         this.element.style.left = `${rect.upperStart.x}px`;
-
-        this.bindGetType();
     }
     shouldComponentUpdate (nextProps, nextState) {
         if (nextState !== this.state) {
@@ -108,7 +106,6 @@ class Monitor extends React.Component {
         return false;
     }
     componentDidUpdate () {
-        this.bindGetType();
         // tw: if monitor is not draggable (ie. not in editor), do not calculate size of monitor for performance
         if (!this.props.draggable) {
             return;
@@ -117,13 +114,6 @@ class Monitor extends React.Component {
     }
     componentWillUnmount () {
         this.props.removeMonitorRect(this.props.id);
-    }
-    bindGetType () {
-        if (this.state.boundType) return;
-        if (this.props.vm && this.props.targetId && this.props.id) {
-            this.getType = this.getType.bind(this, this.props.vm, this.props.targetId, this.props.id);
-            this.setState({ boundType: true });
-        }
     }
     handleDragEnd (e, {x, y}) {
         const newX = parseInt(this.element.style.left, 10) + x;
@@ -268,15 +258,14 @@ class Monitor extends React.Component {
         }
         setVariableValue(vm, targetId, variableId, value);
     }
-    getType (vm, targetId, id) {
-        if (!id || !targetId || !id) {
+    getType () {
+        const { vm, targetId, id } = this.props;
+        if (!vm || !id) {
             console.warn(targetId, 'Failed to get type of monitor.', id);
             return 'undefined';
         }
         try {
-            const variable = getVariable(vm, targetId, id);
-            if (!variable) throw new TypeError('Unable to get variable');
-            return (typeof variable.value);
+            return (typeof getMonitorValue(vm, id));
         } catch {
             console.error('Failed to load monitor type', id, 'of', targetId);
             return 'undefined';
