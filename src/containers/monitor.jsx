@@ -61,7 +61,7 @@ class Monitor extends React.Component {
             sliderPrompt: false,
             locked: false,
             editing: false,
-            type: 'string'
+            boundType: false
         };
     }
     componentDidMount () {
@@ -92,13 +92,7 @@ class Monitor extends React.Component {
         this.element.style.top = `${rect.upperStart.y}px`;
         this.element.style.left = `${rect.upperStart.x}px`;
 
-        // Load the type
-        if (this.props.vm && this.props.targetId && this.props.id) {
-            const variable = getVariable(this.props.vm, this.props.targetId, this.props.id);
-            if (variable) {
-                this.setState({type: typeof variable.value});
-            }
-        }
+        this.bindGetType();
     }
     shouldComponentUpdate (nextProps, nextState) {
         if (nextState !== this.state) {
@@ -114,6 +108,7 @@ class Monitor extends React.Component {
         return false;
     }
     componentDidUpdate () {
+        this.bindGetType();
         // tw: if monitor is not draggable (ie. not in editor), do not calculate size of monitor for performance
         if (!this.props.draggable) {
             return;
@@ -122,6 +117,13 @@ class Monitor extends React.Component {
     }
     componentWillUnmount () {
         this.props.removeMonitorRect(this.props.id);
+    }
+    bindGetType () {
+        if (this.state.boundType) return;
+        if (this.props.vm && this.props.targetId && this.props.id) {
+            this.getType = this.getType.bind(this, this.props.vm, this.props.targetId, this.props.id);
+            this.setState({ boundType: true });
+        }
     }
     handleDragEnd (e, {x, y}) {
         const newX = parseInt(this.element.style.left, 10) + x;
@@ -264,8 +266,21 @@ class Monitor extends React.Component {
                 value = [];
             }
         }
-        this.setState({type:(typeof value)});
         setVariableValue(vm, targetId, variableId, value);
+    }
+    getType (vm, targetId, id) {
+        if (!id || !targetId || !id) {
+            console.warn(targetId, 'Failed to get type of monitor.', id);
+            return 'undefined';
+        }
+        try {
+            const variable = getVariable(vm, targetId, id);
+            if (!variable) throw new TypeError('Unable to get variable');
+            return (typeof variable.value);
+        } catch {
+            console.error('Failed to load monitor type', id, 'of', targetId);
+            return 'undefined';
+        }
     }
     render () {
         const monitorProps = monitorAdapter(this.props);
@@ -295,7 +310,7 @@ class Monitor extends React.Component {
                     theme={this.props.theme}
                     width={this.props.width}
                     locked={this.props.locked}
-                    type={this.state.type}
+                    getType={this.getType}
                     onDragEnd={this.handleDragEnd}
                     onExport={isList ? this.handleExport : null}
                     onImport={isList ? this.handleImport : null}
