@@ -40,6 +40,17 @@
     justify-content: space-between;
 }
 
+/* Row of "card" buttons for modifying custom procedures' scope */
+.scope-options-row {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: left;
+}
+
+.scope-option {
+    margin-right: 1rem;
+}
+
 .option-card {
     background: $ui-white;
     border: 2px solid $ui-black-transparent;

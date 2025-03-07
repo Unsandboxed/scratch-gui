@@ -16,13 +16,15 @@ class CustomProcedures extends React.Component {
             'handleAddNumber',
             'handleAddColor',
             'handleToggleWarp',
+            'handleToggleGlobal',
             'handleCancel',
             'handleOk',
             'setBlocks'
         ]);
         this.state = {
             rtlOffset: 0,
-            warp: false
+            warp: false,
+            globalSelected: false
         };
     }
     componentWillUnmount () {
@@ -107,6 +109,7 @@ class CustomProcedures extends React.Component {
         this.mutationRoot.initSvg();
         this.mutationRoot.render();
         this.setState({warp: this.mutationRoot.getWarp()});
+        this.setState({globalSelected: this.mutationRoot.getGlobal()});
         // Allow the initial events to run to position this block, then focus.
         setTimeout(() => {
             this.mutationRoot.focusLastEditor_();
@@ -152,11 +155,20 @@ class CustomProcedures extends React.Component {
             this.setState({warp: newWarp});
         }
     }
+    handleToggleGlobal () {
+        if (this.mutationRoot) {
+            const newGlobal = !this.mutationRoot.getGlobal();
+            console.log(this.mutationRoot);
+            this.mutationRoot.setGlobal(newGlobal);
+            this.setState({globalSelected: newGlobal});
+        }
+    }
     render () {
         return (
             <CustomProceduresComponent
                 componentRef={this.setBlocks}
                 warp={this.state.warp}
+                globalSelected={this.state.globalSelected}
                 onAddBoolean={this.handleAddBoolean}
                 onAddLabel={this.handleAddLabel}
                 onAddText={this.handleAddText}
@@ -165,6 +177,7 @@ class CustomProcedures extends React.Component {
                 onCancel={this.handleCancel}
                 onOk={this.handleOk}
                 onToggleWarp={this.handleToggleWarp}
+                onScopeOptionSelection={this.handleToggleGlobal}
             />
         );
     }

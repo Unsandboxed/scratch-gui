@@ -215,6 +215,36 @@ const CustomProcedures = props => (
                     onClick={props.onAddColor}
                 />
             </Box>
+            <Box className={styles.scopeOptionsRow}>
+                <label className={styles.scopeOption}>
+                    <input
+                        checked={props.globalSelected}
+                            name="procedureScopeOption"
+                            type="radio"
+                            value="global"
+                        onChange={props.onScopeOptionSelection}
+                    />
+                    <FormattedMessage
+                        defaultMessage="For all sprites"
+                        description="Option message when creating a variable for making it available to all sprites"
+                        id="gui.customProcedures.procedureScopeOptionAllSprites"
+                    />
+                </label>
+                <label className={styles.scopeOption}>
+                    <input
+                        checked={!props.globalSelected}
+                            name="procedureScopeOption"
+                            type="radio"
+                            value="local"
+                        onChange={props.onScopeOptionSelection}
+                    />
+                    <FormattedMessage
+                        defaultMessage="For this sprite only"
+                        description="Option message when creating a varaible for making it only available to the current sprite"
+                        id="gui.customProcedures.procedureScopeOptionSpriteOnly"
+                    />
+                </label>
+            </Box>
             <div className={styles.checkboxRow}>
                 <label>
                     <input
@@ -265,7 +295,9 @@ CustomProcedures.propTypes = {
     onCancel: PropTypes.func.isRequired,
     onOk: PropTypes.func.isRequired,
     onToggleWarp: PropTypes.func.isRequired,
-    warp: PropTypes.bool.isRequired
+    onToggleGlobal: PropTypes.func.isRequired,
+    warp: PropTypes.bool.isRequired,
+    globalSelected: PropTypes.bool.isRequired
 };
 
 export default injectIntl(CustomProcedures);
