@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import Box from '../box/box.jsx';
 import Monitor from '../../containers/monitor.jsx';
 import PropTypes from 'prop-types';
-import {OrderedMap} from 'immutable';
+// import {OrderedMap} from 'immutable';
 import {stageSizeToTransform} from '../../lib/screen-utils';
 import {sanitizeVariableValue} from '../../lib/json-utils';
 
@@ -54,7 +54,8 @@ const MonitorList = props => (
 
 MonitorList.propTypes = {
     draggable: PropTypes.bool.isRequired,
-    monitors: PropTypes.instanceOf(OrderedMap),
+    // @todo: Figure out why this keeps erroring in development
+    monitors: PropTypes.any, // PropTypes.instanceOf(OrderedMap),
     onMonitorChange: PropTypes.func.isRequired,
     stageSize: PropTypes.shape({
         width: PropTypes.number,

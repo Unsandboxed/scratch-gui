@@ -61,20 +61,6 @@ class SpriteInfo extends React.Component {
             stageSize
         } = this.props;
 
-        const sprite = (
-            <FormattedMessage
-                defaultMessage="Sprite"
-                description="Sprite info label"
-                id="gui.SpriteInfo.sprite"
-            />
-        );
-        const showLabel = (
-            <FormattedMessage
-                defaultMessage="Show"
-                description="Sprite info show label"
-                id="gui.SpriteInfo.show"
-            />
-        );
         const sizeLabel = (
             <FormattedMessage
                 defaultMessage="Size"
@@ -178,26 +164,13 @@ class SpriteInfo extends React.Component {
             <Box className={styles.spriteInfo}>
                 <div className={classNames(styles.row, styles.rowPrimary)}>
                     <div className={styles.group}>
-                        <Label
-                            above={labelAbove}
-                            text={sprite}
-                        >
-                            {spriteNameInput}
-                        </Label>
+                        {spriteNameInput}
                     </div>
                     {xPosition}
                     {yPosition}
                 </div>
                 <div className={classNames(styles.row, styles.rowSecondary)}>
                     <div className={labelAbove ? styles.column : styles.group}>
-                        {
-                            stageSize === STAGE_DISPLAY_SIZES.full || stageSize === STAGE_DISPLAY_SIZES.large ?
-                                <Label
-                                    secondary
-                                    text={showLabel}
-                                /> :
-                                null
-                        }
                         <ToggleButtons
                             buttons={[
                                 {

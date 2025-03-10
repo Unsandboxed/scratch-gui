@@ -373,7 +373,6 @@ export default [
                 id="tw.twExtension.description"
             />
         ),
-        incompatibleWithScratch: true,
         tags: ['usb'],
         featured: true
     },
@@ -397,7 +396,6 @@ export default [
         ),
         tags: ['tw', 'usb'],
         featured: true
-        // Not marked as incompatible with Scratch so that clicking on it doesn't show a prompt
     }
 ];
 

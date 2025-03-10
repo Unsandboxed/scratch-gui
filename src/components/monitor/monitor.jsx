@@ -47,7 +47,7 @@ const MonitorComponent = props => (
         disable={!props.draggable && !props.onExport}
         holdToDisplay={props.mode === 'slider' ? -1 : 1000}
         id={`monitor-${props.label}`}
-    >
+    ><React.Fragment>
         <Draggable
             bounds=".monitor-overlay" // Class for monitor container
             cancel=".no-drag" // Class used for slider input to prevent drag
@@ -181,7 +181,7 @@ const MonitorComponent = props => (
                     </BorderedMenuItem>}
             </ContextMenu>
         ), document.body)}
-    </ContextMenuTrigger>
+    </React.Fragment></ContextMenuTrigger>
 
 );
 
