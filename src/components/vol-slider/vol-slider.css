@@ -1,50 +1,43 @@
-.sa-vol-slider {
+.vol-slider {
   /* Same lateral padding as .clone-container-container */
   padding-left: 0.25rem;
   padding-right: 0.25rem;
+  display: flex;
 }
 
-.sa-vol-slider-inner {
+.vol-slider-inner {
   display: flex;
   align-items: center;
 }
 
-.sa-vol-slider-icon {
+.vol-slider-icon {
   width: 20px;
   height: 20px;
   background-repeat: no-repeat;
 }
-.sa-vol-slider:hover .sa-vol-slider-input::-webkit-slider-thumb {
+.vol-slider:hover .vol-slider-input::-webkit-slider-thumb {
   width: 12px;
   height: 12px;
 }
-.sa-vol-slider:hover .sa-vol-slider-input {
+.vol-slider:hover .vol-slider-input {
   width: 50px;
   height: 6px;
 }
-.sa-vol-slider-icon[data-icon="mute"] {
+.vol-slider-icon[data-icon="mute"] {
   background-image: url("./mute.svg");
 }
-.sa-vol-slider-icon[data-icon="quiet"] {
+.vol-slider-icon[data-icon="quiet"] {
   background-image: url("./quiet.svg");
 }
-.sa-vol-slider-icon[data-icon="loud"] {
+.vol-slider-icon[data-icon="loud"] {
   background-image: url("./loud.svg");
 }
-.sa-vol-slider-icon:hover,
-.sa-vol-slider-input:hover {
+.vol-slider-icon:hover,
+.vol-slider-input:hover {
   cursor: pointer;
 }
 
-.sa-small-stage .sa-vol-slider-input,
-.sa-small-stage .sa-vol-slider-icon:not([data-icon="mute"]) {
-  display: none !important;
-}
-.sa-small-stage .sa-vol-slider {
-  width: 0;
-}
-
-.sa-vol-slider-input {
+.vol-slider-input {
   -webkit-appearance: none;
   appearance: none;
   width: 0px;
@@ -54,15 +47,15 @@
   transition: all 0.25s ease;
 }
 
-[dir="ltr"] .sa-vol-slider-input {
+[dir="ltr"] .vol-slider-input {
   margin-left: 3px;
 }
 
-[dir="rtl"] .sa-vol-slider-input {
+[dir="rtl"] .vol-slider-input {
   margin-right: 3px;
 }
 
-.sa-vol-slider-input::-webkit-slider-thumb {
+.vol-slider-input::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 0px;
@@ -71,7 +64,7 @@
   background-color: #c234c2;
 }
 
-.sa-vol-slider-input::-moz-range-thumb {
+.vol-slider-input::-moz-range-thumb {
   width: 12px;
   height: 12px;
   border: none;
@@ -79,6 +72,6 @@
   background-color: #c234c2;
 }
 
-.sa-mute-project-icon {
+.mute-project-icon {
   display: none !important;
 }

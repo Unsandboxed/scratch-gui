@@ -10,7 +10,7 @@ import {updateTargets} from '../reducers/targets';
 import {updateBlockDrag} from '../reducers/block-drag';
 import {updateMonitors} from '../reducers/monitors';
 import {setProjectChanged, setProjectUnchanged} from '../reducers/project-changed';
-import {setRunningState, setTurboState, setStartedState} from '../reducers/vm-status';
+import {setRunningState, setTurboState, setStartedState, updatePauseState, setVolume} from '../reducers/vm-status';
 import {showExtensionAlert} from '../reducers/alerts';
 import {updateMicIndicator} from '../reducers/mic-indicator';
 import {
@@ -79,6 +79,8 @@ const vmListenerHOC = function (WrappedComponent) {
             this.props.vm.on('STAGE_SIZE_CHANGED', this.props.onStageSizeChanged);
             this.props.vm.on('CREATE_UNSANDBOXED_EXTENSION_API', implementGuiAPI);
             this.props.vm.runtime.on('PLATFORM_MISMATCH', this.props.onPlatformMismatch);
+            this.props.vm.on('PROJECT_PAUSE', this.props.onProjectPause);
+            this.props.vm.runtime.on('VOLUME_CHANGE', this.props.onVolumeChange);
         }
         componentDidMount () {
             if (this.props.attachKeyboardEvents) {
@@ -112,6 +114,7 @@ const vmListenerHOC = function (WrappedComponent) {
             this.props.vm.off('PROJECT_RUN_START', this.props.onProjectRunStart);
             this.props.vm.off('PROJECT_RUN_STOP', this.props.onProjectRunStop);
             this.props.vm.off('PROJECT_CHANGED', this.handleProjectChanged);
+            this.props.vm.off('PROJECT_PAUSE', this.props.onProjectPause);
             this.props.vm.off('RUNTIME_STARTED', this.props.onRuntimeStarted);
             this.props.vm.off('RUNTIME_STOPPED', this.props.onRuntimeStopped);
             this.props.vm.off('PROJECT_START', this.props.onGreenFlag);
@@ -128,6 +131,7 @@ const vmListenerHOC = function (WrappedComponent) {
             this.props.vm.off('STAGE_SIZE_CHANGED', this.props.onStageSizeChanged);
             this.props.vm.off('CREATE_UNSANDBOXED_EXTENSION_API', implementGuiAPI);
             this.props.vm.runtime.off('PLATFORM_MISMATCH', this.props.onPlatformMismatch);
+            this.props.vm.runtime.off('VOLUME_CHANGE', this.props.onVolumeChange);
         }
         handleCloudDataUpdate (hasCloudVariables) {
             if (this.props.hasCloudVariables !== hasCloudVariables) {
@@ -216,7 +220,9 @@ const vmListenerHOC = function (WrappedComponent) {
                 onMicListeningUpdate,
                 onMonitorsUpdate,
                 onTargetsUpdate,
+                onVolumeChange,
                 onCameraUpdate,
+                onProjectPause,
                 onProjectChanged,
                 onProjectRunStart,
                 onProjectRunStop,
@@ -246,10 +252,12 @@ const vmListenerHOC = function (WrappedComponent) {
         attachKeyboardEvents: PropTypes.bool,
         onBlockDragUpdate: PropTypes.func.isRequired,
         onGreenFlag: PropTypes.func,
+        onPause: PropTypes.func,
         onKeyDown: PropTypes.func,
         onKeyUp: PropTypes.func,
         onMicListeningUpdate: PropTypes.func.isRequired,
         onMonitorsUpdate: PropTypes.func.isRequired,
+        onProjectPause: PropTypes.func.isRequired,
         onProjectChanged: PropTypes.func.isRequired,
         onProjectRunStart: PropTypes.func.isRequired,
         onProjectRunStop: PropTypes.func.isRequired,
@@ -261,6 +269,7 @@ const vmListenerHOC = function (WrappedComponent) {
         onCameraUpdate: PropTypes.func.isRequired,
         onTurboModeOff: PropTypes.func.isRequired,
         onTurboModeOn: PropTypes.func.isRequired,
+        onVolumeChange: PropTypes.func.isRequired,
         hasCloudVariables: PropTypes.bool,
         onHasCloudVariablesChanged: PropTypes.func.isRequired,
         onFramerateChanged: PropTypes.func.isRequired,
@@ -307,6 +316,8 @@ const vmListenerHOC = function (WrappedComponent) {
         onBlockDragUpdate: areBlocksOverGui => {
             dispatch(updateBlockDrag(areBlocksOverGui));
         },
+        onProjectPause: paused => dispatch(updatePauseState(paused)),
+        onVolumeChange: volume => dispatch(setVolume(volume)),
         onProjectRunStart: () => dispatch(setRunningState(true)),
         onProjectRunStop: () => dispatch(setRunningState(false)),
         onProjectChanged: () => dispatch(setProjectChanged()),

@@ -52,7 +52,7 @@ const TargetPane = ({
     vm,
     ...componentProps
 }) => (
-    <div
+    stageSize === STAGE_DISPLAY_SIZES.hidden ? null : <div
         className={styles.targetPane}
         {...componentProps}
     >

@@ -11,15 +11,32 @@ class Controls extends React.Component {
         super(props);
         bindAll(this, [
             'handleGreenFlagClick',
-            'handleStopAllClick'
+            'handlePauseClick',
+            'handleStopAllClick',
+            'handleVolumeClick',
+            'handleVolumeChange',
+            'handleVolumeBlur'
         ]);
     }
     handleGreenFlagClick (e) {
         e.preventDefault();
         // tw: implement alt+click and right click to toggle FPS
-        if (e.shiftKey || e.altKey || e.type === 'contextmenu') {
-            if (e.shiftKey) {
+        // usb: implement ctrl+click to toggle muted status for volume
+        if (e.ctrlKey || e.shiftKey || e.altKey || e.type === 'contextmenu') {
+            if (e.ctrlKey) {
+                if (this.props.vm.runtime.audioSettings.muted) {
+                    this.props.vm.runtime.setVolume(-1);
+                } else {
+                    this.props.vm.runtime.setVolume(0);
+                }
+            } else if (e.shiftKey) {
                 this.props.vm.setTurboMode(!this.props.turbo);
+            }
+            if (e.ctrlKey) {
+                const muted = this.props.vm.runtime.audioSettings.muted;
+                const volume = this.props.vm.runtime.audioSettings.muted;
+                this.props.vm.runtime.setVolume(volume * -1);
+                this.props.vm.runtime.audioSettings.muted = !muted;
             }
             if (e.altKey || e.type === 'contextmenu') {
                 if (this.props.framerate === 30) {
@@ -35,9 +52,33 @@ class Controls extends React.Component {
             this.props.vm.greenFlag();
         }
     }
+    handlePauseClick (e) {
+        e.preventDefault();
+        this.props.vm.runtime.setPause(!this.props.vm.runtime.paused);
+    }
     handleStopAllClick (e) {
         e.preventDefault();
         this.props.vm.stopAll();
+    }
+    handleVolumeClick (e) {
+        e.preventDefault();
+        if (this.props.vm.runtime.audioSettings.muted) {
+             this.props.vm.runtime.setVolume(-1);
+        } else {
+             this.props.vm.runtime.setVolume(0);
+        }
+    }
+    handleVolumeChange (e) {
+        e.preventDefault();
+        // todo:
+        // do not fire the event every single time we change,
+        // only fire it when we blur (are done changing!!)
+        const volume = Number(e.target.value);
+        this.props.vm.runtime.setVolume(volume, true);
+    }
+    handleVolumeBlur (e) {
+        e.preventDefault();
+        this.props.vm.runtime.setVolume(Number(e.target.value), true);
     }
     render () {
         const {
@@ -45,6 +86,8 @@ class Controls extends React.Component {
             isStarted, // eslint-disable-line no-unused-vars
             projectRunning,
             turbo,
+            paused,
+            volume,
             ...props
         } = this.props;
         return (
@@ -52,8 +95,14 @@ class Controls extends React.Component {
                 {...props}
                 active={projectRunning && isStarted}
                 turbo={turbo}
+                paused={paused}
+                volume={volume}
                 onGreenFlagClick={this.handleGreenFlagClick}
+                onPauseClick={this.handlePauseClick}
                 onStopAllClick={this.handleStopAllClick}
+                onVolumeChange={this.handleVolumeChange}
+                onVolumeClick={this.handleVolumeClick}
+                onVolumeBlur={this.handleVolumeBlur}
             />
         );
     }
@@ -66,6 +115,9 @@ Controls.propTypes = {
     framerate: PropTypes.number.isRequired,
     interpolation: PropTypes.bool.isRequired,
     isSmall: PropTypes.bool,
+    isHidden: PropTypes.bool,
+    paused: PropTypes.bool,
+    volume: PropTypes.number,
     vm: PropTypes.instanceOf(VM)
 };
 
@@ -74,7 +126,9 @@ const mapStateToProps = state => ({
     projectRunning: state.scratchGui.vmStatus.running,
     framerate: state.scratchGui.tw.framerate,
     interpolation: state.scratchGui.tw.interpolation,
-    turbo: state.scratchGui.vmStatus.turbo
+    turbo: state.scratchGui.vmStatus.turbo,
+    paused: state.scratchGui.vmStatus.paused,
+    volume: state.scratchGui.vmStatus.volume
 });
 // no-op function to prevent dispatch prop being passed to component
 const mapDispatchToProps = () => ({});

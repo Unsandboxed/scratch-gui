@@ -7,7 +7,7 @@ import VM from 'scratch-vm';
 
 import Box from '../box/box.jsx';
 import Button from '../button/button.jsx';
-import ToggleButtons from '../toggle-buttons/toggle-buttons.jsx';
+import ToggleButtons from './toggle-buttons.jsx';
 import Controls from '../../containers/controls.jsx';
 import {getStageDimensions} from '../../lib/screen-utils';
 import {STAGE_DISPLAY_SIZES, STAGE_SIZE_MODES} from '../../lib/layout-constants';
@@ -16,6 +16,7 @@ import fullScreenIcon from './icon--fullscreen.svg';
 import unFullScreenIcon from './icon--unfullscreen.svg';
 import largeStageIcon from '!../../lib/tw-recolor/build!./icon--large-stage.svg';
 import smallStageIcon from '!../../lib/tw-recolor/build!./icon--small-stage.svg';
+import hiddenStageIcon from '!../../lib/tw-recolor/build!./icon--hidden-stage.svg';
 import fullStageIcon from '!../../lib/tw-recolor/build!./icon--full-stage.svg';
 import settingsIcon from './icon--settings.svg';
 
@@ -33,6 +34,11 @@ const messages = defineMessages({
         defaultMessage: 'Switch to small stage',
         description: 'Button to change stage size to small',
         id: 'gui.stageHeader.stageSizeSmall'
+    },
+    hiddenStageSizeMessage: {
+        defaultMessage: 'Hide the stage',
+        description: 'Button to hide the stage',
+        id: 'gui.stageHeader.stageSizeHidden'
     },
     fullStageSizeMessage: {
         defaultMessage: 'Switch to full stage',
@@ -70,6 +76,7 @@ const StageHeaderComponent = function (props) {
         isFullScreen,
         isPlayerOnly,
         onKeyPress,
+        onSetStageHidden,
         onSetStageFullScreen,
         onSetStageUnFullScreen,
         onSetStageLarge,
@@ -165,6 +172,13 @@ const StageHeaderComponent = function (props) {
                     <ToggleButtons
                         buttons={[
                             {
+                                handleClick: onSetStageHidden,
+                                icon: hiddenStageIcon,
+                                iconClassName: styles.stageButtonIcon,
+                                isSelected: stageSizeMode === STAGE_SIZE_MODES.hidden,
+                                title: props.intl.formatMessage(messages.hiddenStageSizeMessage)
+                            },
+                            {
                                 handleClick: onSetStageSmall,
                                 icon: smallStageIcon,
                                 iconClassName: styles.stageButtonIcon,
@@ -201,6 +215,7 @@ const StageHeaderComponent = function (props) {
                     <Controls
                         vm={vm}
                         isSmall={stageSizeMode === STAGE_SIZE_MODES.small}
+                        isHidden={stageSizeMode === STAGE_SIZE_MODES.hidden}
                     />
                     <div
                         className={styles.stageSizeRow}
@@ -250,6 +265,7 @@ StageHeaderComponent.propTypes = {
     onSetStageLarge: PropTypes.func.isRequired,
     onSetStageSmall: PropTypes.func.isRequired,
     onSetStageFull: PropTypes.func.isRequired,
+    onSetStageHidden: PropTypes.func.isRequired,
     onOpenSettings: PropTypes.func.isRequired,
     isEmbedded: PropTypes.bool.isRequired,
     stageSize: PropTypes.oneOf(Object.keys(STAGE_DISPLAY_SIZES)),

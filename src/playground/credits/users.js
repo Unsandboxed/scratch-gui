@@ -64,6 +64,21 @@ const contributors = [
     },
     {
         username: 'Wowfunhappy'
+    },
+    {
+        userID: '16426047',
+        username: 'Maximouse'
+    },
+    {
+        userID: '61409215',
+        username: 'TheColaber'
+    },
+    {
+        username: 'DNin01'
+    },
+    {
+        userID: '65550396',
+        name: 'samq64'
     }
 ].map(fromHardcoded);
 
@@ -103,6 +118,10 @@ const addonDevelopers = [
     {
         userID: '9981676',
         username: 'NitroCipher'
+    },
+    {
+        userID: '16426047',
+        username: 'Maximouse'
     },
     {
         userID: '2561680',
@@ -152,10 +171,6 @@ const addonDevelopers = [
         username: 'DNin01'
     },
     {
-        userID: '16426047',
-        username: 'Maximouse'
-    },
-    {
         username: 'retronbv'
     },
     {
@@ -174,6 +189,14 @@ const addonDevelopers = [
     },
     {
         username: 'TheKodeToad'
+    },
+    {
+        userID: '12498592',
+        username: 'LilyMakesThings'
+    },
+    {
+        userID: '74246431',
+        username: '0znzw'
     }
 ].map(fromHardcoded);
 
@@ -214,6 +237,10 @@ const extensionDevelopers = [
     {
         userID: '33988895',
         username: 'D-ScratchNinja'
+    },
+    {
+        userID: '74246431',
+        username: '0znzw'
     },
     {
         username: 'DT'
@@ -340,6 +367,10 @@ const docs = [
     },
     {
         username: 'yoyomonem'
+    },
+    {
+        userID: '41219524',
+        username: 'CubesterYT'
     },
     {
         userID: '55742784',
