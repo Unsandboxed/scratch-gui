@@ -21,8 +21,17 @@ npm-*
 # Other generated source
 /src/generated
 
-# Downloaded during "npm install"
+# Downloaded during "npm install" / "npm ci"
 /static/microbit
 
-# for act
+# for actions
+.secret
 .secrets
+
+# protect against any lily oopsies
+/scratch-vm
+/scratch-blocks
+/scratch-render
+/scratch-svg-renderer
+/scratch-storage
+/addons
