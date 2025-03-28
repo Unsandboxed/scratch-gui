@@ -30,8 +30,7 @@ const manifest = {
     }
   ],
   "tags": [
-    "recommended",
-    "new"
+    "recommended"
   ],
   "enabledByDefault": true,
   "dynamicDisable": true
