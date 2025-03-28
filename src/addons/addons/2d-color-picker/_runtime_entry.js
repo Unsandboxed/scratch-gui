@@ -5,5 +5,5 @@ import _asset from "!url-loader!./assets/sv-gr.png";
 export const resources = {
   "userscript.js": _js,
   "style.css": _css,
-  "assets/sv-gr.png": _asset,
+  "assets\\sv-gr.png": _asset,
 };

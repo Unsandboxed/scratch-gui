@@ -15,8 +15,6 @@ import _debugger from "../addons/debugger/_manifest_entry.js";
 import _pause from "../addons/pause/_manifest_entry.js";
 import _mute_project from "../addons/mute-project/_manifest_entry.js";
 import _vol_slider from "../addons/vol-slider/_manifest_entry.js";
-import _usb_anarchy from "../addons/usb-anarchy/_manifest_entry.js";
-import _usb_scroll from "../addons/usb-scroll/_manifest_entry.js";
 import _clones from "../addons/clones/_manifest_entry.js";
 import _mouse_pos from "../addons/mouse-pos/_manifest_entry.js";
 import _color_picker from "../addons/color-picker/_manifest_entry.js";
@@ -40,6 +38,7 @@ import _custom_block_text from "../addons/custom-block-text/_manifest_entry.js";
 import _editor_colored_context_menus from "../addons/editor-colored-context-menus/_manifest_entry.js";
 import _editor_stage_left from "../addons/editor-stage-left/_manifest_entry.js";
 import _editor_buttons_reverse_order from "../addons/editor-buttons-reverse-order/_manifest_entry.js";
+import _expanded_backpack from "../addons/expanded-backpack/_manifest_entry.js";
 import _variable_manager from "../addons/variable-manager/_manifest_entry.js";
 import _search_sprites from "../addons/search-sprites/_manifest_entry.js";
 import _sprite_properties from "../addons/sprite-properties/_manifest_entry.js";
@@ -50,7 +49,6 @@ import _block_switching from "../addons/block-switching/_manifest_entry.js";
 import _load_extensions from "../addons/load-extensions/_manifest_entry.js";
 import _custom_zoom from "../addons/custom-zoom/_manifest_entry.js";
 import _copy_reporter from "../addons/copy-reporter/_manifest_entry.js";
-import _editor_block_chomping from "../addons/editor-block-chomping/_manifest_entry.js";
 import _initialise_sprite_position from "../addons/initialise-sprite-position/_manifest_entry.js";
 import _blocks2image from "../addons/blocks2image/_manifest_entry.js";
 import _remove_curved_stage_border from "../addons/remove-curved-stage-border/_manifest_entry.js";
@@ -72,7 +70,7 @@ import _editor_comment_previews from "../addons/editor-comment-previews/_manifes
 import _columns from "../addons/columns/_manifest_entry.js";
 import _number_pad from "../addons/number-pad/_manifest_entry.js";
 import _editor_number_arrow_keys from "../addons/editor-number-arrow-keys/_manifest_entry.js";
-import _expanded_backpack from "../addons/expanded-backpack/_manifest_entry.js";
+import _expanded_backpack2 from "../addons/expanded-backpack/_manifest_entry.js";
 import _script_snap from "../addons/script-snap/_manifest_entry.js";
 import _fullscreen from "../addons/fullscreen/_manifest_entry.js";
 import _hide_stage from "../addons/hide-stage/_manifest_entry.js";
@@ -99,8 +97,6 @@ export default {
   "pause": _pause,
   "mute-project": _mute_project,
   "vol-slider": _vol_slider,
-  "usb-anarchy": _usb_anarchy,
-  "usb-scroll": _usb_scroll,
   "clones": _clones,
   "mouse-pos": _mouse_pos,
   "color-picker": _color_picker,
@@ -124,6 +120,7 @@ export default {
   "editor-colored-context-menus": _editor_colored_context_menus,
   "editor-stage-left": _editor_stage_left,
   "editor-buttons-reverse-order": _editor_buttons_reverse_order,
+  "expanded-backpack": _expanded_backpack,
   "variable-manager": _variable_manager,
   "search-sprites": _search_sprites,
   "sprite-properties": _sprite_properties,
@@ -134,7 +131,6 @@ export default {
   "load-extensions": _load_extensions,
   "custom-zoom": _custom_zoom,
   "copy-reporter": _copy_reporter,
-  "editor-block-chomping": _editor_block_chomping,
   "initialise-sprite-position": _initialise_sprite_position,
   "blocks2image": _blocks2image,
   "remove-curved-stage-border": _remove_curved_stage_border,
@@ -156,7 +152,7 @@ export default {
   "columns": _columns,
   "number-pad": _number_pad,
   "editor-number-arrow-keys": _editor_number_arrow_keys,
-  "expanded-backpack": _expanded_backpack,
+  "expanded-backpack": _expanded_backpack2,
   "script-snap": _script_snap,
   "fullscreen": _fullscreen,
   "hide-stage": _hide_stage,

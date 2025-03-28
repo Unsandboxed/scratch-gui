@@ -10,10 +10,10 @@ import _asset6 from "!url-loader!./icons/snap.svg";
 export const resources = {
   "userscript.js": _js,
   "userstyle.css": _css,
-  "icons/decrement.svg": _asset,
-  "icons/increment.svg": _asset2,
-  "icons/off.svg": _asset3,
-  "icons/on.svg": _asset4,
-  "icons/settings.svg": _asset5,
-  "icons/snap.svg": _asset6,
+  "icons\\decrement.svg": _asset,
+  "icons\\increment.svg": _asset2,
+  "icons\\off.svg": _asset3,
+  "icons\\on.svg": _asset4,
+  "icons\\settings.svg": _asset5,
+  "icons\\snap.svg": _asset6,
 };

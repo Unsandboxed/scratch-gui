@@ -11,9 +11,9 @@ const manifest = {
     }
   ],
   "tags": [
-    "theme"
+    "theme",
+    "new"
   ],
-  "enabledByDefault": true,
   "userscripts": [
     {
       "url": "userscript.js"
@@ -40,8 +40,6 @@ const manifest = {
       "type": "boolean",
       "default": false
     }
-  ],
-  "tags": [
   ],
   "dynamicDisable": true
 };

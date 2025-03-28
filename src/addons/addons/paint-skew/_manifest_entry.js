@@ -17,7 +17,9 @@ const manifest = {
       "link": "https://scratch.mit.edu/users/CST1229/"
     }
   ],
-  "tags": [],
+  "tags": [
+    "new"
+  ],
   "userscripts": [
     {
       "url": "userscript.js"

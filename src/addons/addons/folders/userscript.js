@@ -97,57 +97,6 @@ export default async function ({ addon, console, msg }) {
   let currentSpriteItems;
   let currentAssetItems;
 
-  const DIVIDER = "//";
-
-  /**
-   * getFolderFromName("B") === null
-   * getFolderFromName("A//b") === "A"
-   */
-  const getFolderFromName = (name) => {
-    const idx = name.indexOf(DIVIDER);
-    if (idx === -1 || idx === 0) {
-      return null;
-    }
-    return name.substr(0, idx);
-  };
-
-  /**
-   * getNameWithoutFolder("B") === "B"
-   * getNameWithoutFolder("A//b") === "b"
-   */
-  const getNameWithoutFolder = (name) => {
-    const idx = name.indexOf(DIVIDER);
-    if (idx === -1 || idx === 0) {
-      return name;
-    }
-    return name.substr(idx + DIVIDER.length);
-  };
-
-  /**
-   * setFolderOfName("B", "y") === "y//B"
-   * setFolderOfName("c//B", "y") === "y//B"
-   * setFolderOfName("B", null) === "B"
-   * setFolderOfName("c//B", null) === "B"
-   */
-  const setFolderOfName = (name, folder) => {
-    const basename = getNameWithoutFolder(name);
-    if (folder) {
-      return `${folder}${DIVIDER}${basename}`;
-    }
-    return basename;
-  };
-
-  const isValidFolderName = (name) => {
-    return !name.includes(DIVIDER) && !name.endsWith("/");
-  };
-
-  const RESERVED_NAMES = ["_mouse_", "_stage_", "_edge_", "_myself_", "_random_", "_camera_"];
-  const ensureNotReserved = (name) => {
-    if (name === "") return "2";
-    if (RESERVED_NAMES.includes(name)) return `${name}2`;
-    return name;
-  };
-
   const getSortableHOCFromElement = (el) => {
     const nearestSpriteSelector = el.closest("[class*='sprite-selector_sprite-selector']");
     if (nearestSpriteSelector) {
