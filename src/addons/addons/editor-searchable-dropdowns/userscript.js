@@ -100,6 +100,22 @@ export default async function ({ addon, console, msg }) {
     Blockly.DropDownDiv.content_.style.height = "";
   };
 
+  const oldFieldTextDropdownGetOptions = Blockly.FieldTextDropdown.prototype.getOptions;
+  Blockly.FieldTextDropdown.prototype.getOptions = function () {
+    const options = oldFieldTextDropdownGetOptions.call(this);
+    // Options aren't normally stored anywhere, so we'll store them ourselves.
+    resultOfLastGetOptions = options;
+    return options;
+  };
+
+  const oldFieldNumberDropdownGetOptions = Blockly.FieldNumberDropdown.prototype.getOptions;
+  Blockly.FieldNumberDropdown.prototype.getOptions = function () {
+    const options = oldFieldNumberDropdownGetOptions.call(this);
+    // Options aren't normally stored anywhere, so we'll store them ourselves.
+    resultOfLastGetOptions = options;
+    return options;
+  };
+
   const oldFieldDropdownGetOptions = Blockly.FieldDropdown.prototype.getOptions;
   Blockly.FieldDropdown.prototype.getOptions = function () {
     const options = oldFieldDropdownGetOptions.call(this);
