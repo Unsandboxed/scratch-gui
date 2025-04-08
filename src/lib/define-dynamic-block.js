@@ -1,8 +1,9 @@
 // TODO: access `BlockType` and `ArgumentType` without reaching into VM
 // Should we move these into a new extension support module or something?
-import ArgumentType from 'scratch-vm/src/extension-support/argument-type';
-import BlockType from 'scratch-vm/src/extension-support/block-type';
-import ContextMenuContext from 'scratch-vm/src/extension-support/context-menu-context';
+import ArgumentType from 'scratch-vm/src/virtual-machine/extensions/custom/support/constants/argument-type';
+import BlockType from 'scratch-vm/src/virtual-machine/extensions/custom/support/constants/block-type';
+// eslint-disable-next-line max-len
+import ContextMenuContext from 'scratch-vm/src/virtual-machine/extensions/custom/support/constants/context-menu-context';
 import log from './log.js';
 import {injectExtensionBlockTheme} from './themes/blockHelpers';
 
