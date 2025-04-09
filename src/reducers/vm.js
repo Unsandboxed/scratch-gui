@@ -3,7 +3,15 @@ import storage from '../lib/storage';
 import {MAXIMUM_CLOUD_VARIABLES} from '../lib/tw-cloud-limits';
 
 const SET_VM = 'scratch-gui/vm/SET_VM';
-const defaultVM = new VM();
+const defaultVM = (() => {
+    try {
+        return new VM();
+    } catch (e) {
+        // Don't use log.error, the GUI messes up
+        console.error('Failed to construct VM', e);
+        throw e;
+    }
+})();
 defaultVM.setCompatibilityMode(false);
 defaultVM.runtime.cloudOptions.limit = MAXIMUM_CLOUD_VARIABLES;
 defaultVM.attachStorage(storage);

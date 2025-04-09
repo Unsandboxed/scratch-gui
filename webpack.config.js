@@ -138,6 +138,11 @@ if (!process.env.CI) {
     base.plugins.push(new webpack.ProgressPlugin());
 }
 
+const probablyDebug = (
+    (process.env.BUILD_MODE !== 'dist') &&
+    (base.mode === 'development')
+);
+
 module.exports = [
     // to run editor examples
     defaultsDeep({}, base, {
@@ -175,6 +180,7 @@ module.exports = [
         },
         plugins: base.plugins.concat([
             new webpack.DefinePlugin({
+                'process.env.SCRATCHVM_PRESTATEHOOK': probablyDebug,
                 'process.env.NODE_ENV': `"${process.env.NODE_ENV}"`,
                 'process.env.DEBUG': Boolean(process.env.DEBUG),
                 'process.env.ENABLE_SERVICE_WORKER': JSON.stringify(process.env.ENABLE_SERVICE_WORKER || ''),

@@ -12,6 +12,7 @@
   "main": "./dist/scratch-gui.js",
   "scripts": {
     "build": "npm run clean && webpack --colors --bail",
+    "dist": "NODE_ENV=production npm run clean && NODE_ENV=production webpack --env.NODE_ENV=production --env.BUILD_MODE=dist --colors --bail",
     "clean": "rimraf ./build && mkdirp build && rimraf ./dist && mkdirp dist",
     "deploy": "touch build/.nojekyll && gh-pages -t -d build -m \"[skip ci] Build for $(git log --pretty=format:%H -n1)\"",
     "prepublish": "node scripts/prepublish.mjs",
