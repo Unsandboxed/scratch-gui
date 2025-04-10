@@ -37,7 +37,7 @@ class Dial extends React.Component {
     /**
      * Get direction from dial center to mouse move event.
      * @param {Event} e - Mouse move event.
-     * @returns {number} Direction in degrees, clockwise, 90=horizontal.
+     * @return {number} Direction in degrees, clockwise, 90=horizontal.
      */
     directionToMouseEvent (e) {
         const {x: mx, y: my} = getEventXY(e);
@@ -53,7 +53,7 @@ class Dial extends React.Component {
      * Create SVG path data string for the dial "gauge", the overlaid arc slice.
      * @param {number} radius - The radius of the dial.
      * @param {number} direction - Direction in degrees, clockwise, 90=horizontal.
-     * @returns {string} Path data string for the gauge.
+     * @return {string} Path data string for the gauge.
      */
     gaugePath (radius, direction) {
         const rads = (direction) * (Math.PI / 180);

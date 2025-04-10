@@ -5,7 +5,7 @@ import React from 'react';
 /**
  * Higher Order Component to manage inputs that submit on blur and <enter>
  * @param {React.Component} Input text input that consumes onChange, onBlur, onKeyPress
- * @returns {React.Component} Buffered input that calls onSubmit on blur and <enter>
+ * @return {React.Component} Buffered input that calls onSubmit on blur and <enter>
  */
 export default function (Input) {
     class BufferedInput extends React.Component {

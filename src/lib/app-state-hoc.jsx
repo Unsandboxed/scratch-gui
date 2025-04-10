@@ -21,7 +21,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
  * @param {boolean} localesOnly - only provide the locale state, not everything
  *                      required by the GUI. Used to exclude excess state when
                         only rendering modals, not the GUI.
- * @returns {React.Component} component with redux and intl state provided
+ * @return {React.Component} component with redux and intl state provided
  */
 const AppStateHOC = function (WrappedComponent, localesOnly) {
     class AppStateWrapper extends React.Component {

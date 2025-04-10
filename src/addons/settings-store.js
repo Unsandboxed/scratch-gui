@@ -98,7 +98,7 @@ const migrateSettings = settings => {
 /**
  * @template T
  * @param {T|T[]} v A value
- * @returns {T[]} The value if it is a list, otherwise a 1 item list
+ * @return {T[]} The value if it is a list, otherwise a 1 item list
  */
 const asArray = v => {
     if (Array.isArray(v)) {
@@ -461,7 +461,7 @@ class SettingsStore extends EventTargetShim {
      * Evaluate an `if` value from addon.json.
      * @param {string} addonId The ID of the addon.
      * @param {unknown} condition Condition from addon.json
-     * @returns {boolean} True if the condition is met.
+     * @return {boolean} True if the condition is met.
      */
     evaluateCondition (addonId, condition) {
         if (!condition) {

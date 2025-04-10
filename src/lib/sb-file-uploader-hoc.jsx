@@ -28,7 +28,7 @@ import {
 /**
  * Higher Order Component to provide behavior for loading local project files into editor.
  * @param {React.Component} WrappedComponent the component to add project file loading functionality to
- * @returns {React.Component} WrappedComponent with project file loading functionality added
+ * @return {React.Component} WrappedComponent with project file loading functionality added
  *
  * <SBFileUploaderHOC>
  *     <WrappedComponent />

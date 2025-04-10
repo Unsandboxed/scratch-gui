@@ -21,7 +21,7 @@ const manuallyTrustExtension = url => {
 /**
  * Trusted extensions are loaded automatically and without a sandbox.
  * @param {string} url URL as a string.
- * @returns {boolean} True if the extension can is trusted
+ * @return {boolean} True if the extension can is trusted
  */
 const isTrustedExtension = url => (
     // Always trust our official extension repostiory.
@@ -50,7 +50,7 @@ const embedOriginsTrustedByUser = new Set();
 
 /**
  * @param {URL} parsed Parsed URL object
- * @returns {boolean} True if the URL is part of the builtin set of URLs to always trust fetching from.
+ * @return {boolean} True if the URL is part of the builtin set of URLs to always trust fetching from.
  */
 const isAlwaysTrustedForFetching = parsed => (
     // If we would trust loading an extension from here, we can trust loading resources too.
@@ -110,7 +110,7 @@ const VISITABLE_PROTOCOLS = [
 /**
  * @param {string} url Original URL string
  * @param {string[]} protocols List of allowed protocols
- * @returns {URL|null} A URL object if it is valid and of a known protocol, otherwise null.
+ * @return {URL|null} A URL object if it is valid and of a known protocol, otherwise null.
  */
 const parseURL = (url, protocols) => {
     let parsed;
@@ -174,7 +174,7 @@ class TWSecurityManagerComponent extends React.Component {
 
     // eslint-disable-next-line valid-jsdoc
     /**
-     * @returns {Promise<() => Promise<boolean>>} Resolves with a function that you can call to show the modal.
+     * @return {Promise<() => Promise<boolean>>} Resolves with a function that you can call to show the modal.
      * The resolved function returns a promise that resolves with true if the request was approved.
      */
     async acquireModalLock () {
@@ -233,7 +233,7 @@ class TWSecurityManagerComponent extends React.Component {
 
     /**
      * @param {string} url The extension's URL
-     * @returns {string} The VM worker mode to use
+     * @return {string} The VM worker mode to use
      */
     getSandboxMode (url) {
         if (isTrustedExtension(url)) {
@@ -255,7 +255,7 @@ class TWSecurityManagerComponent extends React.Component {
 
     /**
      * @param {string} url The extension's URL
-     * @returns {Promise<boolean>} Whether the extension can be loaded
+     * @return {Promise<boolean>} Whether the extension can be loaded
      */
     async canLoadExtensionFromProject (url) {
         if (isTrustedExtension(url)) {
@@ -285,7 +285,7 @@ class TWSecurityManagerComponent extends React.Component {
 
     /**
      * @param {string} url The resource to fetch
-     * @returns {Promise<boolean>} True if the resource is allowed to be fetched
+     * @return {Promise<boolean>} True if the resource is allowed to be fetched
      */
     async canFetch (url) {
         const parsed = parseURL(url, FETCHABLE_PROTOCOLS);
@@ -312,7 +312,7 @@ class TWSecurityManagerComponent extends React.Component {
 
     /**
      * @param {string} url The website to open
-     * @returns {Promise<boolean>} True if the website can be opened
+     * @return {Promise<boolean>} True if the website can be opened
      */
     async canOpenWindow (url) {
         const parsed = parseURL(url, VISITABLE_PROTOCOLS);
@@ -327,7 +327,7 @@ class TWSecurityManagerComponent extends React.Component {
 
     /**
      * @param {string} url The website to redirect to
-     * @returns {Promise<boolean>} True if the website can be redirected to
+     * @return {Promise<boolean>} True if the website can be redirected to
      */
     async canRedirect (url) {
         const parsed = parseURL(url, VISITABLE_PROTOCOLS);
@@ -341,7 +341,7 @@ class TWSecurityManagerComponent extends React.Component {
     }
 
     /**
-     * @returns {Promise<boolean>} True if audio can be recorded
+     * @return {Promise<boolean>} True if audio can be recorded
      */
     async canRecordAudio () {
         if (!allowedAudio) {
@@ -352,7 +352,7 @@ class TWSecurityManagerComponent extends React.Component {
     }
 
     /**
-     * @returns {Promise<boolean>} True if video can be recorded
+     * @return {Promise<boolean>} True if video can be recorded
      */
     async canRecordVideo () {
         if (!allowedVideo) {
@@ -363,7 +363,7 @@ class TWSecurityManagerComponent extends React.Component {
     }
 
     /**
-     * @returns {Promise<boolean>} True if the clipboard can be read
+     * @return {Promise<boolean>} True if the clipboard can be read
      */
     async canReadClipboard () {
         if (!allowedReadClipboard) {
@@ -374,7 +374,7 @@ class TWSecurityManagerComponent extends React.Component {
     }
 
     /**
-     * @returns {Promise<boolean>} True if the notifications are allowed
+     * @return {Promise<boolean>} True if the notifications are allowed
      */
     async canNotify () {
         if (!allowedNotify) {
@@ -385,7 +385,7 @@ class TWSecurityManagerComponent extends React.Component {
     }
 
     /**
-     * @returns {Promise<boolean>} True if geolocation is allowed.
+     * @return {Promise<boolean>} True if geolocation is allowed.
      */
     async canGeolocate () {
         if (!allowedGeolocation) {
@@ -397,7 +397,7 @@ class TWSecurityManagerComponent extends React.Component {
 
     /**
      * @param {string} url Frame URL
-     * @returns {Promise<boolean>} True if embed is allowed.
+     * @return {Promise<boolean>} True if embed is allowed.
      */
     async canEmbed (url) {
         const parsed = parseURL(url, FETCHABLE_PROTOCOLS);
@@ -420,7 +420,7 @@ class TWSecurityManagerComponent extends React.Component {
     /**
      * @param {string} url URL to download
      * @param {string} name Name to download as
-     * @returns {Promise<boolean>} True if allowed
+     * @return {Promise<boolean>} True if allowed
      */
     async canDownload (url, name) {
         const parsed = parseURL(url, FETCHABLE_PROTOCOLS);

@@ -18,7 +18,7 @@ const motion = function (isInitialSetup, isStage, targetId, colors) {
         'MOTION_STAGE_SELECTED',
         'Stage selected: no motion blocks'
     );
-    // Note: the category's secondaryColour matches up with the blocks' tertiary color, both used for border color.
+    // Note: the categories secondaryColour matches up with the blocks' tertiary color, both used for border color.
     return `
     <category name="%{BKY_CATEGORY_MOTION}" id="motion" colour="${colors.primary}" secondaryColour="${colors.tertiary}">
         ${isStage ? `
@@ -163,7 +163,7 @@ const xmlEscape = function (unsafe) {
 const looks = function (isInitialSetup, isStage, targetId, costumeName, backdropName, colors) {
     const hello = translate('LOOKS_HELLO', 'Hello!');
     const hmm = translate('LOOKS_HMM', 'Hmm...');
-    // Note: the category's secondaryColour matches up with the blocks' tertiary color, both used for border color.
+    // Note: the categories secondaryColour matches up with the blocks' tertiary color, both used for border color.
     return `
     <category name="%{BKY_CATEGORY_LOOKS}" id="looks" colour="${colors.primary}" secondaryColour="${colors.tertiary}">
         ${isStage ? '' : `
@@ -299,7 +299,7 @@ const looks = function (isInitialSetup, isStage, targetId, costumeName, backdrop
 };
 
 const sound = function (isInitialSetup, isStage, targetId, soundName, colors) {
-    // Note: the category's secondaryColour matches up with the blocks' tertiary color, both used for border color.
+    // Note: the categories secondaryColour matches up with the blocks' tertiary color, both used for border color.
     return `
     <category name="%{BKY_CATEGORY_SOUND}" id="sound" colour="${colors.primary}" secondaryColour="${colors.tertiary}">
         <block id="${targetId}_sound_playuntildone" type="sound_playuntildone">
@@ -355,7 +355,7 @@ const sound = function (isInitialSetup, isStage, targetId, soundName, colors) {
 };
 
 const events = function (isInitialSetup, isStage, targetId, colors) {
-    // Note: the category's secondaryColour matches up with the blocks' tertiary color, both used for border color.
+    // Note: the categories secondaryColour matches up with the blocks' tertiary color, both used for border color.
     return `
     <category name="%{BKY_CATEGORY_EVENTS}" id="events" colour="${colors.primary}" secondaryColour="${colors.tertiary}">
         <block type="event_whenflagclicked"/>
@@ -395,7 +395,7 @@ const events = function (isInitialSetup, isStage, targetId, colors) {
 };
 
 const control = function (isInitialSetup, isStage, targetId, colors) {
-    // Note: the category's secondaryColour matches up with the blocks' tertiary color, both used for border color.
+    // Note: the categories secondaryColour matches up with the blocks' tertiary color, both used for border color.
     return `
     <category
         name="%{BKY_CATEGORY_CONTROL}"
@@ -449,7 +449,7 @@ const control = function (isInitialSetup, isStage, targetId, colors) {
 
 const sensing = function (isInitialSetup, isStage, targetId, colors) {
     const name = translate('SENSING_ASK_TEXT', 'What\'s your name?');
-    // Note: the category's secondaryColour matches up with the blocks' tertiary color, both used for border color.
+    // Note: the categories secondaryColour matches up with the blocks' tertiary color, both used for border color.
     return `
     <category
         name="%{BKY_CATEGORY_SENSING}"
@@ -531,7 +531,7 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
     const apple = translate('OPERATORS_JOIN_APPLE', 'apple');
     const banana = translate('OPERATORS_JOIN_BANANA', 'banana');
     const letter = translate('OPERATORS_LETTEROF_APPLE', 'a');
-    // Note: the category's secondaryColour matches up with the blocks' tertiary color, both used for border color.
+    // Note: the categories secondaryColour matches up with the blocks' tertiary color, both used for border color.
     return `
     <category
         name="%{BKY_CATEGORY_OPERATORS}"
@@ -720,7 +720,7 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
 };
 
 const variables = function (isInitialSetup, isStage, targetId, colors) {
-    // Note: the category's secondaryColour matches up with the blocks' tertiary color, both used for border color.
+    // Note: the categories secondaryColour matches up with the blocks' tertiary color, both used for border color.
     return `
     <category
         name="%{BKY_CATEGORY_VARIABLES}"
@@ -733,7 +733,7 @@ const variables = function (isInitialSetup, isStage, targetId, colors) {
 };
 
 const myBlocks = function (isInitialSetup, isStage, targetId, colors) {
-    // Note: the category's secondaryColour matches up with the blocks' tertiary color, both used for border color.
+    // Note: the categories secondaryColour matches up with the blocks' tertiary color, both used for border color.
     return `
     <category
         name="%{BKY_CATEGORY_MYBLOCKS}"
@@ -769,7 +769,7 @@ const xmlClose = '</xml>';
  * @param {?string} backdropName - The name of the default selected backdrop dropdown.
  * @param {?string} soundName -  The name of the default selected sound dropdown.
  * @param {?object} colors - The colors for the theme.
- * @returns {string} - a ScratchBlocks-style XML document for the contents of the toolbox.
+ * @return {string} - a ScratchBlocks-style XML document for the contents of the toolbox.
  */
 const makeToolboxXML = function (isInitialSetup, isStage = true, targetId, categoriesXML = [],
     costumeName = '', backdropName = '', soundName = '', colors = defaultBlockColors) {

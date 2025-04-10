@@ -14,7 +14,7 @@ export default class DomHelpers {
    * @param selectorDrop
    * @param mouseXY
    * @param [shiftKey=false]
-   * @returns {boolean}
+   * @return {boolean}
    */
   triggerDragAndDrop(selectorDrag, selectorDrop, mouseXY, shiftKey) {
     // function for triggering mouse events

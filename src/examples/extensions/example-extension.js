@@ -207,7 +207,7 @@ ExampleExtension.prototype.getInfo = function () {
  * @param {object} args - the block's arguments.
  * @property {number} LETTER_NUM - the string value of the argument.
  * @property {string} TEXT - the string value of the argument.
- * @returns {string} a string which includes the block argument value.
+ * @return {string} a string which includes the block argument value.
  */
 ExampleExtension.prototype.myReporter = function (args) {
     // Note: this implementation is not Unicode-clean; it's just here as an example.

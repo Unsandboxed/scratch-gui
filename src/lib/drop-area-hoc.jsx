@@ -24,13 +24,13 @@ import {connect} from 'react-redux';
  *     This _does not_ handle drags for blocks coming from the workspace.
  *
  * @param {Array.<string>} dragTypes Types to respond to, from DragConstants
- * @returns {function} The HOC, specialized for those drag types
+ * @return {function} The HOC, specialized for those drag types
  */
 const DropAreaHOC = function (dragTypes) {
     /**
      * Return the HOC, specialized for the dragTypes
      * @param {React.Component} WrappedComponent component to receive drop behaviors
-     * @returns {React.Component} component with drag over/drop behavior
+     * @return {React.Component} component with drag over/drop behavior
      */
     return function (WrappedComponent) {
         class DropAreaWrapper extends React.Component {

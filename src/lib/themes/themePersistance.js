@@ -7,7 +7,7 @@ const PREFERS_DARK_QUERY = matchMedia('(prefers-color-scheme: dark)');
 const STORAGE_KEY = 'tw:theme';
 
 /**
- * @returns {Theme} detected theme
+ * @return {Theme} detected theme
  */
 const systemPreferencesTheme = () => {
     if (PREFERS_HIGH_CONTRAST_QUERY && PREFERS_HIGH_CONTRAST_QUERY.matches) {
@@ -21,7 +21,7 @@ const systemPreferencesTheme = () => {
 
 /**
  * @param {function} onChange callback; no guarantees about arguments
- * @returns {function} call to remove event listeners to prevent memory leak
+ * @return {function} call to remove event listeners to prevent memory leak
  */
 const onSystemPreferenceChange = onChange => {
     if (
@@ -44,7 +44,7 @@ const onSystemPreferenceChange = onChange => {
 };
 
 /**
- * @returns {Theme} the theme
+ * @return {Theme} the theme
  */
 const detectTheme = () => {
     const systemPreferences = systemPreferencesTheme();

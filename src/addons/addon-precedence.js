@@ -11,7 +11,7 @@ const addonPrecedence = [
 
 /**
  * @param {string} addonId The addon ID
- * @returns {number} An integer >= 0
+ * @return {number} An integer >= 0
  */
 const getPrecedence = addonId => addonPrecedence.indexOf(addonId) + 1;
 

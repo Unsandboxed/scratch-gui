@@ -40,7 +40,7 @@ const reducer = function (state, action) {
  * @param {!Element} mutator The XML node of the mutator for the procedure.
  * @param {!function(!Element)} callback The function to call when done editing procedure.
  *     Expect the callback to be a function that takes a new XML mutator node.
- * @returns {object} An action object with type ACTIVATE_CUSTOM_PROCEDURES.
+ * @return {object} An action object with type ACTIVATE_CUSTOM_PROCEDURES.
  */
 const activateCustomProcedures = (mutator, callback) => ({
     type: ACTIVATE_CUSTOM_PROCEDURES,
@@ -51,7 +51,7 @@ const activateCustomProcedures = (mutator, callback) => ({
 /**
  * Action creator to close the custom procedures modal.
  * @param {?Element} mutator The new mutator, or null if the callback should not be called.
- * @returns {object} An action object with type ACTIVATE_CUSTOM_PROCEDURES.
+ * @return {object} An action object with type ACTIVATE_CUSTOM_PROCEDURES.
  */
 const deactivateCustomProcedures = mutator => ({
     type: DEACTIVATE_CUSTOM_PROCEDURES,

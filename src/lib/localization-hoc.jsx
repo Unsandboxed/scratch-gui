@@ -9,7 +9,7 @@ import ConnectedIntlProvider from './connected-intl-provider.jsx';
  * to handle Gui intl context. The component accepts an onSetLanguage callback that is
  * called when the locale chagnes.
  * @param {React.Component} WrappedComponent - component to provide state for
- * @returns {React.Component} component with intl state provided from redux
+ * @return {React.Component} component with intl state provided from redux
  */
 const LocalizationHOC = function (WrappedComponent) {
     class LocalizationWrapper extends React.Component {

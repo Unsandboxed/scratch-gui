@@ -173,7 +173,7 @@ export default class DevTools {
 
   /**
    * A nicely ordered version of the top blocks
-   * @returns {[Blockly.Block]}
+   * @return {[Blockly.Block]}
    */
   getTopBlocks() {
     let result = this.getOrderedTopBlockColumns();
@@ -320,7 +320,7 @@ export default class DevTools {
   /**
    * Badly Orphaned - might want to delete these!
    * @param topBlock
-   * @returns {boolean}
+   * @return {boolean}
    */
   isBlockAnOrphan(topBlock) {
     return !!topBlock.outputConnection;
@@ -329,7 +329,7 @@ export default class DevTools {
   /**
    * Split the top blocks into ordered columns
    * @param separateOrphans true to keep all orphans separate
-   * @returns {{orphans: {blocks: [Block], x: number, count: number}, cols: [Col]}}
+   * @return {{orphans: {blocks: [Block], x: number, count: number}, cols: [Col]}}
    */
   getOrderedTopBlockColumns(separateOrphans) {
     let w = this.getWorkspace();
@@ -567,7 +567,7 @@ export default class DevTools {
 
   /**
    * Returns a Set of the top blocks in this workspace / sprite
-   * @returns {Set<any>} Set of top blocks
+   * @return {Set<any>} Set of top blocks
    */
   getTopBlockIDs() {
     let wksp = this.getWorkspace();

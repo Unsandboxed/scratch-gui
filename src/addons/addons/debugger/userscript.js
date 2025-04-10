@@ -321,7 +321,7 @@ export default async function ({ addon, console, msg }) {
 
   /**
    * @param {string} procedureCode
-   * @returns {string}
+   * @return {string}
    */
   const formatProcedureCode = (procedureCode) => {
     const customBlock = addon.tab.getCustomBlock(procedureCode);

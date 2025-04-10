@@ -27,7 +27,7 @@ const SECURITY_CRITICAL_FONTS = [
 /*
  * Higher Order Component to manage events emitted by the VM
  * @param {React.Component} WrappedComponent component to manage VM events for
- * @returns {React.Component} connected component with vm events bound to redux
+ * @return {React.Component} connected component with vm events bound to redux
  */
 const vmManagerHOC = function (WrappedComponent) {
     class VMManager extends React.Component {

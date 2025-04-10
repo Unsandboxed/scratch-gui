@@ -27,7 +27,7 @@ export default class Utils {
 
   /**
    * Get the Scratch Editing Target
-   * @returns {?Target} the scratch editing target
+   * @return {?Target} the scratch editing target
    */
   getEditingTarget() {
     return this.vm.runtime.getEditingTarget();
@@ -45,7 +45,7 @@ export default class Utils {
 
   /**
    * Returns the main workspace
-   * @returns !Blockly.Workspace
+   * @return !Blockly.Workspace
    */
   getWorkspace() {
     const currentWorkspace = Blockly.getMainWorkspace();
@@ -116,7 +116,7 @@ export default class Utils {
   /**
    * Find the top stack block of a  stack
    * @param block a block in a stack
-   * @returns {*} a block that is the top of the stack of blocks
+   * @return {*} a block that is the top of the stack of blocks
    */
   getTopOfStackFor(block) {
     let base = block;

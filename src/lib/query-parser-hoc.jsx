@@ -10,7 +10,7 @@ import {openTipsLibrary} from '../reducers/modals';
 
 /* Higher Order Component to get parameters from the URL query string and initialize redux state
  * @param {React.Component} WrappedComponent: component to render
- * @returns {React.Component} component with query parsing behavior
+ * @return {React.Component} component with query parsing behavior
  */
 const QueryParserHOC = function (WrappedComponent) {
     class QueryParserComponent extends React.Component {

@@ -16,7 +16,7 @@ const implementGuiAPI = Scratch => {
          * You should not assume that ScratchBlocks becoming available means the user is actually
          * in the editor or that a workspace has been created already.
          *
-         * @returns {Promise<any>} Promise that may eventually resolve to ScratchBlocks
+         * @return {Promise<any>} Promise that may eventually resolve to ScratchBlocks
          */
         getBlockly: () => {
             if (AddonHooks.blockly) {
@@ -34,7 +34,7 @@ const implementGuiAPI = Scratch => {
          * This method is VERY SLOW and will cause A LOT OF CPU AND NETWORK ACTIVITY because it
          * downloads and evaluates all of scratch-blocks, a multi-megabyte JavaScript bundle.
          *
-         * @returns {Promise<any>} Promise that will resolve to ScratchBlocks.
+         * @return {Promise<any>} Promise that will resolve to ScratchBlocks.
          */
         getBlocklyEagerly: () => LazyScratchBlocks.load()
     };

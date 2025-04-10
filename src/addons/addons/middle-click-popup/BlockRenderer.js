@@ -131,7 +131,7 @@ function getShapeInfo(shape, isVertical) {
 
 /**
  * @param {BlockInstance} block
- * @returns {number}
+ * @return {number}
  */
 export function getBlockHeight(block) {
   switch (block.typeInfo.shape) {
@@ -165,7 +165,7 @@ export class BlockComponent {
  * Creates a BlockComponent with some text. Like the 'label' element in the make a block menu.
  * @param {string} text The contents of the component.
  * @param {SVGElement} container The element to add the text to.
- * @returns {BlockComponent} The BlockComponent.
+ * @return {BlockComponent} The BlockComponent.
  */
 function createTextComponent(text, fillVar, container) {
   let textElement = container.appendChild(document.createElementNS(SVG_NS, "text"));
@@ -181,7 +181,7 @@ function createTextComponent(text, fillVar, container) {
  * Creates a DOM element to hold all the contents of a block.
  * A block could be the top level block, or it could be a block like (() + ()) that's inside
  * another block.
- * @returns {SVGElement} The SVGElement which will contain all the block's components.
+ * @return {SVGElement} The SVGElement which will contain all the block's components.
  */
 function createBlockContainer() {
   let container = document.createElementNS(SVG_NS, "g");
@@ -237,7 +237,7 @@ function createBackedTextedComponent(text, container, shape, categoryClass, fill
  * Renders a block, with the center of it's leftmost side located at 0, 0.
  * @param {BlockInstance} block
  * @param {SVGElement} container
- * @returns {BlockComponent} The rendered block
+ * @return {BlockComponent} The rendered block
  */
 export default function renderBlock(block, container) {
   var blockComponent = _renderBlock(block, container, block.typeInfo.category, true);
@@ -251,7 +251,7 @@ export default function renderBlock(block, container) {
  * @param {BlockInstance} block
  * @param {SVGAElement} container
  * @param {string} parentCategory The category of this blocks parent. If no parent, than this blocks category.
- * @returns {BlockComponent} The rendered component.
+ * @return {BlockComponent} The rendered component.
  */
 function _renderBlock(block, container, parentCategory, isVertical) {
   const blockContainer = container.appendChild(createBlockContainer());

@@ -34,7 +34,7 @@ export default class UndoGroup {
 
 /**
  * https://github.com/scratchfoundation/scratch-blocks/blob/f159a1779e5391b502d374fb2fdd0cb5ca43d6a2/core/events.js#L182
- * @returns {string}
+ * @return {string}
  * @private
  */
 function generateUID() {

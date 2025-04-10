@@ -15,7 +15,7 @@ const allSheets = new Map();
  * Determine if the contents of a list are equal (===) to each other.
  * @param {unknown[]} a The first list
  * @param {unknown[]} b The second list
- * @returns {boolean} true if the lists are identical
+ * @return {boolean} true if the lists are identical
  */
 const areArraysEqual = (a, b) => {
     if (a.length !== b.length) {

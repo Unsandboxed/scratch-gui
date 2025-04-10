@@ -37,7 +37,7 @@ import {
 /**
  * Higher Order Component to provide behavior for saving projects.
  * @param {React.Component} WrappedComponent the component to add project saving functionality to
- * @returns {React.Component} WrappedComponent with project saving functionality added
+ * @return {React.Component} WrappedComponent with project saving functionality added
  *
  * <ProjectSaverHOC>
  *     <WrappedComponent />

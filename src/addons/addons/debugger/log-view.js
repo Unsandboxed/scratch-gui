@@ -115,7 +115,7 @@ class LogView {
   /**
    * @param {number} index
    * @param {number} [margin] # of pixels on top and bottom that are not considered part of the view
-   * @returns {boolean}
+   * @return {boolean}
    */
   isInView(index, margin = 0) {
     const topEdgeFromTop = index * this.rowHeight;

@@ -363,7 +363,7 @@ class TokenType extends TokenProvider {
    * be used to create a block.
    * @param {Token} token
    * @param {QueryInfo} query
-   * @returns {*}
+   * @return {*}
    */
   createBlockValue(token, query) {
     return token.value;
@@ -377,7 +377,7 @@ class TokenType extends TokenProvider {
    * @param {boolean} endOnly Should we only append to the end of the query. If this is false, we
    * can create text in the middle of the query that wasn't there. This is used to autocomplete
    * {@link StringEnum.GriffTokenType} tokens in the middle of a query.
-   * @returns {string}
+   * @return {string}
    */
   createText(token, query, endOnly) {
     throw new Error("Sub-class must override abstract method.");
@@ -386,7 +386,7 @@ class TokenType extends TokenProvider {
   /**
    * @param {Token} token
    * @param {QueryInfo} query
-   * @returns {Token[]}
+   * @return {Token[]}
    */
   getSubtokens(token, query) {
     return undefined;
@@ -412,7 +412,7 @@ class TokenTypeBlank extends TokenType {
   /**
    * Create a new blank token
    * @param {number} idx The position of the blank token
-   * @returns {Token}
+   * @return {Token}
    */
   createToken(idx) {
     return new Token(idx, idx, this, null);
@@ -820,7 +820,7 @@ class TokenTypeBlock extends TokenType {
    * @param {number} idx
    * @param {TokenProvider[]} subtokenProviders
    * @param {Token[]} subtokens
-   * @returns {Token?}
+   * @return {Token?}
    */
   _createToken(query, idx, subtokenProviders, subtokens) {
     subtokens.reverse();
@@ -1004,14 +1004,14 @@ export class QueryResult {
 
   /**
    * @param {boolean} endOnly
-   * @returns {string}
+   * @return {string}
    */
   toText(endOnly) {
     return this.token.type.createText(this.token, this.query, endOnly) ?? "";
   }
 
   /**
-   * @returns {BlockInstance}
+   * @return {BlockInstance}
    */
   getBlock() {
     if (!this.block) this.block = this.token.createBlockValue(this.query);
@@ -1019,7 +1019,7 @@ export class QueryResult {
   }
 
   /**
-   * @returns {{stringLength: number, tokenLength: number}}
+   * @return {{stringLength: number, tokenLength: number}}
    */
   getLengths() {
     if (this.lengths) return this.lengths;
@@ -1086,7 +1086,7 @@ class QueryInfo {
   /**
    * @param {string} str
    * @param {number} idx The index to start at.
-   * @returns {number} The index of the next non-ignorable character in str, after idx.
+   * @return {number} The index of the next non-ignorable character in str, after idx.
    */
   static skipIgnorable(str, idx) {
     while (QueryInfo.IGNORABLE_CHARS.indexOf(str[idx]) !== -1) ++idx;
@@ -1095,7 +1095,7 @@ class QueryInfo {
 
   /**
    * @param {number} idx The index to start at.
-   * @returns {number} The index of the next non-ignorable character in the query, after idx.
+   * @return {number} The index of the next non-ignorable character in the query, after idx.
    */
   skipIgnorable(idx) {
     return QueryInfo.skipIgnorable(this.lowercase, idx);
@@ -1104,7 +1104,7 @@ class QueryInfo {
   /**
    * @param {string} str
    * @param {number} idx The index to start at.
-   * @returns {number} The index of the next ignorable character in str, after idx.
+   * @return {number} The index of the next ignorable character in str, after idx.
    */
   static skipUnignorable(str, idx) {
     while (QueryInfo.IGNORABLE_CHARS.indexOf(str[idx]) === -1 && idx < str.length) ++idx;
@@ -1113,7 +1113,7 @@ class QueryInfo {
 
   /**
    * @param {number} idx The index to start at.
-   * @returns {number} The index of the next ignorable character in the query, after idx.
+   * @return {number} The index of the next ignorable character in the query, after idx.
    */
   skipUnignorable(idx) {
     return QueryInfo.skipUnignorable(this.lowercase, idx);
@@ -1180,7 +1180,7 @@ export default class WorkspaceQuerier {
   /**
    * Queries the indexed workspace for blocks matching the query string.
    * @param {string} queryStr The query.
-   * @returns {{results: QueryResult[], illegalResult: QueryResult | null, limited: boolean}} A list of the results of the query, sorted by their relevance.
+   * @return {{results: QueryResult[], illegalResult: QueryResult | null, limited: boolean}} A list of the results of the query, sorted by their relevance.
    */
   queryWorkspace(queryStr) {
     if (!this.workspaceIndexed) throw new Error("A workspace must be indexed before it can be queried!");

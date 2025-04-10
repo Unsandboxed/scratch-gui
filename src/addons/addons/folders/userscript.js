@@ -129,7 +129,7 @@ export default async function ({ addon, console, msg }) {
    */
 
   /**
-   * @returns {ItemData|null}
+   * @return {ItemData|null}
    */
   const getItemData = (item) => {
     if (item && item.name && typeof item.name === "object") {

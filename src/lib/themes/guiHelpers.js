@@ -20,7 +20,7 @@ const BLOCK_COLOR_NAMES = [
 
 /**
  * @param {string} css CSS color or var(--...)
- * @returns {string} evaluated CSS
+ * @return {string} evaluated CSS
  */
 const evaluateCSS = css => {
     const variableMatch = css.match(/^var\(([\w-]+)\)$/);

@@ -14,7 +14,7 @@ import styles from './target-pane.css';
  * Pane that contains the sprite selector, sprite info, stage selector,
  * and the new sprite, costume and backdrop buttons
  * @param {object} props Props for the component
- * @returns {React.Component} rendered component
+ * @return {React.Component} rendered component
  */
 const TargetPane = ({
     camera,

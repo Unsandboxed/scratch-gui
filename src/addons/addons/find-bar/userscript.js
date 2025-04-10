@@ -225,7 +225,7 @@ export default async function ({ addon, msg, console }) {
        * @param cls
        * @param txt
        * @param root
-       * @returns BlockItem
+       * @return BlockItem
        */
       function addBlock(cls, txt, root) {
         let id = root.id ? root.id : root.getId ? root.getId() : null;

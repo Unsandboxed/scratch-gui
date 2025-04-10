@@ -71,7 +71,7 @@ export function loadModules(paper, vm) {
   /**
    * Mouse actions are clamped to action bounds
    * @param {boolean} isBitmap True if the editor is in bitmap mode, false if it is in vector mode
-   * @returns {paper.Rectangle} the bounds within which mouse events should work in the paint editor
+   * @return {paper.Rectangle} the bounds within which mouse events should work in the paint editor
    */
   const getActionBounds = (isBitmap) => {
     if (isBitmap) {

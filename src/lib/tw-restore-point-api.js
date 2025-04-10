@@ -32,7 +32,7 @@ const ALL_STORES = [METADATA_STORE, PROJECT_STORE, ASSET_STORE, THUMBNAIL_STORE]
 let _cachedDB = null;
 
 /**
- * @returns {Promise<IDBDatabase>} IDB database with all stores created.
+ * @return {Promise<IDBDatabase>} IDB database with all stores created.
  */
 const openDB = () => {
     if (_cachedDB) {
@@ -70,7 +70,7 @@ const openDB = () => {
 /**
  * Converts a possibly unknown or corrupted object to a known-good metadata object.
  * @param {Partial<Metadata>} obj Unknown object
- * @returns {Metadata} Metadata object with ID
+ * @return {Metadata} Metadata object with ID
  */
 const parseMetadata = obj => {
     // Must not throw -- always return the most salvageable object possible.
@@ -101,7 +101,7 @@ const parseMetadata = obj => {
 /**
  * @param {IDBObjectStore} objectStore IDB object store
  * @param {Set<IDBValidKey>} keysToKeep IDB keys that should continue to exist. Type sensitive.
- * @returns {Promise<void>} Resolves when unused items have been deleted
+ * @return {Promise<void>} Resolves when unused items have been deleted
  */
 const deleteUnknownKeys = (objectStore, keysToKeep) => new Promise(resolve => {
     const keysRequest = objectStore.getAllKeys();
@@ -125,7 +125,7 @@ const deleteUnknownKeys = (objectStore, keysToKeep) => new Promise(resolve => {
 
 /**
  * @param {IDBTransaction} transaction readwrite transaction with access to all stores
- * @returns {Promise<void>} Resolves when data has finished being removed.
+ * @return {Promise<void>} Resolves when data has finished being removed.
  */
 const removeExtraneousData = transaction => new Promise(resolve => {
     const metadataStore = transaction.objectStore(METADATA_STORE);
@@ -157,7 +157,7 @@ const removeExtraneousData = transaction => new Promise(resolve => {
 });
 
 /**
- * @returns {Promise<void>} Resolves when extraneous restore points have been removed.
+ * @return {Promise<void>} Resolves when extraneous restore points have been removed.
  */
 const removeExtraneousRestorePoints = () => openDB().then(db => new Promise((resolveTransaction, rejectTransaction) => {
     const transaction = db.transaction(ALL_STORES, 'readwrite');
@@ -202,7 +202,7 @@ const removeExtraneousRestorePoints = () => openDB().then(db => new Promise((res
 
     /**
      * @param {Metadata} metadata Restore point metadata
-     * @returns {boolean} True if the restore point should be deleted
+     * @return {boolean} True if the restore point should be deleted
      */
     const shouldDelete = metadata => {
         // Manual restore points are never automatically deleted and do not count against any limits
@@ -268,7 +268,7 @@ const removeExtraneousRestorePoints = () => openDB().then(db => new Promise((res
 // eslint-disable-next-line valid-jsdoc
 /**
  * @param {VirtualMachine} vm scratch-vm instance
- * @returns {Promise<{type: string; data: ArrayBuffer;}>} Thumbnail data
+ * @return {Promise<{type: string; data: ArrayBuffer;}>} Thumbnail data
  */
 const generateThumbnail = vm => new Promise(resolve => {
     // Piggyback off of the next draw if we can, otherwise just force it to render
@@ -294,7 +294,7 @@ const generateThumbnail = vm => new Promise(resolve => {
  * @param {VirtualMachine} vm scratch-vm instance
  * @param {string} title project title
  * @param {MetadataType} type restore point type
- * @returns {Promise<void>} resolves when the restore point is created
+ * @return {Promise<void>} resolves when the restore point is created
  */
 const createRestorePoint = (
     vm,
@@ -394,7 +394,7 @@ const createRestorePoint = (
 
 /**
  * @param {number} id the restore point's ID
- * @returns {Promise<void>} Resovles when the restore point has been deleted.
+ * @return {Promise<void>} Resovles when the restore point has been deleted.
  */
 const deleteRestorePoint = id => openDB().then(db => new Promise((resolve, reject) => {
     const transaction = db.transaction(ALL_STORES, 'readwrite');
@@ -411,7 +411,7 @@ const deleteRestorePoint = id => openDB().then(db => new Promise((resolve, rejec
 }));
 
 /**
- * @returns {Promise<void>} Resolves when all data in the database has been deleted.
+ * @return {Promise<void>} Resolves when all data in the database has been deleted.
  */
 const deleteAllRestorePoints = () => openDB().then(db => new Promise((resolveTransaction, rejectTransaction) => {
     const transaction = db.transaction(ALL_STORES, 'readwrite');
@@ -438,13 +438,13 @@ const deleteAllRestorePoints = () => openDB().then(db => new Promise((resolveTra
 
 /**
  * @param {number} id the restore point's ID
- * @returns {Promise<{title: string, blob: Blob}>} Resolves with compressed project data and title.
+ * @return {Promise<{title: string, blob: Blob}>} Resolves with compressed project data and title.
  */
 const exportRestorePoint = async id => {
     const db = await openDB();
 
     /**
-     * @returns {Promise<Metadata>} Resolves with internal metadata.
+     * @return {Promise<Metadata>} Resolves with internal metadata.
      */
     const getMetadata = () => new Promise((resolve, reject) => {
         const transaction = db.transaction([METADATA_STORE], 'readonly');
@@ -464,7 +464,7 @@ const exportRestorePoint = async id => {
     });
 
     /**
-     * @returns {Promise<Uint8Array>} Resolves with binary data for project.json.
+     * @return {Promise<Uint8Array>} Resolves with binary data for project.json.
      */
     const getProjectJSON = () => new Promise((resolve, reject) => {
         const transaction = db.transaction([PROJECT_STORE], 'readonly');
@@ -485,7 +485,7 @@ const exportRestorePoint = async id => {
 
     /**
      * @param {string[]} md5exts Assets to fetch
-     * @returns {Promise<Array<{md5ext: string, data: Uint8Array}>>} Resolves with asset IDs and binary data
+     * @return {Promise<Array<{md5ext: string, data: Uint8Array}>>} Resolves with asset IDs and binary data
      */
     const getAssets = md5exts => new Promise((resolveAssets, rejectAssets) => {
         const transaction = db.transaction([ASSET_STORE], 'readonly');
@@ -547,7 +547,7 @@ const exportRestorePoint = async id => {
 /**
  * @param {VirtualMachine} vm scratch-vm instance
  * @param {number} id the restore point's ID
- * @returns {Promise<ArrayBuffer>} Resolves with sb3 file
+ * @return {Promise<ArrayBuffer>} Resolves with sb3 file
  */
 const loadRestorePoint = (vm, id) => openDB().then(db => new Promise((resolveProject, rejectProject) => {
     const storage = vm.runtime.storage;
@@ -613,7 +613,7 @@ const loadRestorePoint = (vm, id) => openDB().then(db => new Promise((resolvePro
 
 // eslint-disable-next-line valid-jsdoc
 /**
- * @returns {Promise<{totalSize: number; restorePoints: Array<Manifest & {id: number}>}>} Restore point information.
+ * @return {Promise<{totalSize: number; restorePoints: Array<Manifest & {id: number}>}>} Restore point information.
  */
 const getAllRestorePoints = () => openDB().then(db => new Promise((resolve, reject) => {
     const transaction = db.transaction([METADATA_STORE], 'readonly');
@@ -657,7 +657,7 @@ const getAllRestorePoints = () => openDB().then(db => new Promise((resolve, reje
 
 /**
  * @param {number} id restore point's ID
- * @returns {Promise<string>} The URL to load
+ * @return {Promise<string>} The URL to load
  */
 const getThumbnail = id => openDB().then(db => new Promise((resolve, reject) => {
     const transaction = db.transaction([THUMBNAIL_STORE], 'readonly');

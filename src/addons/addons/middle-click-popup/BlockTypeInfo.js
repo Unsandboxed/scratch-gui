@@ -56,7 +56,7 @@ export class BlockInput {
   /**
    * Gets the input this block input refers to on block.
    * @param {BlockInstance} block
-   * @returns {*}
+   * @return {*}
    * @protected
    */
   getInput(block) {
@@ -66,7 +66,7 @@ export class BlockInput {
   /**
    * Gets the field this block input refers to on block.
    * @param {BlockInstance} block
-   * @returns {*}
+   * @return {*}
    * @protected
    */
   getField(block) {
@@ -267,7 +267,7 @@ export class BlockInstance {
 
   /**
    * Creates a real Scratch block from this imaginary representation.
-   * @returns {*} A 'workspace form' block.
+   * @return {*} A 'workspace form' block.
    */
   createWorkspaceForm() {
     if (this.typeInfo.id === "control_stop") {
@@ -337,7 +337,7 @@ export class BlockTypeInfo {
   /**
    * @param {*} block Block in workspace form
    * @param {*} vm
-   * @returns {BlockCategory} The block's category
+   * @return {BlockCategory} The block's category
    */
   static getBlockCategory(block, vm) {
     let name;
@@ -364,7 +364,7 @@ export class BlockTypeInfo {
    * @param {*} vm
    * @param {*} workspace
    * @param {(string) => string} locale The translations used for converting icons into text
-   * @returns {BlockTypeInfo[]}
+   * @return {BlockTypeInfo[]}
    */
   static getBlocks(Blockly, vm, workspace, locale) {
     const flyoutWorkspace = workspace.getToolbox()?.flyout_.getWorkspace();
@@ -583,7 +583,7 @@ export class BlockTypeInfo {
   /**
    * Creates a block of this type with the given inputs
    * @param  {...any} inputs
-   * @returns {BlockInstance}
+   * @return {BlockInstance}
    */
   createBlock(...inputs) {
     return new BlockInstance(this, ...inputs);

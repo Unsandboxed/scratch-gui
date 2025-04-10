@@ -11,7 +11,7 @@ import {
 
 /* Higher Order Component to get the project id from location.hash
  * @param {React.Component} WrappedComponent: component to render
- * @returns {React.Component} component with hash parsing behavior
+ * @return {React.Component} component with hash parsing behavior
  */
 const HashParserHOC = function (WrappedComponent) {
     class HashParserComponent extends React.Component {

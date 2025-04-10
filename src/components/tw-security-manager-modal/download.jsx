@@ -91,7 +91,7 @@ const DEFINITELY_EXECUTABLE = [
 
 /**
  * @param {string} name Name of file
- * @returns {boolean} True indicates definitely dangerous. False does not mean safe.
+ * @return {boolean} True indicates definitely dangerous. False does not mean safe.
  */
 const isDefinitelyExecutable = name => {
     const parts = name.split('.');

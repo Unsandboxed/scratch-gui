@@ -73,7 +73,7 @@ const encodeAndAddSoundToVM = function (vm, samples, sampleRate, name, callback)
  * Downsample the given buffer to try to reduce file size below SOUND_BYTE_LIMIT
  * @param {SoundBuffer} buffer - Buffer to resample
  * @param {function(SoundBuffer):Promise<SoundBuffer>} resampler - resampler function
- * @returns {SoundBuffer} Downsampled buffer with half the sample rate
+ * @return {SoundBuffer} Downsampled buffer with half the sample rate
  */
 const downsampleIfNeeded = (buffer, resampler) => {
     const {samples, sampleRate} = buffer;
@@ -90,7 +90,7 @@ const downsampleIfNeeded = (buffer, resampler) => {
 /**
  * Drop every other sample of an audio buffer as a last-resort way of downsampling.
  * @param {SoundBuffer} buffer - Buffer to resample
- * @returns {SoundBuffer} Downsampled buffer with half the sample rate
+ * @return {SoundBuffer} Downsampled buffer with half the sample rate
  */
 const dropEveryOtherSample = buffer => {
     const newLength = Math.floor(buffer.samples.length / 2);

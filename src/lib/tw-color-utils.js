@@ -26,7 +26,7 @@
 
 /**
  * @param {string} hex hex color code like #abc123
- * @returns {number[]} [r, g, b] in range [0-255]. Alpha channel is ignored.
+ * @return {number[]} [r, g, b] in range [0-255]. Alpha channel is ignored.
  */
 const hex2rgb = hex => {
     const parsed = Number.parseInt(hex.substring(1), 16);
@@ -39,7 +39,7 @@ const hex2rgb = hex => {
 
 /**
  * @param {number[]} rgb [r, g, b] in range [0-255]
- * @returns {string} hex color code like #123abc
+ * @return {string} hex color code like #123abc
  */
 const rgb2hex = rgb => {
     const number = (rgb[0] << 16) | (rgb[1] << 8) | rgb[2];
@@ -48,7 +48,7 @@ const rgb2hex = rgb => {
 
 /**
  * @param {number[]} rgb [r, g, b] in range [0-255]
- * @returns {number[]} [h, s, v] in range [0-360] for h, [0-100] for s, v
+ * @return {number[]} [h, s, v] in range [0-360] for h, [0-100] for s, v
  */
 const rgb2hsv = rgb => {
     let rdif;
@@ -97,7 +97,7 @@ const rgb2hsv = rgb => {
 
 /**
  * @param {number[]} hsv [h, s, v] in range [0-360] for h, [0-100] for s, v
- * @returns {number[]} [r, g, b] in range [0-255]
+ * @return {number[]} [r, g, b] in range [0-255]
  */
 const hsv2rgb = hsv => {
     const h = hsv[0] / 60;

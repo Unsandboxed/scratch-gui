@@ -24,7 +24,7 @@ const DISABLE_WITH_VIDEO_SENSING = false;
 /*
  * Higher Order Component to manage the connection to the cloud server.
  * @param {React.Component} WrappedComponent component to manage VM events for
- * @returns {React.Component} connected component with vm events bound to redux
+ * @return {React.Component} connected component with vm events bound to redux
  */
 const cloudManagerHOC = function (WrappedComponent) {
     class CloudManager extends React.Component {

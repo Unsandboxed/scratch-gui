@@ -22,7 +22,7 @@ const getProjectTitleFromFilename = fileInputFilename => {
 
 /**
  * @param {Uint8Array[]} arrays List of byte arrays
- * @returns {number} Total length of the arrays
+ * @return {number} Total length of the arrays
  */
 const getLengthOfByteArrays = arrays => {
     let length = 0;
@@ -34,7 +34,7 @@ const getLengthOfByteArrays = arrays => {
 
 /**
  * @param {Uint8Array[]} arrays List of byte arrays
- * @returns {Uint8Array} One big array containing all of the little arrays in order.
+ * @return {Uint8Array} One big array containing all of the little arrays in order.
  */
 const concatenateByteArrays = arrays => {
     const totalLength = getLengthOfByteArrays(arrays);

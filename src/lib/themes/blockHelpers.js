@@ -24,7 +24,7 @@ const DEFAULT_EXTENSION_PRIMARY = '#0fbd8c';
  * @param {Array.<object>} dynamicBlockXML - XML for each category of extension blocks, returned from getBlocksXML
  * in the vm runtime.
  * @param {Theme} theme - Theme name
- * @returns {Array.<object>} Dynamic block XML updated with colors.
+ * @return {Array.<object>} Dynamic block XML updated with colors.
  */
 const injectExtensionCategoryTheme = (dynamicBlockXML, theme) => {
     // Minor optimization -- don't do anything at all for the default theme.
@@ -46,7 +46,7 @@ const injectExtensionCategoryTheme = (dynamicBlockXML, theme) => {
             dom.documentElement.setAttribute('secondaryColour', converters.categoryIconBorder(primaryColor));
         } else {
             dom.documentElement.setAttribute('colour', extensionColors.primary);
-            // Note: the category's secondaryColour matches up with the blocks' tertiary color,
+            // Note: the categories secondaryColour matches up with the blocks' tertiary color,
             // both used for border color.
             dom.documentElement.setAttribute('secondaryColour', extensionColors.tertiary);
         }
@@ -92,7 +92,7 @@ const injectBlockIcons = (blockInfoJson, theme) => {
  * No changes are applied if called with the default theme, allowing extensions to provide their own colors.
  * @param {object} blockInfoJson - Static block json
  * @param {Theme} theme - Theme name
- * @returns {object} Block info json with updated colors. The original blockInfoJson is not modified.
+ * @return {object} Block info json with updated colors. The original blockInfoJson is not modified.
  */
 const injectExtensionBlockTheme = (blockInfoJson, theme) => {
     // Minor optimization -- don't do anything at all for the default theme.

@@ -5,7 +5,7 @@
 const PERSISTED_UNSANDBOXED_KEY = 'tw:persisted_unsandboxed';
 
 /**
- * @returns {boolean} True if persistence enabled
+ * @return {boolean} True if persistence enabled
  */
 const getPersistedUnsandboxed = () => {
     try {

@@ -1,12 +1,12 @@
 /**
  * Return whether the fullscreen API is available in this environment.
- * @returns {boolean} true if the fullscreen API is available
+ * @return {boolean} true if the fullscreen API is available
  */
 const available = () => document.fullscreenEnabled || document.webkitFullscreenEnabled;
 
 /**
  * Return whether fullscreen is currently enabled.
- * @returns {boolean} true if in fullscreen
+ * @return {boolean} true if in fullscreen
  */
 const enabled = () => {
     if (typeof document.fullscreenElement !== 'undefined') {

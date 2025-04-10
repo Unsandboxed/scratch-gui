@@ -32,7 +32,7 @@ let compileErrorCounter = 0;
 /*
  * Higher Order Component to manage events emitted by the VM
  * @param {React.Component} WrappedComponent component to manage VM events for
- * @returns {React.Component} connected component with vm events bound to redux
+ * @return {React.Component} connected component with vm events bound to redux
  */
 const vmListenerHOC = function (WrappedComponent) {
     class VMListener extends React.Component {

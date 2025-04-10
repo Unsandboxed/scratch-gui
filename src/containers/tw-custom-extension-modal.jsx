@@ -10,7 +10,7 @@ import {getPersistedUnsandboxed, setPersistedUnsandboxed} from '../lib/tw-persis
 
 /**
  * @param {Blob} blob Blob
- * @returns {Promise<string>} data: uri
+ * @return {Promise<string>} data: uri
  */
 const readAsDataURL = blob => new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -49,7 +49,7 @@ class CustomExtensionModal extends React.Component {
     }
 
     /**
-     * @returns {Promise<string[]>} List of extension URLs to load.
+     * @return {Promise<string[]>} List of extension URLs to load.
      */
     getExtensionURLs () {
         if (this.state.type === 'url') {

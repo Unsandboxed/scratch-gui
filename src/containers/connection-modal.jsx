@@ -121,7 +121,7 @@ class ConnectionModal extends React.Component {
     /**
      * Handle sending an update to the peripheral.
      * @param {function(number): void} [progressCallback] Optional callback for progress updates in the range of [0..1].
-     * @returns {Promise} Resolves when the update is complete.
+     * @return {Promise} Resolves when the update is complete.
      */
     handleSendUpdate (progressCallback) {
         analytics.event({

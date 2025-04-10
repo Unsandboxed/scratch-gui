@@ -255,7 +255,7 @@ const getInitialPosition = function (state, monitorId, eltWidth, eltHeight) {
  * @param {!number} lowerEnd.x X of bottom point that defines the monitor location
  * @param {!number} lowerEnd.y Y of bottom point that defines the monitor location
  * @param {?boolean} savePosition True if the placement should be saved when adding the monitor
- * @returns {object} action to add a new monitor at the location
+ * @return {object} action to add a new monitor at the location
  */
 const addMonitorRect = function (monitorId, upperStart, lowerEnd, savePosition) {
     return {
@@ -271,7 +271,7 @@ const addMonitorRect = function (monitorId, upperStart, lowerEnd, savePosition) 
  * @param {!string} monitorId Id for monitor to move
  * @param {!number} newX X of top point that defines the monitor location
  * @param {!number} newY Y of top point that defines the monitor location
- * @returns {object} action to move an existing monitor to the location
+ * @return {object} action to move an existing monitor to the location
  */
 const moveMonitorRect = function (monitorId, newX, newY) {
     return {
@@ -286,7 +286,7 @@ const moveMonitorRect = function (monitorId, newX, newY) {
  * @param {!string} monitorId Id for monitor to resize
  * @param {!number} newWidth Width to set monitor to
  * @param {!number} newHeight Height to set monitor to
- * @returns {object} action to resize an existing monitor to the given dimensions
+ * @return {object} action to resize an existing monitor to the given dimensions
  */
 const resizeMonitorRect = function (monitorId, newWidth, newHeight) {
     return {
@@ -299,7 +299,7 @@ const resizeMonitorRect = function (monitorId, newWidth, newHeight) {
 
 /**
  * @param {!string} monitorId Id for monitor to remove
- * @returns {object} action to remove an existing monitor
+ * @return {object} action to remove an existing monitor
  */
 const removeMonitorRect = function (monitorId) {
     return {

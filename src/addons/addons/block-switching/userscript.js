@@ -763,7 +763,7 @@ export default async function ({ addon, console, msg }) {
 
   /**
    * @param {string} shadowType The type of shadow eg. "math_number"
-   * @returns {string} The name of the shadow's inner field that contains the user-visible value
+   * @return {string} The name of the shadow's inner field that contains the user-visible value
    */
   const getShadowFieldName = (shadowType) => {
     // This is non-comprehensive.
@@ -779,7 +779,7 @@ export default async function ({ addon, console, msg }) {
   /**
    * @template T
    * @param {T|()=>T} value
-   * @returns {T}
+   * @return {T}
    */
   const callIfFunction = (value) => {
     if (typeof value === "function") {

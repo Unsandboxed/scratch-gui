@@ -53,7 +53,7 @@ const fetchProjectToken = async projectId => {
 /* Higher Order Component to provide behavior for loading projects by id. If
  * there's no id, the default project is loaded.
  * @param {React.Component} WrappedComponent component to receive projectData prop
- * @returns {React.Component} component with project loading behavior
+ * @return {React.Component} component with project loading behavior
  */
 const ProjectFetcherHOC = function (WrappedComponent) {
     class ProjectFetcherComponent extends React.Component {

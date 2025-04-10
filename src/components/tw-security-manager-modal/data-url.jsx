@@ -4,7 +4,7 @@ import styles from './data-url.css';
 
 /**
  * @param {string} dataURI data: URI
- * @returns {string} A hopefully human-readable version
+ * @return {string} A hopefully human-readable version
  */
 const decodeDataURI = dataURI => {
     const delimeter = dataURI.indexOf(',');

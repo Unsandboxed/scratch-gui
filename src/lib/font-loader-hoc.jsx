@@ -7,7 +7,7 @@ import {loadFonts} from 'scratch-render-fonts';
 
 /* Higher Order Component to provide behavior for loading fonts.
  * @param {React.Component} WrappedComponent component to receive fontsLoaded prop
- * @returns {React.Component} component with font loading behavior
+ * @return {React.Component} component with font loading behavior
  */
 const FontLoaderHOC = function (WrappedComponent) {
     class FontLoaderComponent extends React.Component {

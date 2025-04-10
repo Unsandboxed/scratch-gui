@@ -11,7 +11,7 @@ export default async function ({ addon, console }) {
   /**
    * @param {HTMLElement} element
    * @param {number} direction
-   * @returns {Animation}
+   * @return {Animation}
    */
   const animateElement = (element, direction) => {
     /** @type {Animation} */

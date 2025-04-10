@@ -116,7 +116,7 @@ const getEditorMode = () => {
 };
 
 /**
- * @returns {string} Locale code
+ * @return {string} Locale code
  */
 const getLocale = () => {
     const locale = reduxInstance.state.locales.locale;

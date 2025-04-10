@@ -28,7 +28,7 @@ const productId = 0x0204;
 /**
  * Assumes the device is a micro:bit and determines its version.
  * @param {USBDevice} device The USB device to check.
- * @returns {DeviceVersion} The version of the device.
+ * @return {DeviceVersion} The version of the device.
  * @throws {Error} If the device is not a recognized micro:bit.
  */
 const getDeviceVersion = device => {
@@ -50,7 +50,7 @@ const getDeviceVersion = device => {
 /**
  * Checks micro:bit board version targetted by the hex file.
  * @param {IndividualHex} hex The hex file to check.
- * @returns {DeviceVersion} The version of the hex file.
+ * @return {DeviceVersion} The version of the hex file.
  * @throws {Error} If the hex file does not target a recognized micro:bit version.
  */
 const getHexVersion = hex => {
@@ -70,7 +70,7 @@ const getHexVersion = hex => {
 
 /**
  * Fetches the hex file and returns a map of micro:bit versions to hex file contents.
- * @returns {Promise<Map<DeviceVersion, Uint8Array>>} A map of micro:bit versions to hex file contents.
+ * @return {Promise<Map<DeviceVersion, Uint8Array>>} A map of micro:bit versions to hex file contents.
  * @throws {Error} If the fetch fails or cannot be interpreted as text.
  * @throws {Error} If the hex file is not in universal format.
  */
@@ -97,7 +97,7 @@ const getHexMap = async () => {
  * Copy the Scratch-specific hex file to the specified micro:bit.
  * @param {USBDevice} device The micro:bit to update.
  * @param {function(number): void} [progress] Optional function to call with progress updates in the range of [0..1].
- * @returns {Promise<void>} A Promise that resolves when the update is completed.
+ * @return {Promise<void>} A Promise that resolves when the update is completed.
  * @throws {Error} If anything goes wrong while fetching the hex file or updating the micro:bit.
  */
 const updateMicroBit = async (device, progress) => {
@@ -134,7 +134,7 @@ const updateMicroBit = async (device, progress) => {
  * Requests a micro:bit from the browser then updates it with the Scratch-specific hex file.
  * The browser is expected to prompt the user to select a micro:bit.
  * @param {function(number): void} [progress] Optional function to call with progress updates in the range of [0..1].
- * @returns {Promise<void>} A Promise that resolves when the update is completed.
+ * @return {Promise<void>} A Promise that resolves when the update is completed.
  * @throws {Error} If anything goes wrong while fetching the hex file or updating the micro:bit.
  */
 const selectAndUpdateMicroBit = async progress => {
@@ -154,7 +154,7 @@ const selectAndUpdateMicroBit = async progress => {
 
 /**
  * Checks if the browser supports updating a micro:bit.
- * @returns {boolean} True if the browser appears to support updating a micro:bit.
+ * @return {boolean} True if the browser appears to support updating a micro:bit.
  */
 const isMicroBitUpdateSupported = () =>
     !!(navigator.usb && navigator.usb.requestDevice);

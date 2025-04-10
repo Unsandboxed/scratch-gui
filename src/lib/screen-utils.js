@@ -95,7 +95,7 @@ const getStageDimensions = (stageSize, customStageSize, isFullScreen) => {
 
 /**
  * @param {STAGE_DISPLAY_SIZES} stageSize - the current fully-resolved stage size.
- * @returns {number} Minimum width to display the stage area of the screen at. May be wider than the stage's actual size
+ * @return {number} Minimum width to display the stage area of the screen at. May be wider than the stage's actual size
  */
 const getMinWidth = stageSize => {
     const metadata = STAGE_DISPLAY_SCALE_METADATA[stageSize];
@@ -113,7 +113,7 @@ const getMinWidth = stageSize => {
  * @param {number} sizeInfo.height The target height
  * @param {number} sizeInfo.widthDefault The default width
  * @param {number} sizeInfo.heightDefault The default height
- * @returns {object} the CSS transform
+ * @return {object} the CSS transform
  */
 const stageSizeToTransform = ({width, height, widthDefault, heightDefault}) => {
     const scaleX = width / widthDefault;

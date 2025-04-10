@@ -16,7 +16,7 @@ export default class BlockItem {
   /**
    * True if the blockID matches a black represented by this BlockItem
    * @param id
-   * @returns {boolean}
+   * @return {boolean}
    */
   matchesID(id) {
     if (this.labelID === id) {

@@ -242,7 +242,7 @@ const routers = {
  * Return the optimal Router for the current environment
  * @param {string} style Routing style name
  * @param {*} callbacks Redux callbacks
- * @returns {Router} The optimal router for the current environment
+ * @return {Router} The optimal router for the current environment
  */
 const createRouter = (style, callbacks) => {
     const supportedStyles = ['none', 'hash'];
