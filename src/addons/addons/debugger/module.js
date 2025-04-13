@@ -101,6 +101,10 @@ export const setPaused = (_paused) => {
   if (didChange) {
     paused = _paused;
     eventTarget.dispatchEvent(new CustomEvent("change"));
+
+    // USB: events for extensions
+    console.warn('Legacy pause function was used, please use runtime.setPaused instead!');
+    vm.runtime.emit("PROJECT_PAUSE", paused);
   }
 
   // Don't check didChange as new threads could've started that we need to pause.

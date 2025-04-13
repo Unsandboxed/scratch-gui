@@ -20,7 +20,6 @@ const manifest = {
       "url": "style.css"
     }
   ],
-  "enabledByDefault": true,
   "tags": []
 };
 export default manifest;

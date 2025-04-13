@@ -6,7 +6,7 @@ import {injectIntl, intlShape, defineMessages} from 'react-intl';
 import monitorAdapter from '../lib/monitor-adapter.js';
 import MonitorComponent, {monitorModes} from '../components/monitor/monitor.jsx';
 import {addMonitorRect, getInitialPosition, resizeMonitorRect, removeMonitorRect} from '../reducers/monitor-layout';
-import {getVariable, setVariableValue} from '../lib/variable-utils';
+import {getVariable, getMonitorValue, setVariableValue} from '../lib/variable-utils';
 import importCSV from '../lib/import-csv';
 import downloadBlob from '../lib/download-blob';
 import {Theme} from '../lib/themes';
@@ -55,13 +55,13 @@ class Monitor extends React.Component {
             'setElement',
             'handleEdit',
             'handleEditDone',
-            'handleConversion'
+            'handleConversion',
+            'getType'
         ]);
         this.state = {
             sliderPrompt: false,
             locked: false,
-            editing: false,
-            type: 'string'
+            editing: false
         };
     }
     componentDidMount () {
@@ -91,14 +91,6 @@ class Monitor extends React.Component {
         }
         this.element.style.top = `${rect.upperStart.y}px`;
         this.element.style.left = `${rect.upperStart.x}px`;
-
-        // Load the type
-        if (this.props.vm && this.props.targetId && this.props.id) {
-            const variable = getVariable(this.props.vm, this.props.targetId, this.props.id);
-            if (variable) {
-                this.setState({type: typeof variable.value});
-            }
-        }
     }
     shouldComponentUpdate (nextProps, nextState) {
         if (nextState !== this.state) {
@@ -264,8 +256,20 @@ class Monitor extends React.Component {
                 value = [];
             }
         }
-        this.setState({type:(typeof value)});
         setVariableValue(vm, targetId, variableId, value);
+    }
+    getType () {
+        const { vm, targetId, id } = this.props;
+        if (!vm || !id) {
+            console.warn(targetId, 'Failed to get type of monitor.', id);
+            return 'undefined';
+        }
+        try {
+            return (typeof getMonitorValue(vm, id));
+        } catch {
+            console.error('Failed to load monitor type', id, 'of', targetId);
+            return 'undefined';
+        }
     }
     render () {
         const monitorProps = monitorAdapter(this.props);
@@ -295,7 +299,7 @@ class Monitor extends React.Component {
                     theme={this.props.theme}
                     width={this.props.width}
                     locked={this.props.locked}
-                    type={this.state.type}
+                    getType={this.getType}
                     onDragEnd={this.handleDragEnd}
                     onExport={isList ? this.handleExport : null}
                     onImport={isList ? this.handleImport : null}
@@ -349,7 +353,7 @@ Monitor.propTypes = {
     width: PropTypes.number,
     x: PropTypes.number,
     y: PropTypes.number,
-    locked: PropTypes.boolean,
+    locked: PropTypes.bool,
 };
 Monitor.defaultProps = {
     theme: Theme.light

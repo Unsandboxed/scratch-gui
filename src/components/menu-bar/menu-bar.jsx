@@ -330,9 +330,14 @@ class MenuBar extends React.Component {
     }
     handleKeyPress (event) {
         const modifier = bowser.mac ? event.metaKey : event.ctrlKey;
-        if (modifier && event.key.toLowerCase() === 's') {
-            this.props.handleSaveProject();
-            event.preventDefault();
+        if (modifier) {
+            if (event.key.toLowerCase() === 's') {
+                this.props.handleSaveProject();
+                event.preventDefault();    
+            } else if (event.key.toLowerCase() === 'o') {
+                event.preventDefault();    
+                this.props.onStartSelectingFileUpload();
+            }
         }
     }
     getSaveToComputerHandler (downloadProjectCallback) {
@@ -540,7 +545,10 @@ class MenuBar extends React.Component {
                                 this.handleClickDesktopSettings
                             }
                             // eslint-disable-next-line react/jsx-no-bind
-                            onOpenCustomSettings={this.props.onClickAddonSettings.bind(null, 'editor-theme3')}
+                            onOpenCustomSettings={
+                                this.props.onClickAddonSettings &&
+                                this.props.onClickAddonSettings.bind(null, 'editor-theme3')
+                            }
                             onClickAddonSettings={this.props.onClickAddonSettings}
                             onRequestClose={this.props.onRequestCloseSettings}
                             onRequestOpen={this.props.onClickSettings}

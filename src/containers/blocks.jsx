@@ -584,6 +584,7 @@ class Blocks extends React.Component {
         }
     }
     handleShapeAddition (categoryInfo, shapeInfo) {
+        if (this.ScratchBlocks.CustomShapes.has(shapeInfo.name)) return;
         this.ScratchBlocks.CustomShapes.register(shapeInfo.name, shapeInfo, categoryInfo);
     }
     handleBlocksInfoUpdate (categoryInfo) {
