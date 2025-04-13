@@ -571,7 +571,6 @@ const camera = function (isInitialSetup, isStage, targetId, colors) {
         <block type="camera_xposition"/>
         <block type="camera_yposition"/>
         ${blockSeparator}
-        <block type="camera_zoom"/>
         <block type="camera_setzoom">
             <value name="ZOOM">
                 <shadow type="math_number">
@@ -586,6 +585,7 @@ const camera = function (isInitialSetup, isStage, targetId, colors) {
                 </shadow>
             </value>
         </block>
+        <block type="camera_zoom"/>
         ${categorySeparator}
     </category>
     `;

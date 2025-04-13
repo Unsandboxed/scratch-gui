@@ -42,6 +42,7 @@ class CameraInfo extends React.Component {
             // Only update these if rounded value has changed
             // Math.round(this.props.direction) !== Math.round(nextProps.direction) ||
             // Math.round(this.props.size) !== Math.round(nextProps.size) ||
+            Math.round(this.props.zoom) !== Math.round(nextProps.zoom) ||
             Math.round(this.props.x) !== Math.round(nextProps.x) ||
             Math.round(this.props.y) !== Math.round(nextProps.y)
         );
@@ -56,6 +57,14 @@ class CameraInfo extends React.Component {
                 defaultMessage="Camera"
                 description="Camera info label"
                 id="gui.CameraInfo.camera"
+            />
+        );
+
+        const zoomLabel = (
+            <FormattedMessage
+                defaultMessage="Zoom"
+                description="Sprite info zoom label"
+                id="gui.CameraInfo.zoom"
             />
         );
 
@@ -138,6 +147,23 @@ class CameraInfo extends React.Component {
                     </div>
                     {xPosition}
                     {yPosition}
+                    <div className={classNames(styles.group, styles.largerInput)}>
+                        <Label
+                            secondary
+                            above={labelAbove}
+                            text={zoomLabel}
+                        >
+                            <BufferedInput
+                                small
+                                disabled={this.props.disabled}
+                                label={zoomLabel}
+                                tabIndex="0"
+                                type="number"
+                                value={this.props.disabled ? '' : Math.round(this.props.zoom) - 100}
+                                onSubmit={this.props.onChangeZoom}
+                            />
+                        </Label>
+                    </div>
                     <ToggleButtons
                         buttons={[
                             {
@@ -164,11 +190,13 @@ CameraInfo.propTypes = {
     intl: intlShape,
     onChangeX: PropTypes.func,
     onChangeY: PropTypes.func,
+    onChangeZoom: PropTypes.func,
     onClickCenter: PropTypes.func,
     onClickCenterOnTarget: PropTypes.func,
     stageSize: PropTypes.oneOf(Object.keys(STAGE_DISPLAY_SIZES)).isRequired,
     x: PropTypes.number,
-    y: PropTypes.number
+    y: PropTypes.number,
+    zoom: PropTypes.number
 };
 
 export default injectIntl(CameraInfo);

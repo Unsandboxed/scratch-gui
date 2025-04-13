@@ -47,6 +47,7 @@ class SpriteSelectorItem extends React.PureComponent {
         if (this.props.costumeURL) return this.props.costumeURL;
         if (!this.props.asset) return null;
 
+        console.log("we're dragging");
         return getCostumeUrl(this.props.asset);
     }
     handleDragEnd () {
