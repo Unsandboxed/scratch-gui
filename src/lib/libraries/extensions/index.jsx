@@ -519,7 +519,7 @@ export const penGroupGallery = {
             }}
         />
     ),
-    href: 'https://extensions.turbowarp.org/',
+    href: 'https://pen-group.github.io/extensions/',
     extensionId: 'gallery',
     // to do: get a real icon!
     iconURL: customExtensionIcon,
@@ -533,6 +533,6 @@ export const penGroupGallery = {
             id="tw.penGroupGallery.more"
         />
     ),
-    tags: ['tw'],
+    tags: ['usb'],
     featured: true
 };

@@ -166,6 +166,7 @@ class ExtensionLibrary extends React.PureComponent {
             library.push('---');
             if (this.state.gallery) {
                 library.push(toLibraryItem(galleryMore));
+                library.push(toLibraryItem(penGroupGallery))
                 const locale = this.props.intl.locale;
                 library.push(
                     ...this.state.gallery
@@ -177,9 +178,6 @@ class ExtensionLibrary extends React.PureComponent {
                 library.push(toLibraryItem(galleryError));
             } else {
                 library.push(toLibraryItem(galleryLoading));
-            }
-            if (this.state.gallery) {
-                library.push(toLibraryItem(penGroupGallery))
             }
         }
 
