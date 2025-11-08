@@ -526,6 +526,7 @@ export const penGroupGallery = {
     extensionId: 'gallery',
     iconURL: penGroupIcon,
     insetIconURL: penGroupInsetIcon,
+    credits: ['Pen Group'],
     description: (
         <FormattedMessage
             // eslint-disable-next-line max-len
