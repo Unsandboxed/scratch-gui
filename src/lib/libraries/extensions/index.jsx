@@ -60,6 +60,9 @@ import returnIcon from './custom/return.svg';
 import galleryIcon from './gallery/gallery.svg';
 import galleryInsetIcon from './gallery/tw-icon-small.svg';
 
+import penGroupIcon from './gallery/penGroup.svg';
+import penGroupInsetIcon from './gallery/penGroup-icon-small.svg';
+
 import {APP_NAME} from '../../brand';
 
 export default [
@@ -448,7 +451,7 @@ export const galleryLoading = {
             id="tw.extensionGallery.loading"
         />
     ),
-    tags: ['tw'],
+    tags: ['tw', 'gallery'],
     featured: true
 };
 
@@ -476,7 +479,7 @@ export const galleryMore = {
             id="tw.extensionGallery.more"
         />
     ),
-    tags: ['tw'],
+    tags: ['tw', 'gallery'],
     featured: true
 };
 
@@ -504,14 +507,14 @@ export const galleryError = {
             id="tw.extensionGallery.error"
         />
     ),
-    tags: ['tw'],
+    tags: ['tw', 'gallery'],
     featured: true
 };
 
 export const penGroupGallery = {
     name: (
         <FormattedMessage
-            defaultMessage="Pen Group Extensions"
+            defaultMessage="Pen Group Extension Gallery"
             description="Name of the extensions found by the Pen Group"
             id="tw.penGroupGallery.name"
             values={{
@@ -521,10 +524,8 @@ export const penGroupGallery = {
     ),
     href: 'https://pen-group.github.io/extensions/',
     extensionId: 'gallery',
-    // to do: get a real icon!
-    iconURL: customExtensionIcon,
-    insetIconURL: customExtensionInsetIcon,
-    insetColor: '#FF4C4C',
+    iconURL: penGroupIcon,
+    insetIconURL: penGroupInsetIcon,
     description: (
         <FormattedMessage
             // eslint-disable-next-line max-len
@@ -533,6 +534,6 @@ export const penGroupGallery = {
             id="tw.penGroupGallery.more"
         />
     ),
-    tags: ['usb'],
+    tags: ['usb', 'gallery'],
     featured: true
 };
