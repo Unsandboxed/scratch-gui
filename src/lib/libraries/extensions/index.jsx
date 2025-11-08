@@ -507,3 +507,32 @@ export const galleryError = {
     tags: ['tw'],
     featured: true
 };
+
+export const penGroupGallery = {
+    name: (
+        <FormattedMessage
+            defaultMessage="Pen Group Extensions"
+            description="Name of the extensions found by the Pen Group"
+            id="tw.penGroupGallery.name"
+            values={{
+                APP_NAME
+            }}
+        />
+    ),
+    href: 'https://extensions.turbowarp.org/',
+    extensionId: 'gallery',
+    // to do: get a real icon!
+    iconURL: customExtensionIcon,
+    insetIconURL: customExtensionInsetIcon,
+    insetColor: '#FF4C4C',
+    description: (
+        <FormattedMessage
+            // eslint-disable-next-line max-len
+            defaultMessage="Find various pen-related extensions and addons to Pen Plus."
+            description="Explains where to find addons for Pen Plus."
+            id="tw.penGroupGallery.more"
+        />
+    ),
+    tags: ['tw'],
+    featured: true
+};
