@@ -895,7 +895,9 @@ class MenuBar extends React.Component {
                     <div className={styles.menuBarItem}>
                         <a
                             className={styles.feedbackLink}
-                            href="https://scratch.mit.edu/users/GarboMuffin/#comments"
+                            /* href="https://scratch.mit.edu/users/GarboMuffin/#comments" */
+                            /* Do we even want this to link to Scratch at all? */
+                            href="https://scratch.mit.edu/studios/51207300/comments"
                             rel="noopener noreferrer"
                             target="_blank"
                         >
