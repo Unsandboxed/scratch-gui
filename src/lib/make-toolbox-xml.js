@@ -504,6 +504,8 @@ const sensing = function (isInitialSetup, isStage, targetId, colors) {
         ${categorySeparator}
         <block type="sensing_dayssince2000"/>
         <block id="current" type="sensing_current"/>
+        ${blockSeparator}
+        <block id="online" type="sensing_online"/>
         <block type="sensing_username"/>
         ${categorySeparator}
     </category>

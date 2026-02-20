@@ -180,8 +180,13 @@ const messages = defineMessages({
     },
     sensing_dayssince2000: {
         defaultMessage: 'days since 2000',
-        description: 'Label for the days since 2000 monitor when show on the stage',
+        description: 'Label for the days since 2000 monitor when shown on the stage',
         id: 'tw.opcode.2000'
+    },
+    sensing_online: {
+        defaultMessage: 'online?',
+        description: 'Name of "online?" block',
+        id: 'tw.opcode.online'
     },
 
     // Camera
@@ -194,7 +199,7 @@ const messages = defineMessages({
         defaultMessage: 'camera y',
         description: 'Label for the camera y position monitor when shown on the stage',
         id: 'gui.opcodeLabels.cameray'
-    },
+    }
 });
 
 class OpcodeLabels {
@@ -244,6 +249,7 @@ class OpcodeLabels {
             sensing_current: {category: 'sensing'},
             sensing_timer: {category: 'sensing'},
             sensing_dayssince2000: {category: 'sensing'},
+            sensing_online: {category: 'sensing'},
 
             // Camera
             camera_xposition: {category: 'camera'},
@@ -349,6 +355,7 @@ class OpcodeLabels {
         };
         this._opcodeMap.sensing_timer.labelFn = () => this._translator(messages.sensing_timer);
         this._opcodeMap.sensing_dayssince2000.labelFn = () => this._translator(messages.sensing_dayssince2000);
+        this._opcodeMap.sensing_online.labelFn = () => this._translator(messages.sensing_online);
 
         // Camera
         this._opcodeMap.camera_xposition.labelFn = () => this._translator(messages.camera_xposition);
