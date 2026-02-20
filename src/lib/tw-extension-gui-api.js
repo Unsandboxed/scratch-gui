@@ -1,6 +1,5 @@
 import LazyScratchBlocks from './tw-lazy-scratch-blocks';
 import AddonHooks from '../addons/hooks';
-import immutable from 'immutable';
 
 /**
  * Implements Scratch.gui API for unsandboxed extensions.
@@ -8,7 +7,6 @@ import immutable from 'immutable';
  */
 const implementGuiAPI = Scratch => {
     Scratch.gui = {
-        immutable,
         /**
          * Lazily get the internal ScratchBlocks object when it becomes available. It may never be
          * available if, for example, the user never enters the editor.

@@ -7,6 +7,8 @@ import MonitorList from '../../../src/components/monitor-list/monitor-list.jsx';
 import {DEFAULT_THEME} from '../../../src/lib/themes';
 
 describe('MonitorListComponent', () => {
+    // @todo: monitor-list.test.jsx is still using immutable js, it will not work.
+
     const store = configureStore()({scratchGui: {
         monitorLayout: {
             monitors: {},
