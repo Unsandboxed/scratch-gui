@@ -4,28 +4,34 @@ import PropTypes from 'prop-types';
 import log from '../lib/log';
 
 const ENDPOINT = 'https://windchimes.turbowarp.org/api/chime';
-const OPT_OUT_KEY = 'tw:windchime_opt_out';
+// const OPT_OUT_KEY = 'tw:windchime_opt_out';
 const submittedThisSession = new Set();
 
 const isOptedOut = () => {
-    if (!process.env.ENABLE_WINDCHIMES) {
-        return true;
+    if (process.env.ENABLE_WINDCHIMES) {
+        console.error('Windchimes is not supported on Unsandboxed, please disable it.');
     }
-
-    try {
-        const local = localStorage.getItem(OPT_OUT_KEY);
-        if (local !== null) {
-            return local === 'true';
-        }
-    } catch (e) {
-        // ignore
-    }
-
-    // These headers are really intended to be about third-parties so we don't need to follow them,
-    // but if someone has these set, it's good to assume that they would opt out if given the choice.
-    // So we'll just respect that preemptively.
-    return navigator.globalPrivacyControl || navigator.doNotTrack === '1';
+    return true;
 };
+// const isOptedOut = () => {
+//     if (!process.env.ENABLE_WINDCHIMES) {
+//         return true;
+//     }
+
+//     try {
+//         const local = localStorage.getItem(OPT_OUT_KEY);
+//         if (local !== null) {
+//             return local === 'true';
+//         }
+//     } catch (e) {
+//         // ignore
+//     }
+
+//     // These headers are really intended to be about third-parties so we don't need to follow them,
+//     // but if someone has these set, it's good to assume that they would opt out if given the choice.
+//     // So we'll just respect that preemptively.
+//     return navigator.globalPrivacyControl || navigator.doNotTrack === '1';
+// };
 
 class TWWindchimeSubmitter extends React.Component {
     componentDidUpdate (prevProps) {
