@@ -68,19 +68,10 @@ export default {
   "rename-broadcasts": () => import(/* webpackChunkName: "addon-default-entry" */ "../addons/rename-broadcasts/_runtime_entry.js"),
   "reorder-custom-inputs": () => import(/* webpackChunkName: "addon-default-entry" */ "../addons/reorder-custom-inputs/_runtime_entry.js"),
   "script-snap": () => import(/* webpackChunkName: "addon-entry-script-snap" */ "../addons/script-snap/_runtime_entry.js"),
-<<<<<<< HEAD
   "search-sprites": () => import(/* webpackChunkName: "addon-entry-search-sprites" */ "../addons/search-sprites/_runtime_entry.js"),
   "sprite-properties": () => import(/* webpackChunkName: "addon-entry-sprite-properties" */ "../addons/sprite-properties/_runtime_entry.js"),
   "swap-local-global": () => import(/* webpackChunkName: "addon-entry-swap-local-global" */ "../addons/swap-local-global/_runtime_entry.js"),
   "transparent-orphans": () => import(/* webpackChunkName: "addon-entry-transparent-orphans" */ "../addons/transparent-orphans/_runtime_entry.js"),
-=======
-  "fullscreen": () => import(/* webpackChunkName: "addon-entry-fullscreen" */ "../addons/fullscreen/_runtime_entry.js"),
-  "hide-stage": () => import(/* webpackChunkName: "addon-entry-hide-stage" */ "../addons/hide-stage/_runtime_entry.js"),
-  "tw-straighten-comments": () => import(/* webpackChunkName: "addon-entry-tw-straighten-comments" */ "../addons/tw-straighten-comments/_runtime_entry.js"),
-  "tw-remove-backpack": () => import(/* webpackChunkName: "addon-entry-tw-remove-backpack" */ "../addons/tw-remove-backpack/_runtime_entry.js"),
-  "tw-remove-feedback": () => import(/* webpackChunkName: "addon-entry-tw-remove-feedback" */ "../addons/tw-remove-feedback/_runtime_entry.js"),
-  "tw-disable-vibration": () => import(/* webpackChunkName: "addon-entry-tw-disable-vibration" */ "../addons/tw-disable-vibration/_runtime_entry.js"),
->>>>>>> upstream/develop
   "tw-disable-cloud-variables": () => import(/* webpackChunkName: "addon-entry-tw-disable-cloud-variables" */ "../addons/tw-disable-cloud-variables/_runtime_entry.js"),
   "tw-disable-compiler": () => import(/* webpackChunkName: "addon-entry-tw-disable-compiler" */ "../addons/tw-disable-compiler/_runtime_entry.js"),
   "tw-remove-backpack": () => import(/* webpackChunkName: "addon-entry-tw-remove-backpack" */ "../addons/tw-remove-backpack/_runtime_entry.js"),

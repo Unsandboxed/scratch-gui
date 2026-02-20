@@ -67,19 +67,10 @@ import _remove_sprite_confirm from "../addons/remove-sprite-confirm/_manifest_en
 import _rename_broadcasts from "../addons/rename-broadcasts/_manifest_entry.js";
 import _reorder_custom_inputs from "../addons/reorder-custom-inputs/_manifest_entry.js";
 import _script_snap from "../addons/script-snap/_manifest_entry.js";
-<<<<<<< HEAD
 import _search_sprites from "../addons/search-sprites/_manifest_entry.js";
 import _sprite_properties from "../addons/sprite-properties/_manifest_entry.js";
 import _swap_local_global from "../addons/swap-local-global/_manifest_entry.js";
 import _transparent_orphans from "../addons/transparent-orphans/_manifest_entry.js";
-=======
-import _fullscreen from "../addons/fullscreen/_manifest_entry.js";
-import _hide_stage from "../addons/hide-stage/_manifest_entry.js";
-import _tw_straighten_comments from "../addons/tw-straighten-comments/_manifest_entry.js";
-import _tw_remove_backpack from "../addons/tw-remove-backpack/_manifest_entry.js";
-import _tw_remove_feedback from "../addons/tw-remove-feedback/_manifest_entry.js";
-import _tw_disable_vibration from "../addons/tw-disable-vibration/_manifest_entry.js";
->>>>>>> upstream/develop
 import _tw_disable_cloud_variables from "../addons/tw-disable-cloud-variables/_manifest_entry.js";
 import _tw_disable_compiler from "../addons/tw-disable-compiler/_manifest_entry.js";
 import _tw_remove_backpack from "../addons/tw-remove-backpack/_manifest_entry.js";
@@ -157,19 +148,10 @@ export default {
   "rename-broadcasts": _rename_broadcasts,
   "reorder-custom-inputs": _reorder_custom_inputs,
   "script-snap": _script_snap,
-<<<<<<< HEAD
   "search-sprites": _search_sprites,
   "sprite-properties": _sprite_properties,
   "swap-local-global": _swap_local_global,
   "transparent-orphans": _transparent_orphans,
-=======
-  "fullscreen": _fullscreen,
-  "hide-stage": _hide_stage,
-  "tw-straighten-comments": _tw_straighten_comments,
-  "tw-remove-backpack": _tw_remove_backpack,
-  "tw-remove-feedback": _tw_remove_feedback,
-  "tw-disable-vibration": _tw_disable_vibration,
->>>>>>> upstream/develop
   "tw-disable-cloud-variables": _tw_disable_cloud_variables,
   "tw-disable-compiler": _tw_disable_compiler,
   "tw-remove-backpack": _tw_remove_backpack,
