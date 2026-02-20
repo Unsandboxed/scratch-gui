@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import {getEventXY} from '../lib/touch-utils';
 import {getVariable, getVariableValue, setVariableValue} from '../lib/variable-utils';
 import ListMonitorComponent from '../components/monitor/list-monitor.jsx';
-import {safeStringify} from '../lib/tw-safe-stringify.js';
+import {safeStringify} from '../lib/tw-safe-stringify.js'; // @todo: DO NOT USE TURBOWARPS SAFE STRINGIFY
 
 class ListMonitor extends React.Component {
     constructor (props) {

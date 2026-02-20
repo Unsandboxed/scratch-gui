@@ -1,5 +1,5 @@
 import OpcodeLabels from './opcode-labels.js';
-import {safeStringify} from './tw-safe-stringify.js';
+import {safeStringify} from './tw-safe-stringify.js'; // @todo: DO NOT USE TURBOWARPS SAFE STRINGIFY
 
 const isUndefined = a => typeof a === 'undefined';
 

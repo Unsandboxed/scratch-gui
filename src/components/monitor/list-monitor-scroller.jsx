@@ -7,7 +7,7 @@ import {sanitize} from '../../lib/json-utils';
 
 import styles from './monitor.css';
 import {List} from 'react-virtualized';
-import {safeStringify} from '../../lib/tw-safe-stringify.js';
+import {safeStringify} from '../../lib/tw-safe-stringify.js'; // @todo: DO NOT USE TURBOWARPS SAFE STRINGIFY
 
 class ListMonitorScroller extends React.Component {
     constructor (props) {
