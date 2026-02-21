@@ -4,13 +4,13 @@ import classNames from 'classnames';
 
 import styles from './monitor.css';
 
-const SliderMonitor = ({categoryColor, isDiscrete, label, min, max, value, onSliderUpdate}) => (
+const SliderMonitor = ({categoryColor, isDiscrete, label, min, max, value, onSliderUpdate, editing, onEditDone}) => (
     <div className={styles.defaultMonitor}>
         <div className={styles.row}>
             <div className={styles.label}>
                 {label}
             </div>
-            <div
+            {!editing && <div
                 className={styles.value}
                 style={{
                     background: categoryColor.background,
@@ -18,10 +18,14 @@ const SliderMonitor = ({categoryColor, isDiscrete, label, min, max, value, onSli
                 }}
             >
                 {value}
-            </div>
+            </div>}
+            {editing && <input defaultValue={value} onKeyDown={
+                e => e.which === 13 && onEditDone((e.srcElement || e.target).value)
+            } />}
         </div>
         <div className={styles.row}>
             <input
+                disabled={editing}
                 className={classNames(styles.slider, 'no-drag')} // Class used on parent Draggable to prevent drags
                 max={max}
                 min={min}

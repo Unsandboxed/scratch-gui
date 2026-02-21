@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import Draggable from 'react-draggable';
 import {FormattedMessage} from 'react-intl';
-import {ContextMenuTrigger} from 'react-contextmenu';
+import {ContextMenuTrigger, SubMenu} from 'react-contextmenu';
 import {BorderedMenuItem, ContextMenu, MenuItem} from '../context-menu/context-menu.jsx';
 import Box from '../box/box.jsx';
 import DefaultMonitor from './default-monitor.jsx';
@@ -41,12 +41,13 @@ const getCategoryColor = (theme, category) => {
     };
 };
 
+// TODO: reimplement the "conversion" items in the context menu.
 const MonitorComponent = props => (
     <ContextMenuTrigger
         // TW: if export is defined, we always show it, even outside of the editor
         disable={!props.draggable && !props.onExport}
         holdToDisplay={props.mode === 'slider' ? -1 : 1000}
-        id={`monitor-${props.label}`}
+        id={`monitor-${props.id}`}
     >
         <Draggable
             bounds=".monitor-overlay" // Class for monitor container
@@ -54,6 +55,9 @@ const MonitorComponent = props => (
             defaultClassNameDragging={styles.dragging}
             disabled={!props.draggable}
             onStop={props.onDragEnd}
+
+            // https://github.com/TurboWarp/scratch-gui/issues/950
+            enableUserSelectHack={false}
         >
             <Box
                 className={styles.monitorContainer}
@@ -73,7 +77,7 @@ const MonitorComponent = props => (
             // positioning conflicts between the monitors `transform: scale` and
             // the context menus `position: fixed`. For more details, see
             // http://meyerweb.com/eric/thoughts/2011/09/12/un-fixing-fixed-elements-with-css-transforms/
-            <ContextMenu id={`monitor-${props.label}`}>
+            <ContextMenu id={`monitor-${props.id}`}>
                 {props.draggable && props.onSetModeToDefault &&
                     <MenuItem onClick={props.onSetModeToDefault}>
                         <FormattedMessage
@@ -155,7 +159,8 @@ MonitorComponent.propTypes = {
     onSetModeToLarge: PropTypes.func,
     onSetModeToSlider: PropTypes.func,
     onSliderPromptOpen: PropTypes.func,
-    theme: PropTypes.instanceOf(Theme).isRequired
+    theme: PropTypes.instanceOf(Theme).isRequired,
+    getType: PropTypes.func
 };
 
 MonitorComponent.defaultProps = {

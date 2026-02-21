@@ -21,7 +21,6 @@ import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {FormattedMessage, defineMessages, injectIntl, intlShape} from 'react-intl';
 import {getIsLoading} from '../reducers/project-state.js';
-import DOMElementRenderer from '../containers/dom-element-renderer.jsx';
 import AppStateHOC from '../lib/app-state-hoc.jsx';
 import ErrorBoundaryHOC from '../lib/error-boundary-hoc.jsx';
 import TWProjectMetaFetcherHOC from '../lib/tw-project-meta-fetcher-hoc.jsx';
@@ -41,22 +40,12 @@ import {isBrowserSupported} from '../lib/tw-environment-support-prober';
 import AddonChannels from '../addons/channels';
 import {loadServiceWorker} from './load-service-worker';
 import runAddons from '../addons/entry';
+import InvalidEmbed from '../components/tw-invalid-embed/invalid-embed.jsx';
 import {APP_NAME} from '../lib/brand.js';
 
 import styles from './interface.css';
 
-if (window.parent !== window) {
-    // eslint-disable-next-line no-alert
-    alert(`This page contains an invalid ${APP_NAME} embed. Please read https://docs.turbowarp.org/embedding for instructions to create a working embed.`);
-    throw new Error('Invalid embed');
-}
-
-let announcement = null;
-if (process.env.ANNOUNCEMENT) {
-    announcement = document.createElement('p');
-    // This is safe because process.env.ANNOUNCEMENT is set at build time.
-    announcement.innerHTML = process.env.ANNOUNCEMENT;
-}
+const isInvalidEmbed = window.parent !== window;
 
 const handleClickAddonSettings = addonId => {
     // addonId might be a string of the addon to focus on, undefined, or an event (treat like undefined)
@@ -98,11 +87,35 @@ const Footer = () => (
             <div className={styles.footerText}>
                 <FormattedMessage
                     // eslint-disable-next-line max-len
-                    defaultMessage="Unsandboxed and TurboWarp are not affiliated with Scratch, the Scratch Team, or the Scratch Foundation."
+                    defaultMessage="{APP_NAME} and TurboWarp are not affiliated with Scratch, the Scratch Team, or the Scratch Foundation."
                     description="Disclaimer that Unsandboxed is not connected to Scratch"
                     id="tw.footer.disclaimer"
+                    values={{
+                        APP_NAME
+                    }}
                 />
             </div>
+
+            <div className={styles.footerText}>
+                <FormattedMessage
+                    // eslint-disable-next-line max-len
+                    defaultMessage="Scratch is a project of the Scratch Foundation. It is available for free at {scratchDotOrg}."
+                    description="A disclaimer that Scratch requires when referring to Scratch. {scratchDotOrg} is a link with text 'https://scratch.org/'"
+                    id="tw.footer.scratchDisclaimer"
+                    values={{
+                        scratchDotOrg: (
+                            <a
+                                href="https://scratch.org/"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                {'https://scratch.org/'}
+                            </a>
+                        )
+                    }}
+                />
+            </div>
+
             <div className={styles.footerColumns}>
                 <div className={styles.footerSection}>
                     <a href="credits.html">
@@ -110,13 +123,6 @@ const Footer = () => (
                             defaultMessage="Credits"
                             description="Credits link in footer"
                             id="tw.footer.credits"
-                        />
-                    </a>
-                    <a href="https://github.com/sponsors/GarboMuffin">
-                        <FormattedMessage
-                            defaultMessage="Donate"
-                            description="Donation link in footer"
-                            id="tw.footer.donate"
                         />
                     </a>
                 </div>
@@ -197,6 +203,10 @@ class Interface extends React.Component {
         }
     }
     render () {
+        if (isInvalidEmbed) {
+            return <InvalidEmbed />;
+        }
+
         const {
             /* eslint-disable no-unused-vars */
             intl,
@@ -218,6 +228,7 @@ class Interface extends React.Component {
                     [styles.playerOnly]: isHomepage,
                     [styles.editor]: isEditor
                 })}
+                dir={isRtl ? 'rtl' : 'ltr'}
             >
                 {isHomepage ? (
                     <div className={styles.menu}>
@@ -237,7 +248,6 @@ class Interface extends React.Component {
                         width: `${Math.max(480, props.customStageSize.width) + 2}px`
                     }) : null}
                 >
-                    {isHomepage && announcement ? <DOMElementRenderer domElement={announcement} /> : null}
                     <GUI
                         onClickAddonSettings={handleClickAddonSettings}
                         onUpdateProjectTitle={this.handleUpdateProjectTitle}
@@ -319,7 +329,7 @@ class Interface extends React.Component {
                                 <p>
                                     <FormattedMessage
                                         // eslint-disable-next-line max-len
-                                        defaultMessage="{APP_NAME} is still in alpha. Please do not make projects with this. We cannot be held responsible for whatever happens to your projects."
+                                        defaultMessage="{APP_NAME} is a powerful in-browser tool for creating games."
 //                                        defaultMessage="{APP_NAME} is a TurboWarp mod with many changes to the editor. Unlike TurboWarp, we don't guarantee projects made in Unsandboxed will work in Scratch."
                                         description="Description of Unsandboxed on the homepage"
                                         id="tw.home.description"
@@ -331,7 +341,7 @@ class Interface extends React.Component {
                             </div>
                             <div className={styles.section}>
                                 <FeaturedProjects studio="27205657" />
-                            </div>
+                            </div> 
                         </React.Fragment>
                     ) : null}
                 </div>

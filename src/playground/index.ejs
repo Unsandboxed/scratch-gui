@@ -87,6 +87,7 @@
 
     <div class="splash-screen spash-waiting-for-js" hidden>
       <div class="splash-spinner"></div>
+
       <div class="splash-error-title" hidden>Something went wrong. <a href="https://scratch.mit.edu/users/GarboMuffin/#comments" target="_blank" rel="noreferrer">Please report</a> with the information below.</div>
       <div class="splash-errors" hidden></div>
       <button class="splash-reset" hidden>Click here to reset caches (can fix some errors)</button>
@@ -151,15 +152,15 @@
           splashError.appendChild(el);
         };
 
-        if (!localStorage.getItem("we have locked this out for a reason so stop tampering with this") === "seriously, stop") {
-          throw new Error ("This is not ready for you to use yet.");
-        }
-
         splashReset.onclick = function () {
           splashReset.disabled = true;
           function hardRefresh() {
-            var search = location.search.replace(/[?&]nocache=\d+/, '');
-            location.replace(location.pathname + search + (search ? '&' : '?') + 'nocache=' + Math.floor(Math.random() * 100000));
+            var search = location.search.replace(/[?&]nocache=[\d.]+(?=$|&)/, '');
+            // This is a functional cookie used so that we respond with Clear-Site-Data just once. No tracking.
+            // Can't use nocache parameter to trigger this because people might accidentally bookmark that, and
+            // then we would be clearing their cache on every visit.
+            document.cookie = 'tw_clear_cache_once=1; max-age=60; path=/; samesite=strict; secure';
+            location.replace(location.pathname + search + (search ? '&' : '?') + 'nocache=' + Math.floor(Math.random() * 10000000));
           }
           if ('serviceWorker' in navigator) {
             setTimeout(hardRefresh, 5000);

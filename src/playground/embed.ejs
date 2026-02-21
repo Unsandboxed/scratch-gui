@@ -12,14 +12,16 @@
         height: 100%;
         top: 0;
         left: 0;
+        background-color: #ff4c4c;
+        color: white;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
         text-align: center;
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
       }
-      .splash-screen[hidden],
-      .tw-loaded .splash-screen {
+      .splash-screen[hidden] {
         display: none;
       }
       .splash-spinner:after {
@@ -29,7 +31,7 @@
         height: 64px;
         border-radius: 50%;
         border: 6px solid;
-        border-color: #ff4c4c transparent #ff4c4c transparent;
+        border-color: white transparent white transparent;
         animation: splash-spinner 1.2s linear infinite;
       }
       @keyframes splash-spinner {
@@ -48,8 +50,18 @@
     <div class="splash-screen" hidden id="splash-need-js">
       <div class="splash-spinner"></div>
     </div>
+
     <script>
-      document.getElementById("splash-need-js").hidden = false;
+      (function() {
+        'use strict';
+
+        var splash = document.getElementById('splash-need-js');
+        splash.hidden = false;
+
+        window.SplashEnd = () => {
+          splash.hidden = true;
+        };
+      }());
     </script>
 
     <div id="app"></div>

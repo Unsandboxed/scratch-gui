@@ -43,6 +43,7 @@ import {
 import AddonHooks from '../addons/hooks.js';
 import LoadScratchBlocksHOC from '../lib/tw-load-scratch-blocks-hoc.jsx';
 import {findTopBlock} from '../lib/backpack/code-payload.js';
+import {gentlyRequestPersistentStorage} from '../lib/tw-persistent-storage.js';
 
 // TW: Strings we add to scratch-blocks are localized here
 const messages = defineMessages({
@@ -226,6 +227,8 @@ class Blocks extends React.Component {
         for (const category of this.props.vm.runtime._blockInfo) {
             this.handleExtensionAdded(category);
         }
+
+        gentlyRequestPersistentStorage();
     }
     shouldComponentUpdate (nextProps, nextState) {
         return (
@@ -431,7 +434,12 @@ class Blocks extends React.Component {
         this.workspace.glowBlock(data.id, false);
     }
     onVisualReport (data) {
-        this.workspace.reportValue(data.id, data.value);
+        this.workspace.reportValueWithCallback(data.id, '', (div) => {
+            div = div.querySelector('.valueReportBox') || div.querySelector('.blocklyDropDownContent > div');
+            div.appendChild(this.ScratchBlocks.Highlight.highlight(data.value, data.type));
+            div.classList.add('valueReportBox');
+            this.ScratchBlocks.DropDownDiv.showPositionedByBlock(this.workspace, this.workspace.getBlockById(this.ScratchBlocks.DropDownDiv._blockId));
+        });
     }
     getToolboxXML () {
         // Use try/catch because this requires digging pretty deep into the VM
@@ -524,6 +532,12 @@ class Blocks extends React.Component {
         }
     }
     handleExtensionAdded (categoryInfo) {
+        for (const blockShapeName in categoryInfo.customShapes) {
+            if (Object.prototype.hasOwnProperty.call(categoryInfo.customShapes, blockShapeName)) {
+                this.handleShapeAddition(categoryInfo, categoryInfo.customShapes[blockShapeName]);
+            }
+        }
+
         const defineBlocks = blockInfoArray => {
             if (blockInfoArray && blockInfoArray.length > 0) {
                 const staticBlocksJson = [];
@@ -568,6 +582,10 @@ class Blocks extends React.Component {
         if (toolboxXML) {
             this.props.updateToolboxState(toolboxXML);
         }
+    }
+    handleShapeAddition (categoryInfo, shapeInfo) {
+        if (this.ScratchBlocks.CustomShapes.has(shapeInfo.name)) return;
+        this.ScratchBlocks.CustomShapes.register(shapeInfo.name, shapeInfo, categoryInfo);
     }
     handleBlocksInfoUpdate (categoryInfo) {
         // @todo Later we should replace this to avoid all the warnings from redefining blocks.

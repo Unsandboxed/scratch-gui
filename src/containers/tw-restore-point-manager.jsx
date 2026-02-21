@@ -10,11 +10,12 @@ import {setFileHandle} from '../reducers/tw';
 import TWRestorePointModal from '../components/tw-restore-point-modal/restore-point-modal.jsx';
 import RestorePointAPI from '../lib/tw-restore-point-api';
 import log from '../lib/log';
+import downloadBlob from '../lib/download-blob.js';
 
 /* eslint-disable no-alert */
 
 const SAVE_DELAY = 250;
-const MINIMUM_SAVE_TIME = 750;
+const MINIMUM_SAVE_TIME = 1000;
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -38,6 +39,11 @@ const messages = defineMessages({
         defaultMessage: 'Error loading restore point: {error}',
         description: 'Error message when a restore point could not be loaded',
         id: 'tw.restorePoints.error'
+    },
+    exportError: {
+        defaultMessage: 'Error exporting restore point: {error}',
+        description: 'Error message when a restore point could not be exported',
+        id: 'tw.restorePoints.exportError'
     }
 });
 
@@ -45,32 +51,39 @@ class TWRestorePointManager extends React.Component {
     constructor (props) {
         super(props);
         bindAll(this, [
+            'handleProjectChanged',
             'handleClickCreate',
             'handleClickDelete',
             'handleClickDeleteAll',
             'handleChangeInterval',
-            'handleClickLoad'
+            'handleClickExport',
+            'handleClickLoad',
+            'isExportingRestorePoint'
         ]);
         this.state = {
             loading: true,
             totalSize: 0,
             restorePoints: [],
             error: null,
-            wasChanged: props.projectChanged,
-            interval: RestorePointAPI.readInterval()
+            interval: RestorePointAPI.readInterval(),
+            exportingRestorePoints: []
         };
         this.timeout = null;
     }
 
     componentDidMount () {
-        if (this.state.wasChanged) {
+        // This helps reduce problems when people constantly enter and leave the editor which
+        // causes this component to re-mount. Still not perfect though, ideally we would
+        // compensate for time already passed.
+        if (this.props.projectChanged && this.props.hasEverEnteredEditor) {
             this.queueRestorePoint();
         }
 
         RestorePointAPI.deleteLegacyRestorePoint();
+        this.props.vm.on('PROJECT_CHANGED', this.handleProjectChanged);
     }
 
-    componentWillReceiveProps (nextProps) {
+    UNSAFE_componentWillReceiveProps (nextProps) {
         if (nextProps.isModalVisible && !this.props.isModalVisible) {
             this.refreshState();
         } else if (!nextProps.isModalVisible && this.props.isModalVisible) {
@@ -78,30 +91,17 @@ class TWRestorePointManager extends React.Component {
                 restorePoints: []
             });
         }
-
-        if (nextProps.projectChanged && !this.props.projectChanged && !this.state.wasChanged) {
-            this.setState({
-                wasChanged: true
-            });
-        }
-
-        if (!nextProps.isShowingProject && this.props.isShowingProject) {
-            this.setState({
-                wasChanged: false
-            });
-        }
-    }
-
-    componentDidUpdate (prevProps, prevState) {
-        if (this.state.wasChanged && !prevState.wasChanged) {
-            this.queueRestorePoint();
-        } else if (!this.state.wasChanged && prevState.wasChanged) {
-            this.cancelQueuedRestorePoint();
-        }
     }
 
     componentWillUnmount () {
         this.cancelQueuedRestorePoint();
+        this.props.vm.off('PROJECT_CHANGED', this.handleProjectChanged);
+    }
+
+    handleProjectChanged () {
+        if (this.props.hasEverEnteredEditor && !this.timeout) {
+            this.queueRestorePoint();
+        }
     }
 
     handleClickCreate () {
@@ -157,6 +157,39 @@ class TWRestorePointManager extends React.Component {
         return true;
     }
 
+    handleClickExport (id) {
+        if (this.isExportingRestorePoint(id)) {
+            return;
+        }
+
+        this.setState(oldState => ({
+            exportingRestorePoints: [...oldState.exportingRestorePoints, id]
+        }));
+
+        const removeFromExportingList = () => {
+            this.setState(oldState => ({
+                exportingRestorePoints: oldState.exportingRestorePoints.filter(i => i !== id)
+            }));
+        };
+
+        RestorePointAPI.exportRestorePoint(id)
+            .then(result => {
+                downloadBlob(`${result.title}.sb3`, result.blob);
+                removeFromExportingList();
+            })
+            .catch(error => {
+                log.error(error);
+                alert(this.props.intl.formatMessage(messages.exportError, {
+                    error
+                }));
+                removeFromExportingList();
+            });
+    }
+
+    isExportingRestorePoint (id) {
+        return this.state.exportingRestorePoints.includes(id);
+    }
+
     handleClickLoad (id) {
         if (!this.canLoadProject()) {
             return;
@@ -187,7 +220,7 @@ class TWRestorePointManager extends React.Component {
         this.setState({
             interval
         }, () => {
-            if (this.state.wasChanged) {
+            if (this.timeout) {
                 this.cancelQueuedRestorePoint();
                 this.queueRestorePoint();
             }
@@ -201,7 +234,6 @@ class TWRestorePointManager extends React.Component {
         this.timeout = setTimeout(() => {
             this.createRestorePoint(RestorePointAPI.TYPE_AUTOMATIC).then(() => {
                 this.timeout = null;
-                this.queueRestorePoint();
             });
         }, this.state.interval);
     }
@@ -281,9 +313,11 @@ class TWRestorePointManager extends React.Component {
                     onClickCreate={this.handleClickCreate}
                     onClickDelete={this.handleClickDelete}
                     onClickDeleteAll={this.handleClickDeleteAll}
+                    onClickExport={this.handleClickExport}
                     onClickLoad={this.handleClickLoad}
                     interval={this.state.interval}
                     onChangeInterval={this.handleChangeInterval}
+                    isExporting={this.isExportingRestorePoint}
                     isLoading={this.state.loading}
                     totalSize={this.state.totalSize}
                     restorePoints={this.state.restorePoints}
@@ -308,7 +342,10 @@ TWRestorePointManager.propTypes = {
     loadingState: PropTypes.oneOf(LoadingStates).isRequired,
     isShowingProject: PropTypes.bool.isRequired,
     isModalVisible: PropTypes.bool.isRequired,
+    hasEverEnteredEditor: PropTypes.bool.isRequired,
     vm: PropTypes.shape({
+        on: PropTypes.func.isRequired,
+        off: PropTypes.func.isRequired,
         loadProject: PropTypes.func.isRequired,
         stop: PropTypes.func.isRequired,
         renderer: PropTypes.shape({
@@ -323,6 +360,7 @@ const mapStateToProps = state => ({
     loadingState: state.scratchGui.projectState.loadingState,
     isShowingProject: getIsShowingProject(state.scratchGui.projectState.loadingState),
     isModalVisible: state.scratchGui.modals.restorePointModal,
+    hasEverEnteredEditor: state.scratchGui.mode.hasEverEnteredEditor,
     vm: state.scratchGui.vm
 });
 

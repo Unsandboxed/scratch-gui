@@ -10,6 +10,7 @@ import classNames from 'classnames';
 import bluetoothIconURL from './bluetooth.svg';
 import internetConnectionIconURL from './internet-connection.svg';
 import favoriteInactiveIcon from './favorite-inactive.svg';
+import favoriteHoverIcon from './favorite-hover.svg';
 import favoriteActiveIcon from './favorite-active.svg';
 
 const messages = defineMessages({
@@ -35,9 +36,17 @@ class LibraryItemComponent extends React.PureComponent {
             <button
                 className={classNames(styles.favoriteContainer, {[styles.active]: this.props.favorite})}
                 onClick={this.props.onFavorite}
+                onMouseEnter={this.props.onMouseEnter}
+                onMouseLeave={this.props.onMouseLeave}
             >
                 <img
-                    src={this.props.favorite ? favoriteActiveIcon : favoriteInactiveIcon}
+                    src={
+                        this.props.favorite ? 
+                        favoriteActiveIcon : 
+                        this.props.favoriteHover ?
+                        favoriteHoverIcon :
+                        favoriteInactiveIcon
+                    }
                     className={styles.favoriteIcon}
                     draggable={false}
                     alt={favoriteMessage}

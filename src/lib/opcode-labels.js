@@ -163,6 +163,16 @@ const messages = defineMessages({
         description: 'Label for the current second monitor when shown on the stage',
         id: 'gui.opcodeLabels.second'
     },
+    sensing_current_millisecond: {
+        defaultMessage: 'millisecond',
+        description: 'Label for the current millisecond monitor when shown on the stage',
+        id: 'gui.opcodeLabels.millisecond'
+    },
+    sensing_current_timestamp: {
+        defaultMessage: 'timestamp',
+        description: 'Label for the current timestamp monitor when shown on the stage',
+        id: 'gui.opcodeLabels.timestamp'
+    },
     sensing_timer: {
         defaultMessage: 'timer',
         description: 'Label for the timer monitor when shown on the stage',
@@ -170,8 +180,13 @@ const messages = defineMessages({
     },
     sensing_dayssince2000: {
         defaultMessage: 'days since 2000',
-        description: 'Label for the days since 2000 monitor when show on the stage',
+        description: 'Label for the days since 2000 monitor when shown on the stage',
         id: 'tw.opcode.2000'
+    },
+    sensing_online: {
+        defaultMessage: 'online?',
+        description: 'Name of "online?" block',
+        id: 'tw.opcode.online'
     },
 
     // Camera
@@ -184,7 +199,7 @@ const messages = defineMessages({
         defaultMessage: 'camera y',
         description: 'Label for the camera y position monitor when shown on the stage',
         id: 'gui.opcodeLabels.cameray'
-    },
+    }
 });
 
 class OpcodeLabels {
@@ -218,6 +233,7 @@ class OpcodeLabels {
             // Data
             data_variable: {category: 'data'},
             data_listcontents: {category: 'list'},
+            data_listarraycontents: {category: 'list'},
 
             // Sound
             sound_volume: {category: 'sound'},
@@ -233,6 +249,7 @@ class OpcodeLabels {
             sensing_current: {category: 'sensing'},
             sensing_timer: {category: 'sensing'},
             sensing_dayssince2000: {category: 'sensing'},
+            sensing_online: {category: 'sensing'},
 
             // Camera
             camera_xposition: {category: 'camera'},
@@ -301,6 +318,7 @@ class OpcodeLabels {
         // Data
         this._opcodeMap.data_variable.labelFn = params => params.VARIABLE;
         this._opcodeMap.data_listcontents.labelFn = params => params.LIST;
+        this._opcodeMap.data_listarraycontents.labelFn = params => params.LIST;
 
         // Sound
         this._opcodeMap.sound_volume.labelFn = () => this._translator(messages.sound_volume);
@@ -329,10 +347,15 @@ class OpcodeLabels {
                 return this._translator(messages.sensing_current_minute);
             case 'second':
                 return this._translator(messages.sensing_current_second);
+            case 'millisecond':
+                return this._translator(messages.sensing_current_millisecond);
+            case 'timestamp':
+                return this._translator(messages.sensing_current_timestamp);
             }
         };
         this._opcodeMap.sensing_timer.labelFn = () => this._translator(messages.sensing_timer);
         this._opcodeMap.sensing_dayssince2000.labelFn = () => this._translator(messages.sensing_dayssince2000);
+        this._opcodeMap.sensing_online.labelFn = () => this._translator(messages.sensing_online);
 
         // Camera
         this._opcodeMap.camera_xposition.labelFn = () => this._translator(messages.camera_xposition);

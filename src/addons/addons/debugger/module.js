@@ -7,6 +7,8 @@ const STATUS_YIELD = 2;
 const STATUS_YIELD_TICK = 3;
 const STATUS_DONE = 4;
 
+const REACT_INTERNAL_PREFIX = "__reactInternalInstance$";
+
 let vm;
 
 let paused = false;
@@ -68,6 +70,9 @@ const compensateForTimePassedWhilePaused = (thread, pauseState) => {
   if (thread.timer) {
     thread.timer.startTime += vm.runtime.currentMSecs - pauseState.time;
   }
+  if (thread.compatibilityStackFrame && thread.compatibilityStackFrame.timer) {
+    thread.compatibilityStackFrame.timer.startTime += vm.runtime.currentMSecs - pauseState.time;
+  }
   const stackFrame = thread.peekStackFrame();
   if (stackFrame && stackFrame.executionContext && stackFrame.executionContext.timer) {
     stackFrame.executionContext.timer.startTime += vm.runtime.currentMSecs - pauseState.time;
@@ -96,6 +101,10 @@ export const setPaused = (_paused) => {
   if (didChange) {
     paused = _paused;
     eventTarget.dispatchEvent(new CustomEvent("change"));
+
+    // USB: events for extensions
+    console.warn('Legacy pause function was used, please use runtime.setPaused instead!');
+    vm.runtime.emit("PROJECT_PAUSE", paused);
   }
 
   // Don't check didChange as new threads could've started that we need to pause.
@@ -363,12 +372,12 @@ export const singleStep = () => {
   eventTarget.dispatchEvent(new CustomEvent("step"));
 };
 
-export const setup = (_vm) => {
+export const setup = (addon) => {
   if (vm) {
     return;
   }
 
-  vm = _vm;
+  vm = addon.tab.traps.vm;
 
   const originalStepThreads = vm.runtime.sequencer.stepThreads;
   vm.runtime.sequencer.stepThreads = function () {

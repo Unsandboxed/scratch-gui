@@ -7,6 +7,7 @@ import {sanitize} from '../../lib/json-utils';
 
 import styles from './monitor.css';
 import {List} from 'react-virtualized';
+import {safeStringify} from '../../lib/tw-safe-stringify.js'; // @todo: DO NOT USE TURBOWARPS SAFE STRINGIFY
 
 class ListMonitorScroller extends React.Component {
     constructor (props) {
@@ -41,7 +42,7 @@ class ListMonitorScroller extends React.Component {
                 <div className={styles.listIndex}>{index + 1 /* one indexed */}</div>
                 <div
                     className={styles.listValue}
-                    dataIndex={index}
+                    data-index={index}
                     style={{
                         background: this.props.categoryColor.background,
                         color: this.props.categoryColor.text
@@ -52,9 +53,9 @@ class ListMonitorScroller extends React.Component {
                         <div className={styles.inputWrapper}>
                             <input
                                 autoFocus
-                                autoComplete={false}
+                                autoComplete={'false'}
                                 className={classNames(styles.listInput, 'no-drag')}
-                                spellCheck={false}
+                                spellCheck={'false'}
                                 style={{color: this.props.categoryColor.text}}
                                 type="text"
                                 value={sanitize(this.props.activeValue)}
@@ -72,7 +73,9 @@ class ListMonitorScroller extends React.Component {
                         </div>
 
                     ) : (
-                        <div className={styles.valueInner}>{this.props.values[index]}</div>
+                        <div className={styles.valueInner}>
+                            {safeStringify(this.props.values[index])}
+                        </div>
                     )}
                 </div>
             </div>

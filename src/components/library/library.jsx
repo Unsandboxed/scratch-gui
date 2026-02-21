@@ -11,6 +11,7 @@ import Filter from '../filter/filter.jsx';
 import TagButton from '../../containers/tag-button.jsx';
 import Spinner from '../spinner/spinner.jsx';
 import Separator from '../tw-extension-separator/separator.jsx';
+import RemovedTrademarks from '../tw-removed-trademarks/removed-trademarks.jsx';
 import {APP_NAME} from '../../lib/brand.js';
 
 import styles from './library.css';
@@ -192,7 +193,7 @@ class LibraryComponent extends React.Component {
             ];
         }
 
-        // When filtering, favorites are just listed first, not in a separte section.
+        // When filtering, favorites are just listed first, not in a separate section.
         const favoriteItems = [];
         const nonFavoriteItems = [];
         for (const dataItem of this.props.data) {
@@ -228,7 +229,13 @@ class LibraryComponent extends React.Component {
                     }
                 }
                 if (dataItem.description) {
-                    search.push(dataItem.description);
+                    if (typeof dataItem.description === 'string') {
+                        search.push(dataItem.description);
+                    } else {
+                        search.push(this.props.intl.formatMessage(dataItem.description.props, {
+                            APP_NAME
+                        }));
+                    }
                 }
                 return search
                     .join('\n')
@@ -246,6 +253,7 @@ class LibraryComponent extends React.Component {
         this.filteredDataRef = ref;
     }
     render () {
+        const filteredData = this.state.canDisplay && this.props.data && this.getFilteredData();
         return (
             <Modal
                 fullScreen
@@ -296,7 +304,7 @@ class LibraryComponent extends React.Component {
                     })}
                     ref={this.setFilteredDataRef}
                 >
-                    {(this.state.canDisplay && this.props.data) ? this.getFilteredData().map((dataItem, index) => (
+                    {filteredData && this.getFilteredData().map((dataItem, index) => (
                         dataItem === '---' ? (
                             <Separator key={index} />
                         ) : (
@@ -335,7 +343,16 @@ class LibraryComponent extends React.Component {
                                 onSelect={this.handleSelect}
                             />
                         )
-                    )) : (
+                    ))}
+                    {filteredData && this.props.removedTrademarks && (
+                        <React.Fragment>
+                            {filteredData.length > 0 && (
+                                <Separator />
+                            )}
+                            <RemovedTrademarks />
+                        </React.Fragment>
+                    )}
+                    {!filteredData && (
                         <div className={styles.spinnerWrapper}>
                             <Spinner
                                 large
@@ -379,7 +396,8 @@ LibraryComponent.propTypes = {
     setStopHandler: PropTypes.func,
     showPlayButton: PropTypes.bool,
     tags: PropTypes.arrayOf(PropTypes.shape(TagButton.propTypes)),
-    title: PropTypes.string.isRequired
+    title: PropTypes.string.isRequired,
+    removedTrademarks: PropTypes.bool
 };
 
 LibraryComponent.defaultProps = {

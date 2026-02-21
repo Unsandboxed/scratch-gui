@@ -6,14 +6,13 @@ import {injectIntl, intlShape, defineMessages} from 'react-intl';
 import monitorAdapter from '../lib/monitor-adapter.js';
 import MonitorComponent, {monitorModes} from '../components/monitor/monitor.jsx';
 import {addMonitorRect, getInitialPosition, resizeMonitorRect, removeMonitorRect} from '../reducers/monitor-layout';
-import {getVariable, setVariableValue} from '../lib/variable-utils';
+import {getVariable, getMonitorValue, setVariableValue} from '../lib/variable-utils';
 import importCSV from '../lib/import-csv';
 import downloadBlob from '../lib/download-blob';
 import {Theme} from '../lib/themes';
 import SliderPrompt from './slider-prompt.jsx';
 
 import {connect} from 'react-redux';
-import {Map} from 'immutable';
 import VM from 'scratch-vm';
 
 const availableModes = opcode => (
@@ -21,6 +20,8 @@ const availableModes = opcode => (
         if (opcode === 'data_variable') {
             return t !== 'list';
         } else if (opcode === 'data_listcontents') {
+            return t === 'list';
+        } else if (opcode === 'data_listarraycontents') {
             return t === 'list';
         }
         return t !== 'slider' && t !== 'list';
@@ -50,10 +51,16 @@ class Monitor extends React.Component {
             'handleSliderPromptOpen',
             'handleImport',
             'handleExport',
-            'setElement'
+            'setElement',
+            'handleEdit',
+            'handleEditDone',
+            'handleConversion',
+            'getType'
         ]);
         this.state = {
-            sliderPrompt: false
+            sliderPrompt: false,
+            locked: false,
+            editing: false
         };
     }
     componentDidMount () {
@@ -75,11 +82,11 @@ class Monitor extends React.Component {
             rect = getInitialPosition(
                 this.props.monitorLayout, this.props.id, this.element.offsetWidth, this.element.offsetHeight);
             this.props.addMonitorRect(this.props.id, rect);
-            this.props.vm.runtime.requestUpdateMonitor(Map({
+            this.props.vm.runtime.requestUpdateMonitor({
                 id: this.props.id,
                 x: rect.upperStart.x,
                 y: rect.upperStart.y
-            }));
+            });
         }
         this.element.style.top = `${rect.upperStart.y}px`;
         this.element.style.left = `${rect.upperStart.x}px`;
@@ -91,7 +98,8 @@ class Monitor extends React.Component {
         for (const key of Object.getOwnPropertyNames(nextProps)) {
             // Don't need to rerender when other monitors are moved.
             // monitorLayout is only used during initial layout.
-            if (key !== 'monitorLayout' && nextProps[key] !== this.props[key]) {
+            // Using Object.is to tell apart 0 and -0 and avoid unnecessary re-renders for NaN
+            if (key !== 'monitorLayout' && !Object.is(nextProps[key], this.props[key])) {
                 return true;
             }
         }
@@ -115,44 +123,44 @@ class Monitor extends React.Component {
             newX,
             newY
         );
-        this.props.vm.runtime.requestUpdateMonitor(Map({
+        this.props.vm.runtime.requestUpdateMonitor({
             id: this.props.id,
             x: newX,
             y: newY
-        }));
+        });
     }
     handleHide () {
-        this.props.vm.runtime.requestUpdateMonitor(Map({
+        this.props.vm.runtime.requestUpdateMonitor({
             id: this.props.id,
             visible: false
-        }));
+        });
     }
     handleNextMode () {
         const modes = availableModes(this.props.opcode);
         const modeIndex = modes.indexOf(this.props.mode);
         const newMode = modes[(modeIndex + 1) % modes.length];
-        this.props.vm.runtime.requestUpdateMonitor(Map({
+        this.props.vm.runtime.requestUpdateMonitor({
             id: this.props.id,
             mode: newMode
-        }));
+        });
     }
     handleSetModeToDefault () {
-        this.props.vm.runtime.requestUpdateMonitor(Map({
+        this.props.vm.runtime.requestUpdateMonitor({
             id: this.props.id,
             mode: 'default'
-        }));
+        });
     }
     handleSetModeToLarge () {
-        this.props.vm.runtime.requestUpdateMonitor(Map({
+        this.props.vm.runtime.requestUpdateMonitor({
             id: this.props.id,
             mode: 'large'
-        }));
+        });
     }
     handleSetModeToSlider () {
-        this.props.vm.runtime.requestUpdateMonitor(Map({
+        this.props.vm.runtime.requestUpdateMonitor({
             id: this.props.id,
             mode: 'slider'
-        }));
+        });
     }
     handleSliderPromptClose () {
         this.setState({sliderPrompt: false});
@@ -163,12 +171,12 @@ class Monitor extends React.Component {
     handleSliderPromptOk (min, max, isDiscrete) {
         const realMin = Math.min(min, max);
         const realMax = Math.max(min, max);
-        this.props.vm.runtime.requestUpdateMonitor(Map({
+        this.props.vm.runtime.requestUpdateMonitor({
             id: this.props.id,
             sliderMin: realMin,
             sliderMax: realMax,
             isDiscrete: isDiscrete
-        }));
+        });
         this.handleSliderPromptClose();
     }
     setElement (monitorElt) {
@@ -201,6 +209,68 @@ class Monitor extends React.Component {
         const blob = new Blob([text], {type: 'text/plain;charset=utf-8'});
         downloadBlob(`${variable.name}.txt`, blob);
     }
+    handleEdit () {
+        this.setState({editing:true});
+    }
+    handleEditDone (value) {
+        this.setState({editing:false, type:'string'});
+        const {vm, targetId, id: variableId} = this.props;
+        setVariableValue(vm, targetId, variableId, value);
+    }
+    handleConversion (conversion) {
+        const {vm, targetId, id: variableId} = this.props;
+        let value = getVariable(vm, targetId, variableId).value, type = typeof value;
+        if (type === 'object' && conversion === 'string') {
+            try {
+                value = JSON.stringify(value);
+            } catch {
+                value = '';
+            }
+        } else if (conversion === 'string') {
+            value = '' + value;
+        } else if (conversion === 'number') {
+            value = +value;
+        } else if (conversion === 'boolean') {
+            value = Boolean(value);
+        } else if (conversion === 'object') {
+            if (type === 'string') {
+                try {
+                    value = JSON.parse(value);
+                    if (typeof value !== 'object' || Array.isArray(value)) value = {};
+                } catch {
+                    value = {};
+                }
+            } else {
+                value = {};
+            }
+        } else if (conversion === 'array') {
+            if (type === 'string') {
+                try {
+                    value = Array.from(JSON.parse(value));
+                } catch {
+                    value = [];
+                }
+            } else if (type === 'number') {
+                value = new Array(isNaN(value) ? 0 : value);
+            } else {
+                value = [];
+            }
+        }
+        setVariableValue(vm, targetId, variableId, value);
+    }
+    getType () {
+        const { vm, targetId, id } = this.props;
+        if (!vm || !id) {
+            console.warn(targetId, 'Failed to get type of monitor.', id);
+            return 'undefined';
+        }
+        try {
+            return (typeof getMonitorValue(vm, id));
+        } catch {
+            console.error('Failed to load monitor type', id, 'of', targetId);
+            return 'undefined';
+        }
+    }
     render () {
         const monitorProps = monitorAdapter(this.props);
         const showSliderOption = availableModes(this.props.opcode).indexOf('slider') !== -1;
@@ -224,9 +294,12 @@ class Monitor extends React.Component {
                     max={this.props.max}
                     min={this.props.min}
                     mode={this.props.mode}
+                    editing={this.state.editing}
                     targetId={this.props.targetId}
                     theme={this.props.theme}
                     width={this.props.width}
+                    locked={this.props.locked}
+                    getType={this.getType}
                     onDragEnd={this.handleDragEnd}
                     onExport={isList ? this.handleExport : null}
                     onImport={isList ? this.handleImport : null}
@@ -236,6 +309,9 @@ class Monitor extends React.Component {
                     onSetModeToLarge={isList ? null : this.handleSetModeToLarge}
                     onSetModeToSlider={showSliderOption ? this.handleSetModeToSlider : null}
                     onSliderPromptOpen={this.handleSliderPromptOpen}
+                    onEdit={this.handleEdit}
+                    onEditDone={this.handleEditDone}
+                    onConversion={this.handleConversion}
                 />
             </React.Fragment>
         );
@@ -276,7 +352,8 @@ Monitor.propTypes = {
     vm: PropTypes.instanceOf(VM),
     width: PropTypes.number,
     x: PropTypes.number,
-    y: PropTypes.number
+    y: PropTypes.number,
+    locked: PropTypes.bool,
 };
 Monitor.defaultProps = {
     theme: Theme.light

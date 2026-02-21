@@ -423,6 +423,8 @@ const control = function (isInitialSetup, isStage, targetId, colors) {
         <block id="all_at_once" type="control_all_at_once"/>
         ${blockSeparator}
         <block type="control_stop"/>
+        <block type="control_break"/>
+        <block type="control_continue"/>
         ${blockSeparator}
         ${isStage ? `
             <block type="control_create_clone_of">
@@ -502,6 +504,8 @@ const sensing = function (isInitialSetup, isStage, targetId, colors) {
         ${categorySeparator}
         <block type="sensing_dayssince2000"/>
         <block id="current" type="sensing_current"/>
+        ${blockSeparator}
+        <block id="online" type="sensing_online"/>
         <block type="sensing_username"/>
         ${categorySeparator}
     </category>

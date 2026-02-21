@@ -46,10 +46,9 @@ const manifest = {
       "name": "Always show slider",
       "id": "always",
       "type": "boolean",
-      "default": true
+      "default": false
     }
   ],
-  "enabledByDefault": true,
   "dynamicDisable": true,
   "tags": [
     "recommended"

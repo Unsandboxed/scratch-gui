@@ -8,7 +8,7 @@ const FramerateIndicator = ({framerate, interpolation}) => (
     <React.Fragment>
         {/* 0 is technically a valid framerate that means "at monitor refresh rate" */}
         {/* we won't display anything for that yet because we don't know how to explain it */}
-        {framerate !== 30 && framerate !== 0 && (
+        {framerate !== 60 && framerate !== 0 && (
             <div className={styles.framerateContainer}>
                 <div className={styles.framerateLabel}>
                     <FormattedMessage

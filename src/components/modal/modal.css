@@ -9,8 +9,10 @@
     right: 0;
     bottom: 0;
     z-index: $z-index-modal;
+
     background-color: $ui-modal-overlay;
     color: $ui-modal-foreground;
+    backdrop-filter: blur(3px);
 }
 
 .modal-content * {
@@ -71,8 +73,8 @@ $sides: 20rem;
     color: $ui-modal-header-foreground;
 
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 1rem;
-    font-weight: normal;
+    font-size: 1.2rem;
+    font-weight: bold;
 }
 
 .header-item {

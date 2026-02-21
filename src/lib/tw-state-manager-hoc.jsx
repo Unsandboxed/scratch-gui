@@ -421,7 +421,7 @@ const TWStateManager = function (WrappedComponent) {
                     searchParams.set('size', `${width}x${height}`);
                 }
 
-                if (this.props.framerate === 30) {
+                if (this.props.framerate === 60) {
                     searchParams.delete('fps');
                 } else {
                     searchParams.set('fps', this.props.framerate);
@@ -465,18 +465,18 @@ const TWStateManager = function (WrappedComponent) {
                     searchParams.set('clones', runtimeOptions.maxClones);
                 }
 
-                if (runtimeOptions.fencing) {
-                    searchParams.delete('offscreen');
+                if (!runtimeOptions.fencing) {
+                    searchParams.delete('onscreen');
                 } else {
-                    searchParams.set('offscreen', '');
+                    searchParams.set('onscreen', '');
                 }
-
+/*
                 if (runtimeOptions.miscLimits) {
                     searchParams.delete('limitless');
                 } else {
                     searchParams.set('limitless', '');
                 }
-
+*/
                 setSearchParams(searchParams);
             }
         }

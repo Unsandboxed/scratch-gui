@@ -60,13 +60,31 @@ const projectData = translateFunction => {
                 currentCostume: 0,
                 costumes: [
                     {
-                        assetId: '592bae6f8bb9c8d88401b54ac431f7b6',
+                        assetId: '927d672925e7b99f7813735c484c6922',
                         name: translator(messages.costume, {index: 1}),
                         bitmapResolution: 1,
-                        md5ext: '592bae6f8bb9c8d88401b54ac431f7b6.svg',
+                        md5ext: '927d672925e7b99f7813735c484c6922.svg',
                         dataFormat: 'svg',
-                        rotationCenterX: 44,
-                        rotationCenterY: 44
+                        rotationCenterX: 44.156184159652724,
+                        rotationCenterY: 51.508237134270445
+                    },
+                    {
+                        assetId: '5f0bf4c4fcf8a7b9ede17215f40c8440',
+                        name: translator(messages.costume, {index: 2}),
+                        bitmapResolution: 1,
+                        md5ext: '5f0bf4c4fcf8a7b9ede17215f40c8440.svg',
+                        dataFormat: 'svg',
+                        rotationCenterX: 52.33362218184814,
+                        rotationCenterY: 55.36285780562275
+                    },
+                    {
+                        assetId: 'f40bd8ae5c2514f84f100b4ffe7c94c7',
+                        name: translator(messages.costume, {index: 3}),
+                        bitmapResolution: 1,
+                        md5ext: 'f40bd8ae5c2514f84f100b4ffe7c94c7.svg',
+                        dataFormat: 'svg',
+                        rotationCenterX: 43.19538319010644,
+                        rotationCenterY: 55.36286713427046
                     }
                 ],
                 sounds: [],
@@ -77,7 +95,7 @@ const projectData = translateFunction => {
                 size: 100,
                 direction: 90,
                 draggable: false,
-                rotationStyle: 'all around'
+                rotationStyle: 'looking'
             }
         ],
         meta: {

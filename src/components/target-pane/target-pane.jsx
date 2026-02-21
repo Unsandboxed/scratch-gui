@@ -17,6 +17,7 @@ import styles from './target-pane.css';
  * @returns {React.Component} rendered component
  */
 const TargetPane = ({
+    camera,
     editingTarget,
     fileInputRef,
     hoveredTarget,
@@ -29,6 +30,10 @@ const TargetPane = ({
     onChangeSpriteVisibility,
     onChangeSpriteX,
     onChangeSpriteY,
+    onChangeCameraX,
+    onChangeCameraY,
+    onClickCenter,
+    onClickCenterOnTarget,
     onDeleteSprite,
     onDrop,
     onDuplicateSprite,
@@ -53,6 +58,7 @@ const TargetPane = ({
     >
 
         <SpriteSelectorComponent
+            camera={camera}
             editingTarget={editingTarget}
             hoveredTarget={hoveredTarget}
             raised={raiseSprites}
@@ -67,6 +73,10 @@ const TargetPane = ({
             onChangeSpriteVisibility={onChangeSpriteVisibility}
             onChangeSpriteX={onChangeSpriteX}
             onChangeSpriteY={onChangeSpriteY}
+            onChangeCameraX={onChangeCameraX}
+            onChangeCameraY={onChangeCameraY}
+            onClickCenter={onClickCenter}
+            onClickCenterOnTarget={onClickCenterOnTarget}
             onDeleteSprite={onDeleteSprite}
             onDrop={onDrop}
             onDuplicateSprite={onDuplicateSprite}
@@ -126,6 +136,7 @@ const spriteShape = PropTypes.shape({
 });
 
 TargetPane.propTypes = {
+    camera: PropTypes.object,
     editingTarget: PropTypes.string,
     extensionLibraryVisible: PropTypes.bool,
     fileInputRef: PropTypes.func,
@@ -141,6 +152,10 @@ TargetPane.propTypes = {
     onChangeSpriteVisibility: PropTypes.func,
     onChangeSpriteX: PropTypes.func,
     onChangeSpriteY: PropTypes.func,
+    onChangeCameraX: PropTypes.func,
+    onChangeCameraY: PropTypes.func,
+    onClickCenter: PropTypes.func,
+    onClickCenterOnTarget: PropTypes.func,
     onDeleteSprite: PropTypes.func,
     onDrop: PropTypes.func,
     onDuplicateSprite: PropTypes.func,

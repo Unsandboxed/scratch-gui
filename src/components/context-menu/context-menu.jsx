@@ -32,7 +32,6 @@ const DangerousMenuItem = props => (
     />
 );
 
-
 export {
     BorderedMenuItem,
     DangerousMenuItem,

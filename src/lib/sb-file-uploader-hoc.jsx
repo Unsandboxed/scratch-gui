@@ -1,12 +1,11 @@
 import bindAll from 'lodash.bindall';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {defineMessages, intlShape, injectIntl} from 'react-intl';
+import {intlShape, injectIntl} from 'react-intl';
 import {connect} from 'react-redux';
 import log from '../lib/log';
 import sharedMessages from './shared-messages';
-import FileSystemAPI from './tw-filesystem-api';
-import {setFileHandle} from '../reducers/tw';
+import {setFileHandle, setProjectError} from '../reducers/tw';
 
 import {
     LoadingStates,
@@ -19,19 +18,12 @@ import {
 import {setProjectTitle} from '../reducers/project-title';
 import {
     openLoadingProject,
-    closeLoadingProject
+    closeLoadingProject,
+    openInvalidProjectModal
 } from '../reducers/modals';
 import {
     closeFileMenu
 } from '../reducers/menus';
-
-const messages = defineMessages({
-    loadError: {
-        id: 'tw.loadError',
-        defaultMessage: 'Could not load project: {error}',
-        description: 'An error that displays when a local project file fails to load.'
-    }
-});
 
 /**
  * Higher Order Component to provide behavior for loading local project files into editor.
@@ -81,10 +73,27 @@ const SBFileUploaderHOC = function (WrappedComponent) {
             this.fileReader = new FileReader();
             this.fileReader.onload = this.onload;
             // tw: Use FS API when available
-            if (FileSystemAPI.available()) {
+            if (this.props.showOpenFilePicker) {
                 (async () => {
                     try {
-                        const handle = await FileSystemAPI.showOpenFilePicker();
+                        const [handle] = await this.props.showOpenFilePicker({
+                            multiple: false,
+                            types: [
+                                {
+                                    description: 'Scratch Project',
+                                    accept: {
+                                        // Chrome on Android tracks the MIME type of files that get downloaded and
+                                        // then actually enforces that the type must match in showOpenFilePicker()
+                                        // and does not allow the user to override the filter. As Scratch projects have
+                                        // no well-defined and well-adopted MIME types, we can't assume anything about
+                                        // what MIME type they are saved with, so we have to use the most broad MIME
+                                        // type here. Otherwise some users just won't be able to load files for no
+                                        // fault of their own.
+                                        '*/*': ['.sb', '.sb2', '.sb3']
+                                    }
+                                }
+                            ]
+                        });
                         const file = await handle.getFile();
                         this.handleChange({
                             target: {
@@ -97,8 +106,7 @@ const SBFileUploaderHOC = function (WrappedComponent) {
                         if (err && err.name === 'AbortError') {
                             return;
                         }
-                        // eslint-disable-next-line no-console
-                        console.error(err);
+                        log.error(err);
                     }
                 })();
             } else {
@@ -201,11 +209,8 @@ const SBFileUploaderHOC = function (WrappedComponent) {
                         loadingSuccess = true;
                     })
                     .catch(error => {
-                        log.warn(error);
-                        // eslint-disable-next-line no-alert
-                        alert(this.props.intl.formatMessage(messages.loadError, {
-                            error: `${error}`
-                        }));
+                        log.error(error);
+                        this.props.onLoadingFailed(error);
                     })
                     .then(() => {
                         this.props.onLoadingFinished(this.props.loadingState, loadingSuccess);
@@ -234,6 +239,7 @@ const SBFileUploaderHOC = function (WrappedComponent) {
                 isLoadingUpload,
                 isShowingWithoutId,
                 loadingState,
+                onLoadingFailed,
                 onLoadingFinished,
                 onLoadingStarted,
                 onSetFileHandle,
@@ -264,11 +270,13 @@ const SBFileUploaderHOC = function (WrappedComponent) {
         isShowingProject: PropTypes.bool,
         isShowingWithoutId: PropTypes.bool,
         loadingState: PropTypes.oneOf(LoadingStates),
+        onLoadingFailed: PropTypes.func,
         onLoadingFinished: PropTypes.func,
         onLoadingStarted: PropTypes.func,
         onSetProjectTitle: PropTypes.func,
         projectChanged: PropTypes.bool,
         requestProjectUpload: PropTypes.func,
+        showOpenFilePicker: PropTypes.func,
         userOwnsProject: PropTypes.bool,
         vm: PropTypes.shape({
             loadProject: PropTypes.func,
@@ -278,6 +286,11 @@ const SBFileUploaderHOC = function (WrappedComponent) {
             })
         }),
         onSetFileHandle: PropTypes.func
+    };
+    SBFileUploaderComponent.defaultProps = {
+        showOpenFilePicker: typeof showOpenFilePicker === 'function' && !navigator.userAgent.includes('Android') ?
+            window.showOpenFilePicker.bind(window) :
+            null
     };
     const mapStateToProps = (state, ownProps) => {
         const loadingState = state.scratchGui.projectState.loadingState;
@@ -296,6 +309,10 @@ const SBFileUploaderHOC = function (WrappedComponent) {
     const mapDispatchToProps = (dispatch, ownProps) => ({
         cancelFileUpload: loadingState => dispatch(onLoadedProject(loadingState, false, false)),
         closeFileMenu: () => dispatch(closeFileMenu()),
+        onLoadingFailed: error => {
+            dispatch(setProjectError(error));
+            dispatch(openInvalidProjectModal());
+        },
         // transition project state from loading to regular, and close
         // loading screen and file menu
         onLoadingFinished: (loadingState, success) => {

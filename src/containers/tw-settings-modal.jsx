@@ -24,7 +24,7 @@ class UsernameModal extends React.Component {
             'handleHighQualityPenChange',
             'handleInterpolationChange',
             'handleInfiniteClonesChange',
-            'handleRemoveFencingChange',
+            'handleEnableFencingChange',
             'handleRemoveLimitsChange',
             'handleWarpTimerChange',
             'handleStageWidthChange',
@@ -34,7 +34,7 @@ class UsernameModal extends React.Component {
         ]);
     }
     handleFramerateChange (e) {
-        this.props.vm.setFramerate(e.target.checked ? 60 : 30);
+        this.props.vm.setFramerate(e.target.checked ? 30 : 60);
     }
     async handleCustomizeFramerate () {
         // prompt() returns Promise in desktop app
@@ -56,9 +56,9 @@ class UsernameModal extends React.Component {
             maxClones: e.target.checked ? Infinity : 300
         });
     }
-    handleRemoveFencingChange (e) {
+    handleEnableFencingChange (e) {
         this.props.vm.setRuntimeOptions({
-            fencing: !e.target.checked
+            fencing: e.target.checked
         });
     }
     handleRemoveLimitsChange (e) {
@@ -101,7 +101,7 @@ class UsernameModal extends React.Component {
                 onHighQualityPenChange={this.handleHighQualityPenChange}
                 onInterpolationChange={this.handleInterpolationChange}
                 onInfiniteClonesChange={this.handleInfiniteClonesChange}
-                onRemoveFencingChange={this.handleRemoveFencingChange}
+                onEnableFencingChange={this.handleEnableFencingChange}
                 onRemoveLimitsChange={this.handleRemoveLimitsChange}
                 onWarpTimerChange={this.handleWarpTimerChange}
                 onStageWidthChange={this.handleStageWidthChange}
@@ -139,7 +139,7 @@ UsernameModal.propTypes = {
     highQualityPen: PropTypes.bool,
     interpolation: PropTypes.bool,
     infiniteClones: PropTypes.bool,
-    removeFencing: PropTypes.bool,
+    enableFencing: PropTypes.bool,
     removeLimits: PropTypes.bool,
     warpTimer: PropTypes.bool,
     customStageSize: PropTypes.shape({
@@ -156,7 +156,7 @@ const mapStateToProps = state => ({
     highQualityPen: state.scratchGui.tw.highQualityPen,
     interpolation: state.scratchGui.tw.interpolation,
     infiniteClones: state.scratchGui.tw.runtimeOptions.maxClones === Infinity,
-    removeFencing: !state.scratchGui.tw.runtimeOptions.fencing,
+    enableFencing: state.scratchGui.tw.runtimeOptions.fencing,
     removeLimits: !state.scratchGui.tw.runtimeOptions.miscLimits,
     warpTimer: state.scratchGui.tw.compilerOptions.warpTimer,
     customStageSize: state.scratchGui.customStageSize,

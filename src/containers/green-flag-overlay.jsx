@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import VM from 'scratch-vm';
 import Box from '../components/box/box.jsx';
 import greenFlag from '../components/green-flag/icon--green-flag.svg';
+import orangeFlag from '../components/green-flag/icon--orange-flag.svg';
 import {setStartedState} from '../reducers/vm-status.js';
 
 class GreenFlagOverlay extends React.Component {
@@ -35,7 +36,7 @@ class GreenFlagOverlay extends React.Component {
                 <div className={this.props.className}>
                     <img
                         draggable={false}
-                        src={greenFlag}
+                        src={this.props.vm.runtime.turboMode ? orangeFlag : greenFlag}
                     />
                 </div>
             </Box>

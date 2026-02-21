@@ -7,13 +7,20 @@ import {connect} from 'react-redux';
 import check from './check.svg';
 import dropdownCaret from './dropdown-caret.svg';
 import {MenuItem, Submenu} from '../menu/menu.jsx';
-import {ACCENT_GRAY, ACCENT_BLUE, ACCENT_MAP, ACCENT_PURPLE, ACCENT_RED, Theme} from '../../lib/themes/index.js';
+import {ACCENT_GRAY, ACCENT_GREEN, ACCENT_BLUE, ACCENT_MAP, ACCENT_PURPLE, ACCENT_RED, ACCENT_RAINBOW, Theme} from '../../lib/themes/index.js';
 import {openAccentMenu, accentMenuOpen, closeSettingsMenu} from '../../reducers/menus.js';
 import {setTheme} from '../../reducers/theme.js';
 import {persistTheme} from '../../lib/themes/themePersistance.js';
 import styles from './settings-menu.css';
 
+import rainbowIcon from './tw-accent-rainbow.svg';
+
 const options = defineMessages({
+    [ACCENT_RAINBOW]: {
+        defaultMessage: 'Pride',
+        description: 'Name of the pride color scheme, used by Unsandboxed by default during June.',
+        id: 'tw.accent.rainbow'
+    },
     [ACCENT_GRAY]: {
         defaultMessage: 'Gray',
         description: 'Name of the gray color scheme, used by Unsandboxed by default.',
@@ -33,16 +40,37 @@ const options = defineMessages({
         defaultMessage: 'Blue',
         description: 'Name of the blue color scheme. Matches Scratch before the high contrast update.',
         id: 'tw.accent.blue'
+    },
+    [ACCENT_GREEN]: {
+        defaultMessage: 'Green',
+        description: 'Name of the green color scheme. Matches Scratch Lab.',
+        id: 'tw.accent.green'
     }
 });
 
+const icons = {
+    [ACCENT_RAINBOW]: rainbowIcon
+};
+
 const ColorIcon = props => (
-    <div
-        className={styles.accentIconOuter}
-        style={{
-            backgroundColor: ACCENT_MAP[props.id].guiColors['looks-secondary']
-        }}
-    />
+    icons[props.id] ? (
+        <img
+            className={styles.accentIconOuter}
+            src={icons[props.id]}
+            draggable={false}
+            // Image is decorative
+            alt=""
+        />
+    ) : (
+        <div
+            className={styles.accentIconOuter}
+            style={{
+                // menu-bar-background is var(...), don't want to evaluate with the current values
+                backgroundColor: ACCENT_MAP[props.id].guiColors['looks-secondary'],
+                backgroundImage: ACCENT_MAP[props.id].guiColors['menu-bar-background-image']
+            }}
+        />
+    )
 );
 
 ColorIcon.propTypes = {

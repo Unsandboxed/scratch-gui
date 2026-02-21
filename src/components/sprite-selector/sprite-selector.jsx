@@ -3,6 +3,7 @@ import React from 'react';
 import {defineMessages, injectIntl, intlShape} from 'react-intl';
 
 import Box from '../box/box.jsx';
+import CameraInfo from '../../containers/camera-info.jsx';
 import SpriteInfo from '../../containers/sprite-info.jsx';
 import SpriteList from './sprite-list.jsx';
 import ActionMenu from '../action-menu/action-menu.jsx';
@@ -42,6 +43,7 @@ const messages = defineMessages({
 
 const SpriteSelectorComponent = function (props) {
     const {
+        camera,
         editingTarget,
         hoveredTarget,
         intl,
@@ -50,6 +52,10 @@ const SpriteSelectorComponent = function (props) {
         onChangeSpriteRotationStyle,
         onChangeSpriteSize,
         onChangeSpriteVisibility,
+        onChangeCameraX,
+        onChangeCameraY,
+        onClickCenter,
+        onClickCenterOnTarget,
         onChangeSpriteX,
         onChangeSpriteY,
         onDrop,
@@ -80,7 +86,15 @@ const SpriteSelectorComponent = function (props) {
             className={styles.spriteSelector}
             {...componentProps}
         >
-
+            <CameraInfo
+                x={camera.camera.x}
+                y={camera.camera.y}
+                stageSize={stageSize}
+                onClickCenter={onClickCenter}
+                onClickCenterOnTarget={onClickCenterOnTarget}
+                onChangeX={onChangeCameraX}
+                onChangeY={onChangeCameraY}
+            />
             <SpriteInfo
                 direction={selectedSprite.direction}
                 disabled={spriteInfoDisabled}
@@ -147,6 +161,7 @@ const SpriteSelectorComponent = function (props) {
 };
 
 SpriteSelectorComponent.propTypes = {
+    camera: PropTypes.object,
     editingTarget: PropTypes.string,
     hoveredTarget: PropTypes.shape({
         hoveredSprite: PropTypes.string,
@@ -158,8 +173,12 @@ SpriteSelectorComponent.propTypes = {
     onChangeSpriteRotationStyle: PropTypes.func,
     onChangeSpriteSize: PropTypes.func,
     onChangeSpriteVisibility: PropTypes.func,
+    onChangeCameraX: PropTypes.func,
+    onChangeCameraY: PropTypes.func,
     onChangeSpriteX: PropTypes.func,
     onChangeSpriteY: PropTypes.func,
+    onClickCenter: PropTypes.func,
+    onClickCenterOnTarget: PropTypes.func,
     onDeleteSprite: PropTypes.func,
     onDrop: PropTypes.func,
     onDuplicateSprite: PropTypes.func,

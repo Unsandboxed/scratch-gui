@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './monitor.css';
 
-const LargeMonitor = ({categoryColor, value}) => (
-    <div className={styles.largeMonitor}>
+const LargeMonitor = ({categoryColor, value, editing, onEditDone}) => (
+    <span>{!editing && <div className={styles.largeMonitor}>
         <div
             className={styles.largeValue}
             style={{
@@ -13,7 +13,10 @@ const LargeMonitor = ({categoryColor, value}) => (
         >
             {value}
         </div>
-    </div>
+    </div>}
+   {editing && <input defaultValue={value} onKeyDown={
+       e => e.which === 13 && onEditDone((e.srcElement || e.target).value)
+   } />}</span>
 );
 
 LargeMonitor.propTypes = {
