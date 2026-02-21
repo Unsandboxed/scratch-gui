@@ -22,9 +22,9 @@ class CustomProcedures extends React.Component {
             'setBlocks'
         ]);
         this.state = {
+            hat: false,
             rtlOffset: 0,
             warp: false,
-            hat: false
         };
     }
     componentWillUnmount () {
@@ -109,8 +109,8 @@ class CustomProcedures extends React.Component {
         this.mutationRoot.domToMutation(this.props.mutator);
         this.mutationRoot.initSvg();
         this.mutationRoot.render();
-        this.setState({warp: this.mutationRoot.getWarp()});
-        this.setState({hat: this.mutationRoot.getHat()});
+        this.setState({warp: !!this.mutationRoot.getWarp()});
+        this.setState({hat: !!this.mutationRoot.getHat()});
         // Allow the initial events to run to position this block, then focus.
         setTimeout(() => {
             this.mutationRoot.focusLastEditor_();
