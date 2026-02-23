@@ -110,7 +110,7 @@ class CustomProcedures extends React.Component {
         this.mutationRoot.initSvg();
         this.mutationRoot.render();
         this.setState({warp: !!this.mutationRoot.getWarp()});
-        this.setState({hat: !!this.mutationRoot.getHat()});
+        this.setState({hat: !!this.mutationRoot.hat_});
         // Allow the initial events to run to position this block, then focus.
         setTimeout(() => {
             this.mutationRoot.focusLastEditor_();
@@ -158,8 +158,13 @@ class CustomProcedures extends React.Component {
     }
     handleToggleHat () {
         if (this.mutationRoot) {
-            const newHat = !this.mutationRoot.getHat();
-            this.mutationRoot.setHat(newHat);
+            const newHat = !this.mutationRoot.hat_;
+            this.mutationRoot.hat_ = newHat;
+
+            // TODO: BAD BAD BAD BAD NO!!! this is really hacky way of doing it.
+            this.mutationRoot.setPreviousStatement(!newHat, null);
+
+            this.workspace.refreshToolboxSelection_();
             this.ScratchBlocks.WidgetDiv.hide(true);
             this.setState({hat: newHat});
         }
