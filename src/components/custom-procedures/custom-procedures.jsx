@@ -216,7 +216,7 @@ const CustomProcedures = props => (
                 />
             </Box>
             <div className={styles.checkboxRow}>
-                <label>      
+                <label>
                     <input
                         checked={!props.hat}
                         type="radio"
@@ -228,7 +228,7 @@ const CustomProcedures = props => (
                         id="gui.customProcedures.primitive"
                     />
                 </label>
-                <label>      
+                <label>
                     <input
                         checked={props.hat}
                         type="radio"

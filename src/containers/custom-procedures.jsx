@@ -22,9 +22,9 @@ class CustomProcedures extends React.Component {
             'setBlocks'
         ]);
         this.state = {
-            hat: false,
             rtlOffset: 0,
             warp: false,
+            hat: false,
         };
     }
     componentWillUnmount () {
@@ -109,8 +109,7 @@ class CustomProcedures extends React.Component {
         this.mutationRoot.domToMutation(this.props.mutator);
         this.mutationRoot.initSvg();
         this.mutationRoot.render();
-        this.setState({warp: !!this.mutationRoot.getWarp()});
-        this.setState({hat: !!this.mutationRoot.hat_});
+        this.setState({warp: !!this.mutationRoot.getWarp(), hat: !!this.mutationRoot.getHatDefault()});
         // Allow the initial events to run to position this block, then focus.
         setTimeout(() => {
             this.mutationRoot.focusLastEditor_();
@@ -158,15 +157,9 @@ class CustomProcedures extends React.Component {
     }
     handleToggleHat () {
         if (this.mutationRoot) {
-            const newHat = !this.mutationRoot.hat_;
-            this.mutationRoot.hat_ = newHat;
-
-            // TODO: BAD BAD BAD BAD NO!!! this is really hacky way of doing it.
-            this.mutationRoot.setPreviousStatement(!newHat, null);
-
-            this.workspace.refreshToolboxSelection_();
-            this.ScratchBlocks.WidgetDiv.hide(true);
-            this.setState({hat: newHat});
+            const newHatDefault = !this.mutationRoot.getHatDefault();
+            this.mutationRoot.setHatDefault(newHatDefault);
+            this.setState({hat: newHatDefault});
         }
     }
     render () {
