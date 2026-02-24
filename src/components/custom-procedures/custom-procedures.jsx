@@ -241,6 +241,19 @@ const CustomProcedures = props => (
                         id="gui.customProcedures.hatBlock"
                     />
                 </label>
+                &nbsp;
+                <label hidden={!props.hat}>
+                    <input
+                        checked={props.hatAlwaysActivated}
+                        type="checkbox"
+                        onChange={props.onToggleHatAlwaysActivated}
+                    />
+                    <FormattedMessage
+                        defaultMessage="Run every frame?"
+                        description="Label for checkbox to make a hat block always activated instead of edge activated"
+                        id="gui.customProcedures.hatAlwaysActivated"
+                    />
+                </label>
             </div>
             <Box className={styles.buttonRow}>
                 <button
@@ -279,7 +292,10 @@ CustomProcedures.propTypes = {
     onOk: PropTypes.func.isRequired,
     onToggleWarp: PropTypes.func.isRequired,
     onToggleHat: PropTypes.func.isRequired,
-    warp: PropTypes.bool.isRequired
+    onToggleHatAlwaysActivated: PropTypes.func.isRequired,
+    warp: PropTypes.bool.isRequired,
+    hat: PropTypes.bool.isRequired,
+    hatAlwaysActivated: PropTypes.bool.isRequired
 };
 
 export default injectIntl(CustomProcedures);

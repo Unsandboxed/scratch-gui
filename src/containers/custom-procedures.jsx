@@ -17,6 +17,7 @@ class CustomProcedures extends React.Component {
             'handleAddColor',
             'handleToggleWarp',
             'handleToggleHat',
+            'handleToggleHatAlwaysActivated',
             'handleCancel',
             'handleOk',
             'setBlocks'
@@ -25,6 +26,7 @@ class CustomProcedures extends React.Component {
             rtlOffset: 0,
             warp: false,
             hat: false,
+            hatAlwaysActivated: true,
         };
     }
     componentWillUnmount () {
@@ -109,7 +111,11 @@ class CustomProcedures extends React.Component {
         this.mutationRoot.domToMutation(this.props.mutator);
         this.mutationRoot.initSvg();
         this.mutationRoot.render();
-        this.setState({warp: !!this.mutationRoot.getWarp(), hat: !!this.mutationRoot.getHatDefault()});
+        this.setState({
+            warp: !!this.mutationRoot.getWarp(),
+            hat: !!this.mutationRoot.getHatDefault(),
+            hatAlwaysActivated: !!this.mutationRoot.getHatAlwaysActivated()
+        });
         // Allow the initial events to run to position this block, then focus.
         setTimeout(() => {
             this.mutationRoot.focusLastEditor_();
@@ -162,12 +168,20 @@ class CustomProcedures extends React.Component {
             this.setState({hat: newHatDefault});
         }
     }
+    handleToggleHatAlwaysActivated () {
+        if (this.mutationRoot) {
+            const newHatAlwaysActivated = !this.mutationRoot.getHatAlwaysActivated();
+            this.mutationRoot.setHatAlwaysActivated(newHatAlwaysActivated);
+            this.setState({hatAlwaysActivated: newHatAlwaysActivated});
+        }
+    }
     render () {
         return (
             <CustomProceduresComponent
                 componentRef={this.setBlocks}
                 warp={this.state.warp}
                 hat={this.state.hat}
+                hatAlwaysActivated={this.state.hatAlwaysActivated}
                 onAddBoolean={this.handleAddBoolean}
                 onAddLabel={this.handleAddLabel}
                 onAddText={this.handleAddText}
@@ -177,6 +191,7 @@ class CustomProcedures extends React.Component {
                 onOk={this.handleOk}
                 onToggleWarp={this.handleToggleWarp}
                 onToggleHat={this.handleToggleHat}
+                onToggleHatAlwaysActivated={this.handleToggleHatAlwaysActivated}
             />
         );
     }
