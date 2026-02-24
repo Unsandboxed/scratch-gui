@@ -140,9 +140,12 @@ class CustomProcedures extends React.Component {
         }
     }
     handleAddColor (color) {
+        let newColor = color.target.getAttribute("color");
+        if (!newColor) newColor = color.target.value;
+
         if (this.mutationRoot) {
-            this.mutationRoot.setColour(color.target.getAttribute("color"));
-            this.setState({colour: color.target.getAttribute("color")});
+            this.mutationRoot.setColour(newColor);
+            this.setState({colour: newColor});
         }
     }
     handleToggleWarp () {

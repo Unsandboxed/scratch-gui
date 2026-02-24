@@ -149,6 +149,10 @@ const CustomProcedures = props => (
                         onClick={props.onAddColor}
                     />
                 ))}
+                <input type="color"
+                    className={styles.colorCard}
+                    onChange={props.onAddColor}
+                />
             </Box>
             <div className={styles.checkboxRow}>
                 <label>
