@@ -7,6 +7,7 @@ import {defineMessages, injectIntl, intlShape, FormattedMessage} from 'react-int
 import booleanInputIcon from './icon--boolean-input.svg';
 import textInputIcon from './icon--text-input.svg';
 import labelIcon from './icon--label.svg';
+import pickerIcon from './icon--eye-dropper.svg';
 
 import styles from './custom-procedures.css';
 
@@ -150,7 +151,7 @@ const CustomProcedures = props => (
                     />
                 ))}
                 <input type="color"
-                    className={styles.colorCard}
+                    className={styles.colorPicker}
                     onChange={props.onAddColor}
                 />
             </Box>

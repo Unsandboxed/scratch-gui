@@ -152,10 +152,12 @@ class CustomProcedures extends React.Component {
         let newColor = color.target.getAttribute("color");
         if (!newColor) newColor = color.target.value;
 
+        // todo: there's probably a way to do this within the component itself
+        color.target.style.backgroundColor = newColor;
+
         if (this.mutationRoot) {
             this.mutationRoot.customColour_ = newColor;
             this.ScratchBlocks.ScratchBlocks.ProcedureUtils.parseColourMutation.call(this.mutationRoot, newColor);
-            console.log(this.mutationRoot.customColour_);
             this.setState({colour: newColor});
         }
     }
