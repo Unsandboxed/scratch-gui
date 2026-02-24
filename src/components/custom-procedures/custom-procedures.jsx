@@ -167,7 +167,6 @@ const CustomProcedures = props => (
                         id="gui.customProcedures.runWithoutScreenRefresh"
                     />
                 </label>
-                &nbsp;
                 <label>
                     <input
                         checked={props.hat}
@@ -180,8 +179,7 @@ const CustomProcedures = props => (
                         id="gui.customProcedures.hatBlock"
                     />
                 </label>
-                &nbsp;
-                <label hidden={!props.hat}>
+                <label style={{visibility: (props.hat) ? "visible" : "hidden"}}>
                     <input
                         checked={props.hatAlwaysActivated}
                         type="checkbox"

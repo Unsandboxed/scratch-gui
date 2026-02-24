@@ -153,7 +153,9 @@ class CustomProcedures extends React.Component {
         if (!newColor) newColor = color.target.value;
 
         if (this.mutationRoot) {
-            this.mutationRoot.setColour(newColor);
+            this.mutationRoot.customColour_ = newColor;
+            this.ScratchBlocks.ScratchBlocks.ProcedureUtils.parseColourMutation.call(this.mutationRoot, newColor);
+            console.log(this.mutationRoot.customColour_);
             this.setState({colour: newColor});
         }
     }

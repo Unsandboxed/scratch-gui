@@ -75,7 +75,9 @@
 
 /* "Run without screen refresh" row */
 .checkbox-row {
+    display: flex;
     margin-top: 1rem;
+    justify-content: space-between;
 }
 
 /* Confirmation buttons at the bottom of the modal */
