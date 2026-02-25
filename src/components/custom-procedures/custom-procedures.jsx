@@ -178,7 +178,7 @@ const CustomProcedures = props => (
                         onChange={props.onToggleHatAlwaysActivated}
                     />
                     <FormattedMessage
-                        defaultMessage="Run every frame?"
+                        defaultMessage="Run every frame"
                         description="Label for checkbox to make a hat block always activated instead of edge activated"
                         id="gui.customProcedures.hatAlwaysActivated"
                     />
