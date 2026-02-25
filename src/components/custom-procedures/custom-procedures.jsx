@@ -3,6 +3,7 @@ import React from 'react';
 import Modal from '../../containers/modal.jsx';
 import Box from '../box/box.jsx';
 import {defineMessages, injectIntl, intlShape, FormattedMessage} from 'react-intl';
+import FancyCheckbox from '../tw-fancy-checkbox/checkbox.jsx';
 
 import booleanInputIcon from './icon--boolean-input.svg';
 import textInputIcon from './icon--text-input.svg';
@@ -156,10 +157,10 @@ const CustomProcedures = props => (
                 />
             </Box>
             <div className={styles.checkboxRow}>
-                <label>
-                    <input
+                <label className={styles.checkboxContainer}>
+                    <FancyCheckbox
+                        className={styles.checkbox}
                         checked={props.warp}
-                        type="checkbox"
                         onChange={props.onToggleWarp}
                     />
                     <FormattedMessage
@@ -168,10 +169,10 @@ const CustomProcedures = props => (
                         id="gui.customProcedures.runWithoutScreenRefresh"
                     />
                 </label>
-                <label>
-                    <input
+                <label className={styles.checkboxContainer}>
+                    <FancyCheckbox
+                        className={styles.checkbox}
                         checked={props.hat}
-                        type="checkbox"
                         onChange={props.onToggleHat}
                     />
                     <FormattedMessage
@@ -180,10 +181,12 @@ const CustomProcedures = props => (
                         id="gui.customProcedures.hatBlock"
                     />
                 </label>
-                <label style={{visibility: (props.hat) ? "visible" : "hidden"}}>
-                    <input
+                <label className={styles.checkboxContainer}
+                    style={{visibility: (props.hat) ? "visible" : "hidden"}}
+                >
+                    <FancyCheckbox
+                        className={styles.checkbox}
                         checked={props.hatAlwaysActivated}
-                        type="checkbox"
                         onChange={props.onToggleHatAlwaysActivated}
                     />
                     <FormattedMessage

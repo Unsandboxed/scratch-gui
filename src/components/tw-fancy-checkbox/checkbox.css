@@ -11,6 +11,7 @@
     background-size: 100%;
     border: 1px solid $ui-black-transparent;
     outline: none;
+    cursor: pointer;
 }
 .checkbox:hover, .checkbox:focus, .checkbox:active, .checkbox:checked {
     border-color: $looks-secondary;
