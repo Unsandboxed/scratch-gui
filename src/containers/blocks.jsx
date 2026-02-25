@@ -122,7 +122,8 @@ class Blocks extends React.Component {
             'onWorkspaceMetricsChange',
             'setBlocks',
             'setLocale',
-            'handleEnableProcedureReturns'
+            'handleEnableProcedureReturns',
+            'onExtensionAPI'
         ]);
         this.ScratchBlocks.prompt = this.handlePromptStart;
         this.ScratchBlocks.statusButtonCallback = this.handleConnectionModalStart;
@@ -369,6 +370,7 @@ class Blocks extends React.Component {
         this.props.vm.addListener('BLOCKSINFO_UPDATE', this.handleBlocksInfoUpdate);
         this.props.vm.addListener('PERIPHERAL_CONNECTED', this.handleStatusButtonUpdate);
         this.props.vm.addListener('PERIPHERAL_DISCONNECTED', this.handleStatusButtonUpdate);
+        this.props.vm.addListener('CREATE_UNSANDBOXED_EXTENSION_API', this.onExtensionAPI);
     }
     detachVM () {
         this.props.vm.removeListener('SCRIPT_GLOW_ON', this.onScriptGlowOn);
@@ -383,6 +385,12 @@ class Blocks extends React.Component {
         this.props.vm.removeListener('BLOCKSINFO_UPDATE', this.handleBlocksInfoUpdate);
         this.props.vm.removeListener('PERIPHERAL_CONNECTED', this.handleStatusButtonUpdate);
         this.props.vm.removeListener('PERIPHERAL_DISCONNECTED', this.handleStatusButtonUpdate);
+        this.props.vm.removeListener('CREATE_UNSANDBOXED_EXTENSION_API', this.onExtensionAPI);
+    }
+
+    onExtensionAPI(Scratch) {
+        // Assume's the Scratch.gui handle was ran.
+        Scratch.gui.makeToolboxXML = makeToolboxXML;
     }
 
     updateToolboxBlockValue (id, value) {
@@ -457,7 +465,7 @@ class Blocks extends React.Component {
                 this.props.vm.runtime.getBlocksXML(target),
                 this.props.theme
             );
-            return makeToolboxXML(false, target.isStage, target.id, dynamicBlocksXML,
+            return makeToolboxXML(this.props.vm, false, target.isStage, target.id, dynamicBlocksXML,
                 targetCostumes[targetCostumes.length - 1].name,
                 stageCostumes[stageCostumes.length - 1].name,
                 targetSounds.length > 0 ? targetSounds[targetSounds.length - 1].name : '',

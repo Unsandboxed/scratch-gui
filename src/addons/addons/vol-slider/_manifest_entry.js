@@ -13,10 +13,6 @@ const manifest = {
     },
     {
       "name": "DNin01"
-    },
-    {
-      "name": "0znzw",
-      "link": "https://scratch.mit.edu/users/0znzw/"
     }
   ],
   "userscripts": [
@@ -27,6 +23,14 @@ const manifest = {
   "userstyles": [
     {
       "url": "userstyle.css"
+    },
+    {
+      "url": "hover.css",
+      "if": {
+        "settings": {
+          "always": false
+        }
+      }
     }
   ],
   "settings": [
@@ -37,9 +41,14 @@ const manifest = {
       "min": 0,
       "max": 100,
       "default": 100
+    },
+    {
+      "name": "Always show slider",
+      "id": "always",
+      "type": "boolean",
+      "default": false
     }
   ],
-  "enabledByDefault": true,
   "dynamicDisable": true,
   "tags": [
     "recommended"

@@ -10,6 +10,9 @@ import penInsetIconURL from './pen/pen-small.svg';
 import videoSensingIconURL from './videoSensing/video-sensing.png';
 import videoSensingInsetIconURL from './videoSensing/video-sensing-small.svg';
 
+import faceSensingIconURL from './faceSensing/face-sensing.svg';
+import faceSensingInsetIconURL from './faceSensing/face-sensing-small.svg';
+
 import text2speechIconURL from './text2speech/text2speech.png';
 import text2speechInsetIconURL from './text2speech/text2speech-small.svg';
 
@@ -56,6 +59,9 @@ import returnIcon from './custom/return.svg';
 
 import galleryIcon from './gallery/gallery.svg';
 import galleryInsetIcon from './gallery/tw-icon-small.svg';
+
+import penGroupIcon from './gallery/penGroup.svg';
+import penGroupInsetIcon from './gallery/penGroup-icon-small.svg';
 
 import {APP_NAME} from '../../brand';
 
@@ -120,6 +126,28 @@ export default [
                 defaultMessage="Sense motion with the camera."
                 description="Description for the 'Video Sensing' extension"
                 id="gui.extension.videosensing.description"
+            />
+        ),
+        tags: ['scratch'],
+        featured: true
+    },
+    {
+        name: (
+            <FormattedMessage
+                defaultMessage="Face Sensing"
+                description="Name for the 'Face Sensing' extension"
+                id="tw.extension.faceSensing.name"
+            />
+        ),
+        extensionId: 'faceSensing',
+        extensionURL: 'https://extensions.turbowarp.org/lab/face-sensing.js',
+        iconURL: faceSensingIconURL,
+        insetIconURL: faceSensingInsetIconURL,
+        description: (
+            <FormattedMessage
+                defaultMessage="Sense faces with the camera."
+                description="Description for the 'Face Sensing' extension"
+                id="tw.extension.faceSensing.description"
             />
         ),
         tags: ['scratch'],
@@ -423,7 +451,7 @@ export const galleryLoading = {
             id="tw.extensionGallery.loading"
         />
     ),
-    tags: ['tw'],
+    tags: ['tw', 'gallery'],
     featured: true
 };
 
@@ -451,7 +479,7 @@ export const galleryMore = {
             id="tw.extensionGallery.more"
         />
     ),
-    tags: ['tw'],
+    tags: ['tw', 'gallery'],
     featured: true
 };
 
@@ -479,6 +507,34 @@ export const galleryError = {
             id="tw.extensionGallery.error"
         />
     ),
-    tags: ['tw'],
+    tags: ['tw', 'gallery'],
+    featured: true
+};
+
+export const penGroupGallery = {
+    name: (
+        <FormattedMessage
+            defaultMessage="Pen Group Extension Gallery"
+            description="Name of the extensions found by the Pen Group"
+            id="tw.penGroupGallery.name"
+            values={{
+                APP_NAME
+            }}
+        />
+    ),
+    href: 'https://pen-group.github.io/extensions/',
+    extensionId: 'gallery',
+    iconURL: penGroupIcon,
+    insetIconURL: penGroupInsetIcon,
+    credits: ['Pen Group'],
+    description: (
+        <FormattedMessage
+            // eslint-disable-next-line max-len
+            defaultMessage="Find various pen-related extensions and addons to Pen Plus."
+            description="Explains where to find addons for Pen Plus."
+            id="tw.penGroupGallery.more"
+        />
+    ),
+    tags: ['usb', 'gallery'],
     featured: true
 };

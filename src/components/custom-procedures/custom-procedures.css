@@ -75,7 +75,9 @@
 
 /* "Run without screen refresh" row */
 .checkbox-row {
+    display: flex;
     margin-top: 1rem;
+    justify-content: space-between;
 }
 
 /* Confirmation buttons at the bottom of the modal */
@@ -118,9 +120,7 @@
     border-radius: $space;
     padding: calc($space * 1);
     text-align: center;
-    flex-grow: 1;
     transition: all 0.2s;
-    flex-basis: 100px;
 }
 
 .color-card {
@@ -129,12 +129,7 @@
     border: 2px solid $ui-black-transparent;
     border-radius: 50%;
     cursor: pointer;
-    padding: calc($space * 1);
     transition: all 0.2s;
-}
-
-.color-card + .color-card {
-    margin-left: 1rem;
 }
 
 .color-card:hover {
@@ -142,6 +137,21 @@
     box-shadow: 0px 0px 0px 4px $looks-transparent;
 }
 
-.color-card + .color-card {
-    margin-left: 1rem;
+.color-picker {
+    height: 35px;
+    width: 35px;
+    border: 2px solid $ui-black-transparent;
+    background-color: transparent;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.color-picker::-webkit-color-swatch {
+    display: none;
+}
+
+.color-picker:hover {
+    border: 2px solid $looks-secondary;
+    box-shadow: 0px 0px 0px 4px $looks-transparent;
 }

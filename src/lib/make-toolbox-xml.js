@@ -504,6 +504,8 @@ const sensing = function (isInitialSetup, isStage, targetId, colors) {
         ${categorySeparator}
         <block type="sensing_dayssince2000"/>
         <block id="current" type="sensing_current"/>
+        ${blockSeparator}
+        <block id="online" type="sensing_online"/>
         <block type="sensing_username"/>
         ${categorySeparator}
     </category>
@@ -1017,9 +1019,14 @@ const myBlocks = function (isInitialSetup, isStage, targetId, colors) {
 };
 
 // eslint-disable-next-line max-len
-const extraTurboWarpBlocks = `
-<block type="argument_reporter_boolean"><field name="VALUE">is compiled?</field></block>
-<block type="argument_reporter_boolean"><field name="VALUE">is Unsandboxed?</field></block>
+const usbBlocksColours = `colourmutprimary="#66757f" colourmutsecondary="#5c6a73" colourmuttertiary="#525e66" colourmutquaternary="#0B8E69"`;
+const extraUnsandboxedBlocks = `
+<block type="argument_reporter_boolean">
+  <field name="VALUE">is compiled?</field><mutation ${usbBlocksColours}></mutation>
+</block>
+<block type="argument_reporter_boolean">
+  <field name="VALUE">is Unsandboxed?</field><mutation ${usbBlocksColours}></mutation>
+</block>
 `;
 /* eslint-enable no-unused-vars */
 
@@ -1027,6 +1034,7 @@ const xmlOpen = '<xml style="display: none">';
 const xmlClose = '</xml>';
 
 /**
+ * @param {?VirtualMachine} vm - Virtual machine instance.
  * @param {!boolean} isInitialSetup - Whether the toolbox is for initial setup. If the mode is "initial setup",
  * blocks with localized default parameters (e.g. ask and wait) should not be loaded. (LLK/scratch-gui#5445)
  * @param {?boolean} isStage - Whether the toolbox is for a stage-type target. This is always set to true
@@ -1042,7 +1050,7 @@ const xmlClose = '</xml>';
  * @param {?object} colors - The colors for the theme.
  * @returns {string} - a ScratchBlocks-style XML document for the contents of the toolbox.
  */
-const makeToolboxXML = function (isInitialSetup, isStage = true, targetId, categoriesXML = [],
+const makeToolboxXML = function (vm, isInitialSetup, isStage = true, targetId, categoriesXML = [],
     costumeName = '', backdropName = '', soundName = '', colors = defaultBlockColors) {
     isStage = isInitialSetup || isStage;
     const gap = [categorySeparator];
@@ -1074,11 +1082,11 @@ const makeToolboxXML = function (isInitialSetup, isStage = true, targetId, categ
     const variablesXML = moveCategory('data') || variables(isInitialSetup, isStage, targetId, colors.data);
     const myBlocksXML = moveCategory('procedures') || myBlocks(isInitialSetup, isStage, targetId, colors.more);
 
-    // Always display TurboWarp blocks as the first extension, if it exists,
+    // Always display Unsandboxed blocks as the first extension, if it exists,
     // and also add an "is compiled?" block to the top.
-    let turbowarpXML = moveCategory('tw');
-    if (turbowarpXML && !turbowarpXML.includes(extraTurboWarpBlocks)) {
-        turbowarpXML = turbowarpXML.replace('<block', `${extraTurboWarpBlocks}<block`);
+    let unsandboxedXML = moveCategory('tw'); // legacy id.
+    if (unsandboxedXML && !unsandboxedXML.includes(extraUnsandboxedBlocks)) {
+        unsandboxedXML = unsandboxedXML.replace('<block', `${extraUnsandboxedBlocks}<block`);
     }
 
     const everything = [
@@ -1096,8 +1104,8 @@ const makeToolboxXML = function (isInitialSetup, isStage = true, targetId, categ
         myBlocksXML
     ];
 
-    if (turbowarpXML) {
-        everything.push(gap, turbowarpXML);
+    if (unsandboxedXML) {
+        everything.push(gap, unsandboxedXML);
     }
 
     for (const extensionCategory of categoriesXML) {
@@ -1105,7 +1113,36 @@ const makeToolboxXML = function (isInitialSetup, isStage = true, targetId, categ
     }
 
     everything.push(xmlClose);
+    if (vm) {
+        vm.emit(
+            'MAKE_TOOLBOX_XML', makeToolboxXML.exports, everything,
+            isInitialSetup, isStage, targetId, categoriesXML,
+            costumeName, backdropName, soundName, colors
+        );
+    }
     return everything.join('\n');
+};
+makeToolboxXML.exports = {
+    make: (...args) => makeToolboxXML(...args),
+    translate,
+    xmlEscape,
+
+    categorySeparator,
+    blockSeparator,
+    xmlOpen,
+    xmlClose,
+    usbBlocksColours,
+    extraUnsandboxedBlocks,
+
+    motion,
+    looks,
+    sound,
+    events,
+    control,
+    sensing,
+    operators,
+    variables,
+    myBlocks
 };
 
 export default makeToolboxXML;

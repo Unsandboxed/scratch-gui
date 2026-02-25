@@ -8,7 +8,8 @@ import log from '../lib/log';
 import extensionLibraryContent, {
     galleryError,
     galleryLoading,
-    galleryMore
+    galleryMore,
+    penGroupGallery
 } from '../lib/libraries/extensions/index.jsx';
 import extensionTags from '../lib/libraries/tw-extension-tags';
 import galleryInsetIcon from '../lib/libraries/extensions/gallery/tw-icon-small.svg';
@@ -165,9 +166,11 @@ class ExtensionLibrary extends React.PureComponent {
             library.push('---');
             if (this.state.gallery) {
                 library.push(toLibraryItem(galleryMore));
+                library.push(toLibraryItem(penGroupGallery));
                 const locale = this.props.intl.locale;
                 library.push(
                     ...this.state.gallery
+                        .filter(i => i.extensionId !== 'faceSensing')
                         .map(i => translateGalleryItem(i, locale))
                         .map(toLibraryItem)
                 );

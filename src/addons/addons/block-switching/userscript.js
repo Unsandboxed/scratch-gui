@@ -742,7 +742,6 @@ export default async function ({ addon, console, msg }) {
     // Because we don't implement the switching ourselves, this is not controlled by the data category option.
     blockSwitches["data_variable"] = [];
     blockSwitches["data_listcontents"] = [];
-    blockSwitches["data_listarraycontents"] = [];
   };
   buildSwitches();
   addon.settings.addEventListener("change", buildSwitches);
@@ -1016,7 +1015,7 @@ export default async function ({ addon, console, msg }) {
           });
         });
 
-        if (block.type === "data_variable" || block.type === "data_listcontents" || block.type === "data_listarraycontents") {
+        if (block.type === "data_variable" || block.type === "data_listcontents") {
           // Add top border to first variable (if it exists)
           const delBlockIndex = items.findIndex((item) => item.text === ScratchBlocks.Msg.DELETE_BLOCK);
           // firstVariableItem might be undefined, a variable to switch to,

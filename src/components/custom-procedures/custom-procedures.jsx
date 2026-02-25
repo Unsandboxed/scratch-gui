@@ -9,6 +9,7 @@ import textInputIcon from './icon--text-input.svg';
 import numberInputIcon from './icon--number-input.svg';
 import statementIcon from './icon--statement-input.svg';
 import labelIcon from './icon--label.svg';
+import pickerIcon from './icon--eye-dropper.svg';
 
 import styles from './custom-procedures.css';
 
@@ -21,17 +22,19 @@ const messages = defineMessages({
 });
 
 const colors = [
-    "#ff6680",
-    "#4c97ff",
-    "#9966ff",
-    "#cf63cf",
-    "#ffbf00",
-    "#ffab19",
-    "#5cb1d6",
-    "#ff4c4c",
-    "#59c059",
-    "#ff8c1a",
-    "#ff661a"
+    {color: "#4C97FF", id: "colours_motion"},
+    {color: "#9966FF", id: "colours_looks"},
+    {color: "#CF63CF", id: "colours_sounds"},
+    {color: "#FFBF00", id: "colours_event"},
+    {color: "#FFAB19", id: "colours_control"},
+    {color: "#5CB1D6", id: "colours_sensing"},
+    {color: "#FF4C4C", id: "colours_camera"},
+    {color: "#59C059", id: "colours_operators"},
+    {color: "#419f86", id: "colours_string"},
+    {color: "#FF8C1A", id: "colours_data"},
+    {color: "#FF661A", id: "colours_data_lists"},
+    {color: "#FF6680", id: "colours_more"},
+    {color: "#0fBD8C", id: "colours_pen"},
 ]
 
 const CustomProcedures = props => (
@@ -158,82 +161,19 @@ const CustomProcedures = props => (
                 />
             </div>
             <Box className={styles.colorRow}>
-                <span style={{ backgroundColor: colors[0] }}
-                    className={styles.colorCard}
-                    role="button"
-                    color={colors[0]}
-                    draggable={false}
-                    onClick={props.onAddColor}
-                />
-                <span style={{ backgroundColor: colors[1] }}
-                    className={styles.colorCard}
-                    role="button"
-                    color={colors[1]}
-                    draggable={false}
-                    onClick={props.onAddColor}
-                />
-                <span style={{ backgroundColor: colors[2] }}
-                    className={styles.colorCard}
-                    role="button"
-                    color={colors[2]}
-                    draggable={false}
-                    onClick={props.onAddColor}
-                />
-                <span style={{ backgroundColor: colors[3] }}
-                    className={styles.colorCard}
-                    role="button"
-                    color={colors[3]}
-                    draggable={false}
-                    onClick={props.onAddColor}
-                />
-                <span style={{ backgroundColor: colors[4] }}
-                    className={styles.colorCard}
-                    role="button"
-                    color={colors[4]}
-                    draggable={false}
-                    onClick={props.onAddColor}
-                />
-                <span style={{ backgroundColor: colors[5] }}
-                    className={styles.colorCard}
-                    role="button"
-                    color={colors[5]}
-                    draggable={false}
-                    onClick={props.onAddColor}
-                />
-                <span style={{ backgroundColor: colors[6] }}
-                    className={styles.colorCard}
-                    role="button"
-                    color={colors[6]}
-                    draggable={false}
-                    onClick={props.onAddColor}
-                />
-                <span style={{ backgroundColor: colors[7] }}
-                    className={styles.colorCard}
-                    role="button"
-                    color={colors[7]}
-                    draggable={false}
-                    onClick={props.onAddColor}
-                />
-                <span style={{ backgroundColor: colors[8] }}
-                    className={styles.colorCard}
-                    role="button"
-                    color={colors[8]}
-                    draggable={false}
-                    onClick={props.onAddColor}
-                />
-                <span style={{ backgroundColor: colors[9] }}
-                    className={styles.colorCard}
-                    role="button"
-                    color={colors[9]}
-                    draggable={false}
-                    onClick={props.onAddColor}
-                />
-                <span style={{ backgroundColor: colors[10] }}
-                    className={styles.colorCard}
-                    role="button"
-                    color={colors[10]}
-                    draggable={false}
-                    onClick={props.onAddColor}
+                {colors.map(item => (
+                    <span style={{ backgroundColor: item.color }}
+                        className={styles.colorCard}
+                        key={item.id}
+                        role="button"
+                        color={item.id}
+                        draggable={false}
+                        onClick={props.onAddColor}
+                    />
+                ))}
+                <input type="color"
+                    className={styles.colorPicker}
+                    onChange={props.onAddColor}
                 />
             </Box>
             <div className={styles.checkboxRow}>
@@ -247,6 +187,30 @@ const CustomProcedures = props => (
                         defaultMessage="Run without screen refresh"
                         description="Label for checkbox to run without screen refresh"
                         id="gui.customProcedures.runWithoutScreenRefresh"
+                    />
+                </label>
+                <label>
+                    <input
+                        checked={props.hat}
+                        type="checkbox"
+                        onChange={props.onToggleHat}
+                    />
+                    <FormattedMessage
+                        defaultMessage="Hat by default"
+                        description="Label for checkbox to make a hat block"
+                        id="gui.customProcedures.hatBlock"
+                    />
+                </label>
+                <label style={{visibility: (props.hat) ? "visible" : "hidden"}}>
+                    <input
+                        checked={props.hatAlwaysActivated}
+                        type="checkbox"
+                        onChange={props.onToggleHatAlwaysActivated}
+                    />
+                    <FormattedMessage
+                        defaultMessage="Run every frame?"
+                        description="Label for checkbox to make a hat block always activated instead of edge activated"
+                        id="gui.customProcedures.hatAlwaysActivated"
                     />
                 </label>
             </div>
@@ -287,7 +251,11 @@ CustomProcedures.propTypes = {
     onCancel: PropTypes.func.isRequired,
     onOk: PropTypes.func.isRequired,
     onToggleWarp: PropTypes.func.isRequired,
-    warp: PropTypes.bool.isRequired
+    onToggleHat: PropTypes.func.isRequired,
+    onToggleHatAlwaysActivated: PropTypes.func.isRequired,
+    warp: PropTypes.bool.isRequired,
+    hat: PropTypes.bool.isRequired,
+    hatAlwaysActivated: PropTypes.bool.isRequired
 };
 
 export default injectIntl(CustomProcedures);

@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import Box from '../box/box.jsx';
 import Monitor from '../../containers/monitor.jsx';
 import PropTypes from 'prop-types';
-// import {OrderedMap} from 'immutable';
 import {stageSizeToTransform} from '../../lib/screen-utils';
 import {sanitizeVariableValue} from '../../lib/json-utils';
 
@@ -22,7 +21,7 @@ const MonitorList = props => (
             className={styles.monitorListScaler}
             style={stageSizeToTransform(props.stageSize)}
         >
-            {props.monitors.valueSeq().filter(m => m.visible)
+            {props.monitors && props.monitors.valueSeq().filter(m => m.visible)
                 .map(monitorData => (
                     <Monitor
                         draggable={props.draggable}
@@ -54,8 +53,9 @@ const MonitorList = props => (
 
 MonitorList.propTypes = {
     draggable: PropTypes.bool.isRequired,
-    // @todo: Figure out why this keeps erroring in development
-    monitors: PropTypes.any, // PropTypes.instanceOf(OrderedMap),
+    monitors: PropTypes.shape({
+        valueSeq: PropTypes.func
+    }),
     onMonitorChange: PropTypes.func.isRequired,
     stageSize: PropTypes.shape({
         width: PropTypes.number,

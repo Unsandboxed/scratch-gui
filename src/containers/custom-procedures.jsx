@@ -17,13 +17,17 @@ class CustomProcedures extends React.Component {
             'handleAddNumber',
             'handleAddColor',
             'handleToggleWarp',
+            'handleToggleHat',
+            'handleToggleHatAlwaysActivated',
             'handleCancel',
             'handleOk',
             'setBlocks'
         ]);
         this.state = {
             rtlOffset: 0,
-            warp: false
+            warp: false,
+            hat: false,
+            hatAlwaysActivated: true,
         };
     }
     componentWillUnmount () {
@@ -41,6 +45,7 @@ class CustomProcedures extends React.Component {
         );
 
         const ScratchBlocks = LazyScratchBlocks.get();
+        this.ScratchBlocks = ScratchBlocks;
         // @todo This is a hack to make there be no toolbox.
         const oldDefaultToolbox = ScratchBlocks.Blocks.defaultToolbox;
         ScratchBlocks.Blocks.defaultToolbox = null;
@@ -107,7 +112,11 @@ class CustomProcedures extends React.Component {
         this.mutationRoot.domToMutation(this.props.mutator);
         this.mutationRoot.initSvg();
         this.mutationRoot.render();
-        this.setState({warp: this.mutationRoot.getWarp()});
+        this.setState({
+            warp: !!this.mutationRoot.getWarp(),
+            hat: !!this.mutationRoot.getHatDefault(),
+            hatAlwaysActivated: !!this.mutationRoot.getHatAlwaysActivated()
+        });
         // Allow the initial events to run to position this block, then focus.
         setTimeout(() => {
             this.mutationRoot.focusLastEditor_();
@@ -146,11 +155,16 @@ class CustomProcedures extends React.Component {
         }
     }
     handleAddColor (color) {
+        let newColor = color.target.getAttribute("color");
+        if (!newColor) newColor = color.target.value;
+
+        // todo: there's probably a way to do this within the component itself
+        color.target.style.backgroundColor = newColor;
+
         if (this.mutationRoot) {
-            this.mutationRoot.setColour(color.target.getAttribute("color"));
-            this.setState({colour: color.target.getAttribute("color")});
-            this.mutationRoot.updateDisplay_();
-            this.mutationRoot.focusLastEditor_();
+            this.mutationRoot.customColour_ = newColor;
+            this.ScratchBlocks.ScratchBlocks.ProcedureUtils.parseColourMutation.call(this.mutationRoot, newColor);
+            this.setState({colour: newColor});
         }
     }
     handleToggleWarp () {
@@ -160,12 +174,31 @@ class CustomProcedures extends React.Component {
             this.setState({warp: newWarp});
         }
     }
+    handleToggleHat () {
+        if (this.mutationRoot) {
+            const newHatDefault = !this.mutationRoot.getHatDefault();
+            this.mutationRoot.setHatDefault(newHatDefault);
+            this.setState({hat: newHatDefault});
+        }
+    }
+    handleToggleHatAlwaysActivated () {
+        if (this.mutationRoot) {
+            const newHatAlwaysActivated = !this.mutationRoot.getHatAlwaysActivated();
+            this.mutationRoot.setHatAlwaysActivated(newHatAlwaysActivated);
+            this.setState({hatAlwaysActivated: newHatAlwaysActivated});
+        }
+    }
     render () {
         return (
             <CustomProceduresComponent
                 componentRef={this.setBlocks}
                 warp={this.state.warp}
+<<<<<<< HEAD
                 onAddStatement={this.handleAddStatement}
+=======
+                hat={this.state.hat}
+                hatAlwaysActivated={this.state.hatAlwaysActivated}
+>>>>>>> develop
                 onAddBoolean={this.handleAddBoolean}
                 onAddLabel={this.handleAddLabel}
                 onAddText={this.handleAddText}
@@ -174,6 +207,8 @@ class CustomProcedures extends React.Component {
                 onCancel={this.handleCancel}
                 onOk={this.handleOk}
                 onToggleWarp={this.handleToggleWarp}
+                onToggleHat={this.handleToggleHat}
+                onToggleHatAlwaysActivated={this.handleToggleHatAlwaysActivated}
             />
         );
     }
