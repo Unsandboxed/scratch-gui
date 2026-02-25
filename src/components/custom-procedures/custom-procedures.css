@@ -72,12 +72,12 @@
 .checkbox-row {
     display: flex;
     margin-top: 1rem;
-    justify-content: space-between;
 }
 
 .checkbox-container {
     display: flex;
     align-items: center;
+    margin-left: 16px;
 }
 
 .checkbox {

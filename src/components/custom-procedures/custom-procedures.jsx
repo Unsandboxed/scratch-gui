@@ -160,18 +160,6 @@ const CustomProcedures = props => (
                 <label className={styles.checkboxContainer}>
                     <FancyCheckbox
                         className={styles.checkbox}
-                        checked={props.warp}
-                        onChange={props.onToggleWarp}
-                    />
-                    <FormattedMessage
-                        defaultMessage="Run without screen refresh"
-                        description="Label for checkbox to run without screen refresh"
-                        id="gui.customProcedures.runWithoutScreenRefresh"
-                    />
-                </label>
-                <label className={styles.checkboxContainer}>
-                    <FancyCheckbox
-                        className={styles.checkbox}
                         checked={props.hat}
                         onChange={props.onToggleHat}
                     />
@@ -193,6 +181,20 @@ const CustomProcedures = props => (
                         defaultMessage="Run every frame?"
                         description="Label for checkbox to make a hat block always activated instead of edge activated"
                         id="gui.customProcedures.hatAlwaysActivated"
+                    />
+                </label>
+            </div>
+            <div className={styles.checkboxRow}>
+                <label className={styles.checkboxContainer}>
+                    <FancyCheckbox
+                        className={styles.checkbox}
+                        checked={props.warp}
+                        onChange={props.onToggleWarp}
+                    />
+                    <FormattedMessage
+                        defaultMessage="Run without screen refresh"
+                        description="Label for checkbox to run without screen refresh"
+                        id="gui.customProcedures.runWithoutScreenRefresh"
                     />
                 </label>
             </div>
