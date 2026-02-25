@@ -18,6 +18,7 @@ class CustomProcedures extends React.Component {
             'handleToggleWarp',
             'handleToggleHat',
             'handleToggleHatAlwaysActivated',
+            'handleToggleGlobal',
             'handleCancel',
             'handleOk',
             'setBlocks'
@@ -25,6 +26,7 @@ class CustomProcedures extends React.Component {
         this.state = {
             rtlOffset: 0,
             warp: false,
+            global: false,
             hat: false,
             hatAlwaysActivated: true,
         };
@@ -113,6 +115,7 @@ class CustomProcedures extends React.Component {
         this.mutationRoot.render();
         this.setState({
             warp: !!this.mutationRoot.getWarp(),
+            global: !!this.mutationRoot.getGlobal(),
             hat: !!this.mutationRoot.getHatDefault(),
             hatAlwaysActivated: !!this.mutationRoot.getHatAlwaysActivated()
         });
@@ -182,6 +185,13 @@ class CustomProcedures extends React.Component {
             this.setState({hatAlwaysActivated: newHatAlwaysActivated});
         }
     }
+    handleToggleGlobal () {
+        if (this.mutationRoot) {
+            const newGlobal = !this.mutationRoot.getGlobal();
+            this.mutationRoot.setGlobal(newGlobal);
+            this.setState({global: newGlobal});
+        }
+    }
     render () {
         return (
             <CustomProceduresComponent
@@ -189,6 +199,7 @@ class CustomProcedures extends React.Component {
                 warp={this.state.warp}
                 hat={this.state.hat}
                 hatAlwaysActivated={this.state.hatAlwaysActivated}
+                global={this.state.global}
                 onAddBoolean={this.handleAddBoolean}
                 onAddLabel={this.handleAddLabel}
                 onAddText={this.handleAddText}
@@ -199,6 +210,7 @@ class CustomProcedures extends React.Component {
                 onToggleWarp={this.handleToggleWarp}
                 onToggleHat={this.handleToggleHat}
                 onToggleHatAlwaysActivated={this.handleToggleHatAlwaysActivated}
+                onToggleGlobal={this.handleToggleGlobal}
             />
         );
     }
