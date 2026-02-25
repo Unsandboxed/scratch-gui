@@ -193,12 +193,9 @@ class CustomProcedures extends React.Component {
             <CustomProceduresComponent
                 componentRef={this.setBlocks}
                 warp={this.state.warp}
-<<<<<<< HEAD
                 onAddStatement={this.handleAddStatement}
-=======
                 hat={this.state.hat}
                 hatAlwaysActivated={this.state.hatAlwaysActivated}
->>>>>>> develop
                 onAddBoolean={this.handleAddBoolean}
                 onAddLabel={this.handleAddLabel}
                 onAddText={this.handleAddText}
