@@ -11,11 +11,6 @@
     padding: 1.5rem 2.25rem;
 }
 
-.body input[type="checkbox"],
-.body input[type="radio"] {
-    margin: 3px;
-}
-
 /* Blocks workspace for custom procedure declaration editor */
 .workspace {
     min-height: 200px;
@@ -77,7 +72,18 @@
 .checkbox-row {
     display: flex;
     margin-top: 1rem;
-    justify-content: space-between;
+    margin-left: -16px;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-left: 16px;
+}
+
+.checkbox {
+    display: flex;
+    margin-right: 8px;
 }
 
 /* Confirmation buttons at the bottom of the modal */
