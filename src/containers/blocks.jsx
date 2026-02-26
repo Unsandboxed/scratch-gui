@@ -371,6 +371,8 @@ class Blocks extends React.Component {
         this.props.vm.addListener('PERIPHERAL_CONNECTED', this.handleStatusButtonUpdate);
         this.props.vm.addListener('PERIPHERAL_DISCONNECTED', this.handleStatusButtonUpdate);
         this.props.vm.addListener('CREATE_UNSANDBOXED_EXTENSION_API', this.onExtensionAPI);
+
+        this.ScratchBlocks.Procedures.vmCanDeleteDefinitionCallback_ = (...args) => this.props.vm.sbCanDeleteDefinitionCallback_(...args);
     }
     detachVM () {
         this.props.vm.removeListener('SCRIPT_GLOW_ON', this.onScriptGlowOn);
@@ -386,6 +388,8 @@ class Blocks extends React.Component {
         this.props.vm.removeListener('PERIPHERAL_CONNECTED', this.handleStatusButtonUpdate);
         this.props.vm.removeListener('PERIPHERAL_DISCONNECTED', this.handleStatusButtonUpdate);
         this.props.vm.removeListener('CREATE_UNSANDBOXED_EXTENSION_API', this.onExtensionAPI);
+
+        this.ScratchBlocks.Procedures.vmCanDeleteDefinitionCallback_ = () => true;
     }
 
     onExtensionAPI(Scratch) {
