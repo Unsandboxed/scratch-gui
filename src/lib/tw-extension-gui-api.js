@@ -7,6 +7,8 @@ import AddonHooks from '../addons/hooks';
  */
 const implementGuiAPI = Scratch => {
     Scratch.gui = {
+        immutable: Scratch.vm.$.modules.immutable(),
+
         /**
          * Lazily get the internal ScratchBlocks object when it becomes available. It may never be
          * available if, for example, the user never enters the editor.
