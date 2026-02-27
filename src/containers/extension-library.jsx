@@ -9,7 +9,8 @@ import extensionLibraryContent, {
     galleryError,
     galleryLoading,
     galleryMore,
-    penGroupGallery
+    penGroupGallery,
+    blacklist
 } from '../lib/libraries/extensions/index.jsx';
 import extensionTags from '../lib/libraries/tw-extension-tags';
 import galleryInsetIcon from '../lib/libraries/extensions/gallery/tw-icon-small.svg';
@@ -84,7 +85,7 @@ const fetchLibrary = async () => {
             text: sample
         })) : null,
         featured: true
-    }));
+    })).filter(extension => !blacklist.has(extension.extensionId));
 };
 
 class ExtensionLibrary extends React.PureComponent {

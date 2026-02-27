@@ -65,6 +65,28 @@ import penGroupInsetIcon from './gallery/penGroup-icon-small.svg';
 
 import {APP_NAME} from '../../brand';
 
+export const blacklist = new Set([
+    // the following are blacklisted for having better alternitives or being broken in unfixable ways
+    'lmsutilsblocks',
+    'RixxyX',
+    'qxsckvarandlist',
+    'verctedictionaries',
+    'betterpen',
+    'ShovelUtils',
+    'cs2627883NumericalEncoding',
+    'images',
+    'lmsmcutils',
+    'DTcameracontrols',
+    'SPcamera',
+    'skyhigh173JSON',
+    'clayhtmlencode',
+    // the following are for having our own versions tailored to our mod
+    // TODO: cast, runtime options, clones plus
+    // NONE RIGHT NOW :<
+    // the following are for bad conduct towards oss
+    '0832rxfs2',
+]);
+
 export default [
     {
         name: (
