@@ -20,6 +20,7 @@ class CustomProcedures extends React.Component {
             'handleToggleHat',
             'handleToggleHatAlwaysActivated',
             'handleToggleGlobal',
+            'handleToggleSharedLocals',
             'handleCancel',
             'handleOk',
             'setBlocks'
@@ -30,6 +31,7 @@ class CustomProcedures extends React.Component {
             global: false,
             hat: false,
             hatAlwaysActivated: true,
+            sharedLocals: false
         };
     }
     componentWillUnmount () {
@@ -118,7 +120,8 @@ class CustomProcedures extends React.Component {
             warp: !!this.mutationRoot.getWarp(),
             global: !!this.mutationRoot.getGlobal(),
             hat: !!this.mutationRoot.getHatDefault(),
-            hatAlwaysActivated: !!this.mutationRoot.getHatAlwaysActivated()
+            hatAlwaysActivated: !!this.mutationRoot.getHatAlwaysActivated(),
+            sharedLocals: !!this.mutationRoot.getPollutesLocals()
         });
         // Allow the initial events to run to position this block, then focus.
         setTimeout(() => {
@@ -198,6 +201,13 @@ class CustomProcedures extends React.Component {
             this.setState({global: newGlobal});
         }
     }
+    handleToggleSharedLocals () {
+        if (this.mutationRoot) {
+            const newSharedLocals = !this.mutationRoot.getPollutesLocals();
+            this.mutationRoot.setPollutesLocals(newSharedLocals);
+            this.setState({sharedLocals: newSharedLocals});
+        }
+    }
     render () {
         return (
             <CustomProceduresComponent
@@ -206,6 +216,7 @@ class CustomProcedures extends React.Component {
                 onAddStatement={this.handleAddStatement}
                 hat={this.state.hat}
                 hatAlwaysActivated={this.state.hatAlwaysActivated}
+                sharedLocals={this.state.sharedLocals}
                 global={this.state.global}
                 onAddBoolean={this.handleAddBoolean}
                 onAddLabel={this.handleAddLabel}
@@ -218,6 +229,7 @@ class CustomProcedures extends React.Component {
                 onToggleHat={this.handleToggleHat}
                 onToggleHatAlwaysActivated={this.handleToggleHatAlwaysActivated}
                 onToggleGlobal={this.handleToggleGlobal}
+                onToggleSharedLocals={this.handleToggleSharedLocals}
             />
         );
     }

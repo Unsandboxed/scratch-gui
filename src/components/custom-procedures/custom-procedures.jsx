@@ -232,6 +232,20 @@ const CustomProcedures = props => (
                         id="gui.customProcedures.forAllSprites"
                     />
                 </label>
+                <label className={styles.checkboxContainer}
+                    style={{visibility: (props.global) ? "visible" : "hidden"}}
+                >
+                    <FancyCheckbox
+                        className={styles.checkbox}
+                        checked={props.sharedLocals}
+                        onChange={props.onToggleSharedLocals}
+                    />
+                    <FormattedMessage
+                        defaultMessage="Share local variables"
+                        description="Label for checkbox to make for this sprite only variables shared"
+                        id="gui.customProcedures.sharedLocals"
+                    />
+                </label>
             </div>
             <Box className={styles.buttonRow}>
                 <button
@@ -273,10 +287,12 @@ CustomProcedures.propTypes = {
     onToggleHat: PropTypes.func.isRequired,
     onToggleHatAlwaysActivated: PropTypes.func.isRequired,
     onToggleGlobal: PropTypes.func.isRequired,
+    onToggleSharedLocals: PropTypes.func.isRequired,
     warp: PropTypes.bool.isRequired,
     hat: PropTypes.bool.isRequired,
     global: PropTypes.bool.isRequired,
-    hatAlwaysActivated: PropTypes.bool.isRequired
+    hatAlwaysActivated: PropTypes.bool.isRequired,
+    sharedLocals: PropTypes.bool.isRequired
 };
 
 export default injectIntl(CustomProcedures);
