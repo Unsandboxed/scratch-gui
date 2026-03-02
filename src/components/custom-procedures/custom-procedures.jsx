@@ -219,6 +219,34 @@ const CustomProcedures = props => (
                     />
                 </label>
             </div>
+            <div className={styles.checkboxRow}>
+                <label className={styles.checkboxContainer}>
+                    <FancyCheckbox
+                        className={styles.checkbox}
+                        checked={props.global}
+                        onChange={props.onToggleGlobal}
+                    />
+                    <FormattedMessage
+                        defaultMessage="For all sprites"
+                        description="Label for checkbox to work for all sprites"
+                        id="gui.customProcedures.forAllSprites"
+                    />
+                </label>
+                <label className={styles.checkboxContainer}
+                    style={{visibility: (props.global) ? "visible" : "hidden"}}
+                >
+                    <FancyCheckbox
+                        className={styles.checkbox}
+                        checked={props.sharedLocals}
+                        onChange={props.onToggleSharedLocals}
+                    />
+                    <FormattedMessage
+                        defaultMessage="Share local variables"
+                        description="Label for checkbox to make for this sprite only variables shared"
+                        id="gui.customProcedures.sharedLocals"
+                    />
+                </label>
+            </div>
             <Box className={styles.buttonRow}>
                 <button
                     className={styles.cancelButton}
@@ -258,9 +286,13 @@ CustomProcedures.propTypes = {
     onToggleWarp: PropTypes.func.isRequired,
     onToggleHat: PropTypes.func.isRequired,
     onToggleHatAlwaysActivated: PropTypes.func.isRequired,
+    onToggleGlobal: PropTypes.func.isRequired,
+    onToggleSharedLocals: PropTypes.func.isRequired,
     warp: PropTypes.bool.isRequired,
     hat: PropTypes.bool.isRequired,
-    hatAlwaysActivated: PropTypes.bool.isRequired
+    global: PropTypes.bool.isRequired,
+    hatAlwaysActivated: PropTypes.bool.isRequired,
+    sharedLocals: PropTypes.bool.isRequired
 };
 
 export default injectIntl(CustomProcedures);
