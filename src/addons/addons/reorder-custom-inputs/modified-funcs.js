@@ -1,7 +1,7 @@
 // https://github.com/scratchfoundation/scratch-blocks/blob/f210e042988b91bcdc2abeca7a2d85e178edadb2/blocks_vertical/procedures.js#L205
 export function modifiedCreateAllInputs(connectionMap) {
   // Split the proc into components, by %n, %b, %s, %f and %l (ignoring escaped).
-  var procComponents = this.procCode_.split(/(?=[^\\]%[nbsfl])/);
+  var procComponents = this.procCode_.split(/(?=[^\\]%[nbsfloa])/);
   procComponents = procComponents.map(function (c) {
     return c.trim(); // Strip whitespace.
   });
@@ -13,7 +13,10 @@ export function modifiedCreateAllInputs(connectionMap) {
     // Don't treat %l as an argument
     if (component.substring(0, 1) == "%" && component.substring(1, 2) !== "l") {
       var argumentType = component.substring(1, 2);
-      if (!(argumentType == "n" || argumentType == "b" || argumentType == "s" || argumentType == "f" )) {
+      if (!(
+        argumentType == "n" || argumentType == "b" || argumentType == "s" ||
+        argumentType == "f" || argumentType == 'o' || argumentType == 'a'
+        )) {
         throw new Error("Found an custom procedure with an invalid type: " + argumentType);
       }
       labelText = component.substring(2).trim();
@@ -24,6 +27,10 @@ export function modifiedCreateAllInputs(connectionMap) {
         var input = this.appendValueInput(id);
         if (argumentType == 'b') {
           input.setCheck("Boolean");
+        } else if (argumentType == 'o') {
+          input.setCheck("Object");
+        } else if (argumentType == 'a') {
+          input.setCheck("Array");
         }
       } else {
         var input = this.appendStatementInput(id);
@@ -63,6 +70,10 @@ export function modifiedUpdateDeclarationProcCode(prefixLabels = false) {
         this.procCode_ += "%b";
       } else if (target.type == "argument_editor_number") {
         this.procCode_ += "%n";
+      } else if (target.type == "argument_editor_array") {
+        this.procCode_ += '%a';
+      } else if (target.type == 'argument_editor_object') {
+        this.procCode_ += '%o';
       } else {
         this.procCode_ += "%s";
       }

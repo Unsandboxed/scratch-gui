@@ -7,8 +7,8 @@ export default async function ({ addon, console }) {
     Blockly.WidgetDiv.DIV.insertAdjacentHTML(
       "beforeend",
       `
-            <svg width="20px" height="40px" 
-                 style="left: ${direction === "left" ? "calc(50% - 20px)" : "calc(50% + 20px)"}" 
+            <svg width="20px" height="40px"
+                 style="left: ${direction === "left" ? "calc(50% - 20px)" : "calc(50% + 20px)"}"
                  class="blocklyTextShiftArrow">
                 <path d="${path}" fill="none" stroke="#FF661A" stroke-width="2"></path>
             </svg>`
@@ -23,7 +23,7 @@ export default async function ({ addon, console }) {
     if (this.inputList.length === 1) {
       return;
     }
-      
+
     var inputNameToRemove = null;
     var inputNameIndex;
 
@@ -45,7 +45,7 @@ export default async function ({ addon, console }) {
         }
       }
     }
-    
+
     // There must be at least one field before a statement input.
     if (this.inputList[1].type === 3 && // Blockly.NEXT_STATEMENT
         inputNameIndex === 0) {
@@ -161,7 +161,10 @@ export default async function ({ addon, console }) {
     procedureDeclaration.onChangeFn = modifiedUpdateDeclarationProcCode;
     procedureDeclaration.removeFieldCallback = modifiedRemoveFieldCallback;
 
-    for (const inputFn of ["addLabelExternal", "addBooleanExternal", "addStringExternal", "addNumberExternal", "addStatementExternal"]) {
+    for (const inputFn of [
+        "addLabelExternal", "addBooleanExternal", "addStringExternal", "addNumberExternal",
+        "addArrayExternal", "addObjectExternal",
+        "addStatementExternal"]) {
       if (save_original) {
         originalAddFns[inputFn] = procedureDeclaration[inputFn];
       }
