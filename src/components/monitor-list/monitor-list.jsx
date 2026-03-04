@@ -4,7 +4,6 @@ import Box from '../box/box.jsx';
 import Monitor from '../../containers/monitor.jsx';
 import PropTypes from 'prop-types';
 import {stageSizeToTransform} from '../../lib/screen-utils';
-import {sanitizeVariableValue} from '../../lib/json-utils';
 
 import styles from './monitor-list.css';
 
@@ -36,10 +35,7 @@ const MonitorList = props => (
                         params={monitorData.params}
                         spriteName={monitorData.spriteName}
                         targetId={monitorData.targetId}
-                        value={sanitizeVariableValue(
-                            monitorData.value,
-                            monitorData.mode
-                        )}
+                        value={monitorData.value}
                         width={monitorData.width}
                         x={monitorData.x}
                         y={monitorData.y}

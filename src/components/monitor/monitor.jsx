@@ -1,4 +1,5 @@
 import React from 'react';
+import VM from 'scratch-vm';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import Draggable from 'react-draggable';
@@ -160,7 +161,8 @@ MonitorComponent.propTypes = {
     onSetModeToSlider: PropTypes.func,
     onSliderPromptOpen: PropTypes.func,
     theme: PropTypes.instanceOf(Theme).isRequired,
-    getType: PropTypes.func
+    getType: PropTypes.func,
+    vm: PropTypes.instanceOf(VM).isRequired
 };
 
 MonitorComponent.defaultProps = {

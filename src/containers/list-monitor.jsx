@@ -39,9 +39,18 @@ class ListMonitor extends React.Component {
             return;
         }
 
+        const tc = this.props.vm.runtime.customDataTypes.getTCof(this.props.value[index]);
         this.setState({
             activeIndex: index,
-            activeValue: safeStringify(this.props.value[index]),
+            activeValue: (
+                tc ?
+                    (vm.runtime.customDataTypes.callExtraMode(
+                        vm.runtime.customDataTypes.reverseTypeNameLookup(tc),
+                        'serializeForListRow',
+                        this.props.value[index]
+                    ) ?? safeStringify(this.props.value[index])) :
+                    safeStringify(this.props.value[index])
+            ),
             inputDidChange: false
         });
     }
@@ -124,6 +133,7 @@ class ListMonitor extends React.Component {
             .concat(listValue.slice(this.state.activeIndex + 1));
         setVariableValue(vm, targetId, variableId, newListValue);
         const newActiveIndex = Math.min(newListValue.length - 1, this.state.activeIndex);
+
         this.setState({
             activeIndex: newActiveIndex,
             activeValue: safeStringify(newListValue[newActiveIndex]),
@@ -193,7 +203,6 @@ class ListMonitor extends React.Component {
 
     render () {
         const {
-            vm, // eslint-disable-line no-unused-vars
             ...props
         } = this.props;
         return (
@@ -227,15 +236,8 @@ ListMonitor.propTypes = {
         height: PropTypes.number
     }),
     targetId: PropTypes.string,
-    value: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-        PropTypes.arrayOf(PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.number
-        ]))
-    ]),
-    vm: PropTypes.instanceOf(VM),
+    value: PropTypes.arrayOf(PropTypes.any).isRequired,
+    vm: PropTypes.instanceOf(VM).isRequired,
     width: PropTypes.number,
     x: PropTypes.number,
     y: PropTypes.number

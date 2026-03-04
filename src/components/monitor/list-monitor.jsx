@@ -21,7 +21,7 @@ const ListMonitor = ({draggable, label, locked, width, height, value, onResizeMo
                 className={classNames(draggable ? styles.lockButton : null, 'no-drag')}
                 onClick={draggable ? onLock : null}
             >
-                {(draggable) ? 
+                {(draggable) ?
                     <img className={styles.padlockIcon}
                     draggable={false}
                     src={(locked) ? lockedIcon : unlockedIcon}
@@ -82,14 +82,7 @@ ListMonitor.propTypes = {
     onAdd: PropTypes.func,
     onLock: PropTypes.func,
     onResizeMouseDown: PropTypes.func,
-    value: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number,
-        PropTypes.arrayOf(PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.number
-        ]))
-    ]),
+    value: PropTypes.arrayOf(PropTypes.any).isRequired,
     width: PropTypes.number,
     locked: PropTypes.bool
 };

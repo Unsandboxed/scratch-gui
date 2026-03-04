@@ -1,9 +1,9 @@
 import React from 'react';
+import VM from 'scratch-vm';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import bindAll from 'lodash.bindall';
 import {FormattedMessage} from 'react-intl';
-import {sanitize} from '../../lib/json-utils';
 
 import styles from './monitor.css';
 import {List} from 'react-virtualized';
@@ -33,6 +33,8 @@ class ListMonitorScroller extends React.Component {
         );
     }
     rowRenderer ({index, key, style}) {
+        const tc1 = this.props.vm.runtime.customDataTypes.getTCof(this.props.activeValue);
+        const tc2 = this.props.vm.runtime.customDataTypes.getTCof(this.props.values[index]);
         return (
             <div
                 className={styles.listRow}
@@ -58,7 +60,15 @@ class ListMonitorScroller extends React.Component {
                                 spellCheck={'false'}
                                 style={{color: this.props.categoryColor.text}}
                                 type="text"
-                                value={sanitize(this.props.activeValue)}
+                                value={
+                                    tc1 ?
+                                        (this.props.vm.runtime.customDataTypes.callExtraMode(
+                                            this.props.vm.runtime.customDataTypes.reverseTypeNameLookup(tc1),
+                                            'serializeForListRow',
+                                            this.props.activeValue
+                                        ) ?? safeStringify(this.props.activeValue)) :
+                                        safeStringify(this.props.activeValue)
+                                }
                                 onBlur={this.props.onDeactivate}
                                 onChange={this.props.onInput}
                                 onFocus={this.props.onFocus}
@@ -74,7 +84,15 @@ class ListMonitorScroller extends React.Component {
 
                     ) : (
                         <div className={styles.valueInner}>
-                            {safeStringify(this.props.values[index])}
+                            {
+                                tc2 ?
+                                    (this.props.vm.runtime.customDataTypes.callExtraMode(
+                                        this.props.vm.runtime.customDataTypes.reverseTypeNameLookup(tc2),
+                                        'serializeForListRow',
+                                        this.props.values[index]
+                                    ) ?? safeStringify(this.props.values[index])) :
+                                    safeStringify(this.props.values[index])
+                            }
                         </div>
                     )}
                 </div>
@@ -117,10 +135,8 @@ ListMonitorScroller.propTypes = {
     onInput: PropTypes.func,
     onKeyPress: PropTypes.func,
     onRemove: PropTypes.func,
-    values: PropTypes.arrayOf(PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number
-    ])),
-    width: PropTypes.number
+    values: PropTypes.arrayOf(PropTypes.any).isRequired,
+    width: PropTypes.number,
+    vm: PropTypes.instanceOf(VM).isRequired
 };
 export default ListMonitorScroller;
