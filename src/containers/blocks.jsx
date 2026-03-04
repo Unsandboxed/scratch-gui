@@ -384,7 +384,41 @@ class Blocks extends React.Component {
         this.props.vm.addListener('CREATE_UNSANDBOXED_EXTENSION_API', this.onExtensionAPI);
         this.props.vm.runtime.addListener('GLOBAL_PROCEDURE_REMOVED', this.handleGlobalProcedureDeletion);
 
+        const _createHighlighter = (visualType, h) => (
+            (blocklyHighlight, value, goog) => {
+                const node = goog.dom.createElement('span');
+                node.appendChild(blocklyHighlight.highlightSingle(`<${visualType} `, 'ctype.open'));
+                h(blocklyHighlight, value, node, goog);
+                node.appendChild(blocklyHighlight.highlightSingle(`>`, 'ctype.close'));
+                return node;
+            }
+        );
+
+        this.props.vm.runtime.customDataTypes.setExtraMode('set', 'highlight',
+            _createHighlighter('Set', (blocklyHighlight, value, node) => {
+                node.appendChild(blocklyHighlight.highlight(Array.from(value), 'object'));
+            })
+        );
+        this.props.vm.runtime.customDataTypes.setExtraMode('map', 'highlight',
+            _createHighlighter('Map', (blocklyHighlight, _value, node) => {
+                node.appendChild(blocklyHighlight.highlightSingle('{', 'object.openParenth'));
+                node.appendChild(blocklyHighlight.highlightSingle('...', 'ctype.data'));
+                node.appendChild(blocklyHighlight.highlightSingle('}', 'object.closeParenth'));
+            })
+        );
+
         this.ScratchBlocks.Procedures.vmCanDeleteDefinitionCallback_ = (...args) => this.props.vm.sbCanDeleteDefinitionCallback_(...args);
+        this.ScratchBlocks.Highlight.getCustomHighlightFor = (value) => {
+            const c = this.props.vm.runtime.customDataTypes.getTCof(value);
+            if (!c) {
+                return null;
+            }
+            return (...values) => this.props.vm.runtime.customDataTypes.callExtraMode(
+                this.props.vm.runtime.customDataTypes.reverseTypeNameLookup(c),
+                'highlight',
+                ...values,
+            );
+        };
     }
     detachVM () {
         this.props.vm.removeListener('SCRIPT_GLOW_ON', this.onScriptGlowOn);
@@ -403,6 +437,7 @@ class Blocks extends React.Component {
         this.props.vm.runtime.removeListener('GLOBAL_PROCEDURE_REMOVED', this.handleGlobalProcedureDeletion);
 
         this.ScratchBlocks.Procedures.vmCanDeleteDefinitionCallback_ = () => true;
+        this.ScratchBlocks.Highlight.getCustomHighlightFor = () => null;
     }
 
     onExtensionAPI(Scratch) {
