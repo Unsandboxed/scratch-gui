@@ -115,6 +115,7 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.1.0",
     "babel-loader": "8.3.0",
+    "babel-plugin-transform-define": "^2.1.4",
     "child-process-es6-promise": "^1.2.1",
     "chromedriver": "117.0.3",
     "depended": "github:Unsandboxed/depended#main",

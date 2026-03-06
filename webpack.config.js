@@ -67,13 +67,14 @@ const base = {
     },
     module: {
         rules: [{
-            test: /\.jsx?$/,
+            test: /\.((jsx?)|(cjs))$/,
             loader: 'babel-loader',
             include: [
                 path.resolve(__dirname, 'src'),
                 /node_modules[\\/]scratch-[^\\/]+[\\/]src/,
                 /node_modules[\\/]pify/,
-                /node_modules[\\/]@vernier[\\/]godirect/
+                /node_modules[\\/]@vernier[\\/]godirect/,
+                /node_modules[\\/]scratch-blocks[\\/]node_modules[\\/]@yuri-kiss[\\/]muif[\\/]/
             ],
             options: {
                 // Explicitly disable babelrc so we don't catch various config
@@ -82,7 +83,11 @@ const base = {
                 plugins: [
                     ['react-intl', {
                         messagesDir: './translations/messages/'
-                    }]],
+                    }],
+                    ["transform-define", {
+                        'muif.process_env_WEBPACK': 'true'
+                    }]
+                ],
                 presets: ['@babel/preset-env', '@babel/preset-react']
             }
         },
@@ -114,6 +119,10 @@ const base = {
         }]
     },
     plugins: [
+        new webpack.IgnorePlugin(/^(vm|fs|jsdom)$/, /goog$/),
+        new webpack.DefinePlugin({
+            'muif.process_env_WEBPACK': 'true'
+        }),
         new CopyWebpackPlugin({
             patterns: [
                 {
