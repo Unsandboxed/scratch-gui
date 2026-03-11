@@ -47,6 +47,10 @@ const options = defineMessages({
     }
 });
 
+const showFlash = () => {
+    return new URLSearchParams(global.location.search).has('back-in-time');
+};
+
 const icons = {
     [BLOCKS_THREE]: threeIcon,
     [BLOCKS_HIGH_CONTRAST]: highContrastIcon,
@@ -131,7 +135,7 @@ const BlocksThemeMenu = ({
                 BLOCKS_THREE,
                 BLOCKS_HIGH_CONTRAST,
                 BLOCKS_DARK,
-                BLOCKS_FLASH,
+                ...(showFlash()) ? [BLOCKS_FLASH] : [],
                 ...(onOpenCustomSettings ? [BLOCKS_CUSTOM] : [])
             ].map(i => (
                 <ThemeMenuItem

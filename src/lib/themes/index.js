@@ -71,7 +71,7 @@ const BLOCKS_MAP = {
     [BLOCKS_FLASH]: {
         blocksMediaFolder: 'blocks-media/flash',
         colors: defaultsDeep({}, blocksFlash.blockColors, defaultBlockColors),
-        extensions: blocksFlash.extensions,
+        extensions: {},
         customExtensionColors: {},
         useForStage: false
     },

@@ -1,10 +1,3 @@
-import musicIcon from './flash-media/extensions/musicIcon.svg';
-import penIcon from './flash-media/extensions/penIcon.svg';
-import text2speechIcon from './flash-media/extensions/text2speechIcon.svg';
-import translateIcon from './flash-media/extensions/translateIcon.svg';
-import videoSensingIcon from './flash-media/extensions/videoSensingIcon.svg';
-import {hex2hsv, hsv2hex} from '../../tw-color-utils';
-
 const blockColors = {
     motion: {
         primary: '#4a6cd4',
@@ -95,25 +88,6 @@ const blockColors = {
     },
 };
 
-const extensions = {
-    music: {
-        blockIconURI: musicIcon
-    },
-    pen: {
-        blockIconURI: penIcon
-    },
-    text2speech: {
-        blockIconURI: text2speechIcon
-    },
-    translate: {
-        blockIconURI: translateIcon
-    },
-    videoSensing: {
-        blockIconURI: videoSensingIcon
-    }
-};
-
 export {
-    blockColors,
-    extensions
+    blockColors
 };
