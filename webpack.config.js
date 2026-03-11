@@ -125,10 +125,19 @@ const base = {
                     to: 'static/blocks-media/high-contrast'
                 },
                 {
+                    from: 'node_modules/scratch-blocks/media',
+                    to: 'static/blocks-media/flash'
+                },
+                {
                     from: 'src/lib/themes/blocks/high-contrast-media/blocks-media',
                     to: 'static/blocks-media/high-contrast',
                     force: true
-                }
+                },
+                {
+                    from: 'src/lib/themes/blocks/flash-media/blocks-media',
+                    to: 'static/blocks-media/flash',
+                    force: true
+                },
             ]
         })
     ]
