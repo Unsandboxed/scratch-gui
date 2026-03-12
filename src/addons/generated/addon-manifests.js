@@ -32,7 +32,6 @@ import _editor_extra_keys from "../addons/editor-extra-keys/_manifest_entry.js";
 import _editor_number_arrow_keys from "../addons/editor-number-arrow-keys/_manifest_entry.js";
 import _editor_searchable_dropdowns from "../addons/editor-searchable-dropdowns/_manifest_entry.js";
 import _editor_sounds from "../addons/editor-sounds/_manifest_entry.js";
-import _editor_square_inputs from "../addons/editor-square-inputs/_manifest_entry.js";
 import _editor_stage_left from "../addons/editor-stage-left/_manifest_entry.js";
 import _editor_stepping from "../addons/editor-stepping/_manifest_entry.js";
 import _editor_theme3 from "../addons/editor-theme3/_manifest_entry.js";
@@ -113,7 +112,6 @@ export default {
   "editor-number-arrow-keys": _editor_number_arrow_keys,
   "editor-searchable-dropdowns": _editor_searchable_dropdowns,
   "editor-sounds": _editor_sounds,
-  "editor-square-inputs": _editor_square_inputs,
   "editor-stage-left": _editor_stage_left,
   "editor-stepping": _editor_stepping,
   "editor-theme3": _editor_theme3,

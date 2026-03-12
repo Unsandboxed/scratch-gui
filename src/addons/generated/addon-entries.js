@@ -33,7 +33,6 @@ export default {
   "editor-number-arrow-keys": () => import(/* webpackChunkName: "addon-entry-editor-number-arrow-keys" */ "../addons/editor-number-arrow-keys/_runtime_entry.js"),
   "editor-searchable-dropdowns": () => import(/* webpackChunkName: "addon-default-entry" */ "../addons/editor-searchable-dropdowns/_runtime_entry.js"),
   "editor-sounds": () => import(/* webpackChunkName: "addon-entry-editor-sounds" */ "../addons/editor-sounds/_runtime_entry.js"),
-  "editor-square-inputs": () => import(/* webpackChunkName: "addon-entry-editor-square-inputs" */ "../addons/editor-square-inputs/_runtime_entry.js"),
   "editor-stage-left": () => import(/* webpackChunkName: "addon-entry-editor-stage-left" */ "../addons/editor-stage-left/_runtime_entry.js"),
   "editor-stepping": () => import(/* webpackChunkName: "addon-entry-editor-stepping" */ "../addons/editor-stepping/_runtime_entry.js"),
   "editor-theme3": () => import(/* webpackChunkName: "addon-entry-editor-theme3" */ "../addons/editor-theme3/_runtime_entry.js"),
