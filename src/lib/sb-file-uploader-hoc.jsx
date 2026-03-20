@@ -80,6 +80,10 @@ const SBFileUploaderHOC = function (WrappedComponent) {
                             multiple: false,
                             types: [
                                 {
+                                    description: 'Unsandboxed Project',
+                                    '*/*': ['.ubp']
+                                },
+                                {
                                     description: 'Scratch Project',
                                     accept: {
                                         // Chrome on Android tracks the MIME type of files that get downloaded and
