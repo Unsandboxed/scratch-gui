@@ -157,13 +157,10 @@ class ListMonitor extends React.Component {
         const list = getVariable(vm, targetId, variableId);
         list.locked = !list.locked;
         if (Array.isArray(list.value)) {
-            // Freeze locked lists if the list is not already frozen.
-            if (list.locked && !Object.isFrozen(list.value)) {
-                list.value = Object.freeze(list.value);
-                // Unfreeze unlocked lists if the list is not already unfrozen.
-            } else if (!list.locked && Object.isFrozen(list.value)) {
-                // NOTE: cloning is used because there is no Object.unfreeze.
-                list.value = list.value.slice();
+            if (list.locked && !ReadonlyArray.isReadonlyArray(list.value)) {
+                list.value = ReadonlyArray.from(list.value);
+            } else if (!list.locked && ReadonlyArray.isReadonlyArray(list.value)) {
+                list.value = Array.from(list.value);
             }
         }
         this.setState({
