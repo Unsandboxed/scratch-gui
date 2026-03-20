@@ -1,7 +1,7 @@
 {
-  "short_name": "TurboWarp",
-  "name": "TurboWarp",
-  "description": "Mod of Scratch 3 with a compiler, dark mode, and more features.",
+  "short_name": "Unsandboxed",
+  "name": "Unsandboxed",
+  "description": "Unsandboxed is a powerful in-browser tool for creating games.",
   "icons": [
     {
       "src": "images/192.png",
@@ -15,7 +15,7 @@
     }
   ],
   "start_url": "editor",
-  "background_color": "#333333",
+  "background_color": "#808080",
   "display": "standalone",
-  "theme_color": "#333333"
+  "theme_color": "#808080"
 }

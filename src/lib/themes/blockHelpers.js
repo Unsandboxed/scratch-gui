@@ -1,4 +1,4 @@
-import {BLOCKS_THREE} from '.';
+import {BLOCKS_FLASH, BLOCKS_THREE} from '.';
 
 const getBlockIconURI = extensionIcons => {
     if (!extensionIcons) return null;
@@ -97,6 +97,7 @@ const injectBlockIcons = (blockInfoJson, theme) => {
 const injectExtensionBlockTheme = (blockInfoJson, theme) => {
     // Minor optimization -- don't do anything at all for the default theme.
     if (theme.blocks === BLOCKS_THREE) return blockInfoJson;
+    if (theme.blocks === BLOCKS_FLASH) return blockInfoJson;
 
     if (!blockInfoJson.extensions?.includes('default_extension_colors')) {
         const converters = theme.getCustomExtensionColors();

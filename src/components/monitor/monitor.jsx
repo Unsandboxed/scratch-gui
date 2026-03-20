@@ -41,12 +41,13 @@ const getCategoryColor = (theme, category) => {
     };
 };
 
+// TODO: reimplement the "conversion" items in the context menu.
 const MonitorComponent = props => (
     <ContextMenuTrigger
         // TW: if export is defined, we always show it, even outside of the editor
         disable={!props.draggable && !props.onExport}
         holdToDisplay={props.mode === 'slider' ? -1 : 1000}
-        id={`monitor-${props.label}`}
+        id={`monitor-${props.id}`}
     >
         <Draggable
             bounds=".monitor-overlay" // Class for monitor container
@@ -76,8 +77,7 @@ const MonitorComponent = props => (
             // positioning conflicts between the monitors `transform: scale` and
             // the context menus `position: fixed`. For more details, see
             // http://meyerweb.com/eric/thoughts/2011/09/12/un-fixing-fixed-elements-with-css-transforms/
-            <ContextMenu id={`monitor-${props.label}`}>
-                <div id={`monitor-readout-${props.label}`}>
+            <ContextMenu id={`monitor-${props.id}`}>
                 {props.draggable && props.onSetModeToDefault &&
                     <MenuItem onClick={props.onSetModeToDefault}>
                         <FormattedMessage
@@ -102,59 +102,14 @@ const MonitorComponent = props => (
                             id="gui.monitor.contextMenu.slider"
                         />
                     </MenuItem>}
-                </div>
-                {props.draggable && props.mode !== 'list' && <div id={`monitor-edit-${props.label}`}>
-	                {props.onSliderPromptOpen && props.mode === 'slider' &&
-	                    <MenuItem onClick={props.onSliderPromptOpen}>
-	                        <FormattedMessage
-	                            defaultMessage="change slider range"
-	                            description="Menu item to change the slider range"
-	                            id="gui.monitor.contextMenu.sliderRange"
-	                        />
-	                    </MenuItem>}
-	                <BorderedMenuItem onClick={props.onEdit}>
-	                        <FormattedMessage
-	                            defaultMessage="edit content"
-	                            description="Edit the content"
-	                            id="gui.monitor.contextMenu.edit"
-	                        />
-	                    </BorderedMenuItem>
-	                {props.type !== 'string' && <MenuItem onClick={() => props.onConversion('string')}>
-	                        <FormattedMessage
-	                            defaultMessage="convert to string"
-	                            description="Converts the value to a string"
-	                            id="gui.monitor.contextMenu.cts"
-	                        />
-	                    </MenuItem> }
-	                {props.type === 'string' && <MenuItem onClick={() => props.onConversion('number')}>
-	                        <FormattedMessage
-	                            defaultMessage="convert to number"
-	                            description="Converts the value to a number"
-	                            id="gui.monitor.contextMenu.ctn"
-	                        />
-	                    </MenuItem> }
-	                {(props.type === 'string' || props.type === 'number') && <MenuItem onClick={() => props.onConversion('boolean')}>
-	                        <FormattedMessage
-	                            defaultMessage="convert to boolean"
-	                            description="Converts the value to a boolean"
-	                            id="gui.monitor.contextMenu.ctb"
-	                        />
-	                    </MenuItem> }
-	                {props.type === 'string' && <MenuItem onClick={() => props.onConversion('array')}>
-	                        <FormattedMessage
-	                            defaultMessage="convert to array"
-	                            description="Converts the value to an array"
-	                            id="gui.monitor.contextMenu.cta"
-	                        />
-	                    </MenuItem> }
-	                {props.type === 'string' && <MenuItem onClick={() => props.onConversion('object')}>
-	                        <FormattedMessage
-	                            defaultMessage="convert to object"
-	                            description="Converts the value to an object"
-	                            id="gui.monitor.contextMenu.cto"
-	                        />
-	                    </MenuItem> }
-                </div>}
+                {props.draggable && props.onSliderPromptOpen && props.mode === 'slider' &&
+                    <BorderedMenuItem onClick={props.onSliderPromptOpen}>
+                        <FormattedMessage
+                            defaultMessage="change slider range"
+                            description="Menu item to change the slider range"
+                            id="gui.monitor.contextMenu.sliderRange"
+                        />
+                    </BorderedMenuItem>}
                 {props.onImport &&
                     <MenuItem onClick={props.onImport}>
                         <FormattedMessage
@@ -204,7 +159,8 @@ MonitorComponent.propTypes = {
     onSetModeToLarge: PropTypes.func,
     onSetModeToSlider: PropTypes.func,
     onSliderPromptOpen: PropTypes.func,
-    theme: PropTypes.instanceOf(Theme).isRequired
+    theme: PropTypes.instanceOf(Theme).isRequired,
+    getType: PropTypes.func
 };
 
 MonitorComponent.defaultProps = {

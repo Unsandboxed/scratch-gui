@@ -122,7 +122,9 @@ class Blocks extends React.Component {
             'onWorkspaceMetricsChange',
             'setBlocks',
             'setLocale',
-            'handleEnableProcedureReturns'
+            'handleEnableProcedureReturns',
+            'onExtensionAPI',
+            'handleGlobalProcedureDeletion'
         ]);
         this.ScratchBlocks.prompt = this.handlePromptStart;
         this.ScratchBlocks.statusButtonCallback = this.handleConnectionModalStart;
@@ -350,6 +352,16 @@ class Blocks extends React.Component {
         }
     }
 
+    handleGlobalProcedureDeletion (proccode) {
+        if (this.workspace) {
+            this.workspace.deleteGlobalProcedureMutationByProccode(proccode);
+        }
+        if (this.flyoutWorkspace) {
+            this.flyoutWorkspace.deleteGlobalProcedureMutationByProccode(proccode);
+        }
+        this.requestToolboxUpdate();
+    }
+
     attachVM () {
         this.workspace.addChangeListener(this.props.vm.blockListener);
         this.flyoutWorkspace = this.workspace
@@ -369,6 +381,10 @@ class Blocks extends React.Component {
         this.props.vm.addListener('BLOCKSINFO_UPDATE', this.handleBlocksInfoUpdate);
         this.props.vm.addListener('PERIPHERAL_CONNECTED', this.handleStatusButtonUpdate);
         this.props.vm.addListener('PERIPHERAL_DISCONNECTED', this.handleStatusButtonUpdate);
+        this.props.vm.addListener('CREATE_UNSANDBOXED_EXTENSION_API', this.onExtensionAPI);
+        this.props.vm.runtime.addListener('GLOBAL_PROCEDURE_REMOVED', this.handleGlobalProcedureDeletion);
+
+        this.ScratchBlocks.Procedures.vmCanDeleteDefinitionCallback_ = (...args) => this.props.vm.sbCanDeleteDefinitionCallback_(...args);
     }
     detachVM () {
         this.props.vm.removeListener('SCRIPT_GLOW_ON', this.onScriptGlowOn);
@@ -383,6 +399,15 @@ class Blocks extends React.Component {
         this.props.vm.removeListener('BLOCKSINFO_UPDATE', this.handleBlocksInfoUpdate);
         this.props.vm.removeListener('PERIPHERAL_CONNECTED', this.handleStatusButtonUpdate);
         this.props.vm.removeListener('PERIPHERAL_DISCONNECTED', this.handleStatusButtonUpdate);
+        this.props.vm.removeListener('CREATE_UNSANDBOXED_EXTENSION_API', this.onExtensionAPI);
+        this.props.vm.runtime.removeListener('GLOBAL_PROCEDURE_REMOVED', this.handleGlobalProcedureDeletion);
+
+        this.ScratchBlocks.Procedures.vmCanDeleteDefinitionCallback_ = () => true;
+    }
+
+    onExtensionAPI(Scratch) {
+        // Assume's the Scratch.gui handle was ran.
+        Scratch.gui.makeToolboxXML = makeToolboxXML;
     }
 
     updateToolboxBlockValue (id, value) {
@@ -457,7 +482,7 @@ class Blocks extends React.Component {
                 this.props.vm.runtime.getBlocksXML(target),
                 this.props.theme
             );
-            return makeToolboxXML(false, target.isStage, target.id, dynamicBlocksXML,
+            return makeToolboxXML(this.props.vm, false, target.isStage, target.id, dynamicBlocksXML,
                 targetCostumes[targetCostumes.length - 1].name,
                 stageCostumes[stageCostumes.length - 1].name,
                 targetSounds.length > 0 ? targetSounds[targetSounds.length - 1].name : '',
@@ -584,6 +609,7 @@ class Blocks extends React.Component {
         }
     }
     handleShapeAddition (categoryInfo, shapeInfo) {
+        if (this.ScratchBlocks.CustomShapes.has(shapeInfo.name)) return;
         this.ScratchBlocks.CustomShapes.register(shapeInfo.name, shapeInfo, categoryInfo);
     }
     handleBlocksInfoUpdate (categoryInfo) {

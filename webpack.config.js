@@ -111,15 +111,6 @@ const base = {
                     }
                 }
             }]
-        },
-        {
-            test: /\.hex$/,
-            use: [{
-                loader: 'url-loader',
-                options: {
-                    limit: 16 * 1024
-                }
-            }]
         }]
     },
     plugins: [
@@ -134,10 +125,19 @@ const base = {
                     to: 'static/blocks-media/high-contrast'
                 },
                 {
+                    from: 'node_modules/scratch-blocks/media',
+                    to: 'static/blocks-media/flash'
+                },
+                {
                     from: 'src/lib/themes/blocks/high-contrast-media/blocks-media',
                     to: 'static/blocks-media/high-contrast',
                     force: true
-                }
+                },
+                {
+                    from: 'src/lib/themes/blocks/flash-media/blocks-media',
+                    to: 'static/blocks-media/flash',
+                    force: true
+                },
             ]
         })
     ]
@@ -164,7 +164,7 @@ module.exports = [
         module: {
             rules: base.module.rules.concat([
                 {
-                    test: /\.(svg|png|wav|mp3|gif|jpg|woff2)$/,
+                    test: /\.(svg|png|wav|mp3|gif|jpg|woff2|hex)$/,
                     loader: 'url-loader',
                     options: {
                         limit: 2048,
@@ -188,7 +188,8 @@ module.exports = [
                 'process.env.DEBUG': Boolean(process.env.DEBUG),
                 'process.env.ENABLE_SERVICE_WORKER': JSON.stringify(process.env.ENABLE_SERVICE_WORKER || ''),
                 'process.env.ROOT': JSON.stringify(root),
-                'process.env.ROUTING_STYLE': JSON.stringify(process.env.ROUTING_STYLE || 'filehash')
+                'process.env.ROUTING_STYLE': JSON.stringify(process.env.ROUTING_STYLE || 'filehash'),
+                'process.env.ENABLE_WINDCHIMES': JSON.stringify(process.env.ENABLE_WINDCHIMES || '')
             }),
             new HtmlWebpackPlugin({
                 chunks: ['editor'],
@@ -274,7 +275,7 @@ module.exports = [
             module: {
                 rules: base.module.rules.concat([
                     {
-                        test: /\.(svg|png|wav|mp3|gif|jpg|woff2)$/,
+                        test: /\.(svg|png|wav|mp3|gif|jpg|woff2|hex)$/,
                         loader: 'url-loader',
                         options: {
                             limit: 2048,

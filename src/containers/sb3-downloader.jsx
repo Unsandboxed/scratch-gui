@@ -102,7 +102,7 @@ class SB3Downloader extends React.Component {
                     {
                         description: 'Unsandboxed Project',
                         accept: {
-                            'application/x.unsandboxed.ubp': '.ubp'
+                            'application/octet-stream': '.ubp',
                         }
                     }
                 ],
@@ -295,7 +295,9 @@ SB3Downloader.propTypes = {
 };
 SB3Downloader.defaultProps = {
     className: '',
-    showSaveFilePicker: typeof showSaveFilePicker === 'function' ? window.showSaveFilePicker.bind(window) : null
+    showSaveFilePicker: typeof showSaveFilePicker === 'function' && !navigator.userAgent.includes('Android') ?
+        window.showSaveFilePicker.bind(window) :
+        null
 };
 
 const mapStateToProps = state => ({

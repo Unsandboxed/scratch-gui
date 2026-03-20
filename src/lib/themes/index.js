@@ -13,6 +13,7 @@ import * as guiDark from './gui/dark';
 import * as blocksThree from './blocks/three';
 import * as blocksHighContrast from './blocks/high-contrast';
 import * as blocksDark from './blocks/dark';
+import * as blocksFlash from './blocks/flash';
 
 const ACCENT_PURPLE = 'purple';
 const ACCENT_BLUE = 'blue';
@@ -28,7 +29,7 @@ const ACCENT_MAP = {
     [ACCENT_GREEN]: accentGreen,
     [ACCENT_RAINBOW]: accentRainbow,
 };
-const ACCENT_DEFAULT = ACCENT_RAINBOW;
+const ACCENT_DEFAULT = ACCENT_GRAY;
 
 const GUI_LIGHT = 'light';
 const GUI_DARK = 'dark';
@@ -41,6 +42,7 @@ const GUI_DEFAULT = GUI_LIGHT;
 const BLOCKS_THREE = 'three';
 const BLOCKS_DARK = 'dark';
 const BLOCKS_HIGH_CONTRAST = 'high-contrast';
+const BLOCKS_FLASH = 'flash';
 const BLOCKS_CUSTOM = 'custom';
 const BLOCKS_DEFAULT = BLOCKS_THREE;
 const defaultBlockColors = blocksThree.blockColors;
@@ -64,6 +66,13 @@ const BLOCKS_MAP = {
         colors: defaultsDeep({}, blocksDark.blockColors, defaultBlockColors),
         extensions: blocksDark.extensions,
         customExtensionColors: blocksDark.customExtensionColors,
+        useForStage: false
+    },
+    [BLOCKS_FLASH]: {
+        blocksMediaFolder: 'blocks-media/flash',
+        colors: defaultsDeep({}, blocksFlash.blockColors, defaultBlockColors),
+        extensions: {},
+        customExtensionColors: {},
         useForStage: false
     },
     [BLOCKS_CUSTOM]: {
@@ -167,6 +176,7 @@ export {
     BLOCKS_THREE,
     BLOCKS_DARK,
     BLOCKS_HIGH_CONTRAST,
+    BLOCKS_FLASH,
     BLOCKS_CUSTOM,
     BLOCKS_MAP
 };

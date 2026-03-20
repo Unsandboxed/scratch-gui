@@ -28,6 +28,7 @@ import SettingsMenu from './settings-menu.jsx';
 import EditMenu from './edit-menu.jsx';
 
 import TWSaveStatus from './tw-save-status.jsx';
+import TWNews from './tw-news.jsx';
 
 import {openTipsLibrary, openSettingsModal, openRestorePointModal} from '../../reducers/modals';
 import {setPlayer} from '../../reducers/mode';
@@ -330,9 +331,14 @@ class MenuBar extends React.Component {
     }
     handleKeyPress (event) {
         const modifier = bowser.mac ? event.metaKey : event.ctrlKey;
-        if (modifier && event.key.toLowerCase() === 's') {
-            this.props.handleSaveProject();
-            event.preventDefault();
+        if (modifier) {
+            if (event.key.toLowerCase() === 's') {
+                this.props.handleSaveProject();
+                event.preventDefault();    
+            } else if (event.key.toLowerCase() === 'o') {
+                event.preventDefault();    
+                this.props.onStartSelectingFileUpload();
+            }
         }
     }
     getSaveToComputerHandler (downloadProjectCallback) {
@@ -470,7 +476,7 @@ class MenuBar extends React.Component {
         );
         // Show the About button only if we have a handler for it (like in the desktop app)
         const aboutButton = this.buildAboutMenu(this.props.onClickAbout);
-        return (
+        const menuBar = (
             <Box
                 className={classNames(
                     this.props.className,
@@ -540,7 +546,10 @@ class MenuBar extends React.Component {
                                 this.handleClickDesktopSettings
                             }
                             // eslint-disable-next-line react/jsx-no-bind
-                            onOpenCustomSettings={this.props.onClickAddonSettings.bind(null, 'editor-theme3')}
+                            onOpenCustomSettings={
+                                this.props.onClickAddonSettings &&
+                                this.props.onClickAddonSettings.bind(null, 'editor-theme3')
+                            }
                             onClickAddonSettings={this.props.onClickAddonSettings}
                             onRequestClose={this.props.onRequestCloseSettings}
                             onRequestOpen={this.props.onClickSettings}
@@ -886,7 +895,9 @@ class MenuBar extends React.Component {
                     <div className={styles.menuBarItem}>
                         <a
                             className={styles.feedbackLink}
-                            href="https://scratch.mit.edu/users/GarboMuffin/#comments"
+                            /* href="https://scratch.mit.edu/users/GarboMuffin/#comments" */
+                            /* Do we even want this to link to Scratch at all? */
+                            href="https://scratch.mit.edu/studios/51207300/comments"
                             rel="noopener noreferrer"
                             target="_blank"
                         >
@@ -913,6 +924,13 @@ class MenuBar extends React.Component {
 
                 {aboutButton}
             </Box>
+        );
+
+        return (
+            <React.Fragment>
+                {menuBar}
+                {/* <TWNews /> */}
+            </React.Fragment>
         );
     }
 }

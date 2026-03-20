@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 import check from './check.svg';
 import dropdownCaret from './dropdown-caret.svg';
 import {MenuItem, Submenu} from '../menu/menu.jsx';
-import {BLOCKS_CUSTOM, BLOCKS_DARK, BLOCKS_HIGH_CONTRAST, BLOCKS_THREE, Theme} from '../../lib/themes/index.js';
+import {BLOCKS_CUSTOM, BLOCKS_FLASH, BLOCKS_DARK, BLOCKS_HIGH_CONTRAST, BLOCKS_THREE, Theme} from '../../lib/themes/index.js';
 import {openBlocksThemeMenu, blocksThemeMenuOpen, closeSettingsMenu} from '../../reducers/menus.js';
 import {setTheme} from '../../reducers/theme.js';
 import {persistTheme} from '../../lib/themes/themePersistance.js';
@@ -15,6 +15,7 @@ import styles from './settings-menu.css';
 import threeIcon from './tw-blocks-three.svg';
 import highContrastIcon from './tw-blocks-high-contrast.svg';
 import darkIcon from './tw-blocks-dark.svg';
+import flashIcon from './tw-blocks-flash.svg';
 import customIcon from './tw-blocks-custom.svg';
 import openLinkIcon from './tw-open-link.svg';
 
@@ -34,6 +35,11 @@ const options = defineMessages({
         description: 'Name of the dark block colors',
         id: 'tw.blockColors.dark'
     },
+    [BLOCKS_FLASH]: {
+        defaultMessage: 'Flash (Beta)',
+        description: 'Name of the flash block colors',
+        id: 'tw.blockColors.flash'
+    },
     [BLOCKS_CUSTOM]: {
         defaultMessage: 'Customize in Addon Settings',
         description: 'Link in block color list to open addon settings for more customization',
@@ -41,10 +47,15 @@ const options = defineMessages({
     }
 });
 
+const showFlash = () => {
+    return new URLSearchParams(global.location.search).has('back-in-time');
+};
+
 const icons = {
     [BLOCKS_THREE]: threeIcon,
     [BLOCKS_HIGH_CONTRAST]: highContrastIcon,
     [BLOCKS_DARK]: darkIcon,
+    [BLOCKS_FLASH]: flashIcon,
     [BLOCKS_CUSTOM]: customIcon
 };
 
@@ -120,7 +131,13 @@ const BlocksThemeMenu = ({
             />
         </div>
         <Submenu place={isRtl ? 'left' : 'right'}>
-            {[BLOCKS_THREE, BLOCKS_HIGH_CONTRAST, BLOCKS_DARK, BLOCKS_CUSTOM].map(i => (
+            {[
+                BLOCKS_THREE,
+                BLOCKS_HIGH_CONTRAST,
+                BLOCKS_DARK,
+                ...(showFlash()) ? [BLOCKS_FLASH] : [],
+                ...(onOpenCustomSettings ? [BLOCKS_CUSTOM] : [])
+            ].map(i => (
                 <ThemeMenuItem
                     key={i}
                     id={i}

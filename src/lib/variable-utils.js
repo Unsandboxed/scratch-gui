@@ -7,6 +7,8 @@ const getVariable = (vm, targetId, variableId) => {
     return target.variables[variableId];
 };
 
+const getMonitorValue = (vm, variableId) => vm.runtime.getMonitorState().get(variableId).value;
+
 const getVariableValue = (vm, targetId, variableId) => {
     const variable = getVariable(vm, targetId, variableId);
     // If array, return a new copy for mutating, ensuring that updates stay immutable.
@@ -25,5 +27,6 @@ const setVariableValue = (vm, targetId, variableId, value) => {
 export {
     getVariable,
     getVariableValue,
+    getMonitorValue,
     setVariableValue
 };

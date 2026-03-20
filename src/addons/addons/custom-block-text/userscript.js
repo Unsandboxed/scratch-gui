@@ -28,9 +28,13 @@ export default async function ({ addon, console }) {
   //
   const boldCss = document.createElement("style");
   boldCss.textContent = `
-    .blocklyText,
-    .blocklyHtmlInput {
-      font-weight: bold;
+    .blocklyText {
+      font: 700 10pt "Helvetica Neue", "Verdana", Helvetica, sans-serif;
+      word-spacing: "1px";
+    }
+    .blocklyHtmlInput,
+    .blocklyTextField {
+      font: 400 10pt "Helvetica Neue", "Verdana", Helvetica, sans-serif;
     }`;
   boldCss.disabled = true;
   document.head.appendChild(boldCss);

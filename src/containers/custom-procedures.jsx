@@ -10,19 +10,30 @@ class CustomProcedures extends React.Component {
     constructor (props) {
         super(props);
         bindAll(this, [
+            'handleAddStatement',
             'handleAddLabel',
             'handleAddBoolean',
             'handleAddText',
             'handleAddNumber',
+            'handleAddArray',
+            'handleAddObject',
             'handleAddColor',
             'handleToggleWarp',
+            'handleToggleHat',
+            'handleToggleHatAlwaysActivated',
+            'handleToggleGlobal',
+            'handleToggleSharedLocals',
             'handleCancel',
             'handleOk',
             'setBlocks'
         ]);
         this.state = {
             rtlOffset: 0,
-            warp: false
+            warp: false,
+            global: false,
+            hat: false,
+            hatAlwaysActivated: true,
+            sharedLocals: false
         };
     }
     componentWillUnmount () {
@@ -40,6 +51,7 @@ class CustomProcedures extends React.Component {
         );
 
         const ScratchBlocks = LazyScratchBlocks.get();
+        this.ScratchBlocks = ScratchBlocks;
         // @todo This is a hack to make there be no toolbox.
         const oldDefaultToolbox = ScratchBlocks.Blocks.defaultToolbox;
         ScratchBlocks.Blocks.defaultToolbox = null;
@@ -106,7 +118,13 @@ class CustomProcedures extends React.Component {
         this.mutationRoot.domToMutation(this.props.mutator);
         this.mutationRoot.initSvg();
         this.mutationRoot.render();
-        this.setState({warp: this.mutationRoot.getWarp()});
+        this.setState({
+            warp: !!this.mutationRoot.getWarp(),
+            global: !!this.mutationRoot.getGlobal(),
+            hat: !!this.mutationRoot.getHatDefault(),
+            hatAlwaysActivated: !!this.mutationRoot.getHatAlwaysActivated(),
+            sharedLocals: !!this.mutationRoot.getPollutesLocals()
+        });
         // Allow the initial events to run to position this block, then focus.
         setTimeout(() => {
             this.mutationRoot.focusLastEditor_();
@@ -119,6 +137,11 @@ class CustomProcedures extends React.Component {
         const newMutation = this.mutationRoot ? this.mutationRoot.mutationToDom(true) : null;
         this.props.onRequestClose(newMutation);
     }
+    handleAddStatement () {
+        if (this.mutationRoot) {
+            this.mutationRoot.addStatementExternal();
+        }
+    }
     handleAddLabel () {
         if (this.mutationRoot) {
             this.mutationRoot.addLabelExternal();
@@ -127,6 +150,16 @@ class CustomProcedures extends React.Component {
     handleAddBoolean () {
         if (this.mutationRoot) {
             this.mutationRoot.addBooleanExternal();
+        }
+    }
+    handleAddArray () {
+        if (this.mutationRoot) {
+            this.mutationRoot.addArrayExternal();
+        }
+    }
+    handleAddObject () {
+        if (this.mutationRoot) {
+            this.mutationRoot.addObjectExternal();
         }
     }
     handleAddText () {
@@ -140,9 +173,16 @@ class CustomProcedures extends React.Component {
         }
     }
     handleAddColor (color) {
+        let newColor = color.target.getAttribute("color");
+        if (!newColor) newColor = color.target.value;
+
+        // todo: there's probably a way to do this within the component itself
+        color.target.style.backgroundColor = newColor;
+
         if (this.mutationRoot) {
-            this.mutationRoot.setColour(color.target.getAttribute("color"));
-            this.setState({colour: color.target.getAttribute("color")});
+            this.mutationRoot.customColour_ = newColor;
+            this.ScratchBlocks.ScratchBlocks.ProcedureUtils.parseColourMutation.call(this.mutationRoot, newColor);
+            this.setState({colour: newColor});
         }
     }
     handleToggleWarp () {
@@ -152,19 +192,58 @@ class CustomProcedures extends React.Component {
             this.setState({warp: newWarp});
         }
     }
+    handleToggleHat () {
+        if (this.mutationRoot) {
+            const newHatDefault = !this.mutationRoot.getHatDefault();
+            this.mutationRoot.setHatDefault(newHatDefault);
+            this.setState({hat: newHatDefault});
+        }
+    }
+    handleToggleHatAlwaysActivated () {
+        if (this.mutationRoot) {
+            const newHatAlwaysActivated = !this.mutationRoot.getHatAlwaysActivated();
+            this.mutationRoot.setHatAlwaysActivated(newHatAlwaysActivated);
+            this.setState({hatAlwaysActivated: newHatAlwaysActivated});
+        }
+    }
+    handleToggleGlobal () {
+        if (this.mutationRoot) {
+            const newGlobal = !this.mutationRoot.getGlobal();
+            this.mutationRoot.setGlobal(newGlobal);
+            this.setState({global: newGlobal});
+        }
+    }
+    handleToggleSharedLocals () {
+        if (this.mutationRoot) {
+            const newSharedLocals = !this.mutationRoot.getPollutesLocals();
+            this.mutationRoot.setPollutesLocals(newSharedLocals);
+            this.setState({sharedLocals: newSharedLocals});
+        }
+    }
     render () {
         return (
             <CustomProceduresComponent
                 componentRef={this.setBlocks}
                 warp={this.state.warp}
+                onAddStatement={this.handleAddStatement}
+                hat={this.state.hat}
+                hatAlwaysActivated={this.state.hatAlwaysActivated}
+                sharedLocals={this.state.sharedLocals}
+                global={this.state.global}
                 onAddBoolean={this.handleAddBoolean}
                 onAddLabel={this.handleAddLabel}
                 onAddText={this.handleAddText}
                 onAddNumber={this.handleAddNumber}
+                onAddArray={this.handleAddArray}
+                onAddObject={this.handleAddObject}
                 onAddColor={this.handleAddColor}
                 onCancel={this.handleCancel}
                 onOk={this.handleOk}
                 onToggleWarp={this.handleToggleWarp}
+                onToggleHat={this.handleToggleHat}
+                onToggleHatAlwaysActivated={this.handleToggleHatAlwaysActivated}
+                onToggleGlobal={this.handleToggleGlobal}
+                onToggleSharedLocals={this.handleToggleSharedLocals}
             />
         );
     }
