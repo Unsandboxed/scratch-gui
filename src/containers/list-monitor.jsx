@@ -2,6 +2,7 @@ import bindAll from 'lodash.bindall';
 import PropTypes from 'prop-types';
 import React from 'react';
 import VM from 'scratch-vm';
+import ReadonlyArray from 'scratch-vm/src/util/ReadonlyArray';
 import {connect} from 'react-redux';
 import {getEventXY} from '../lib/touch-utils';
 import {getVariable, getVariableValue, setVariableValue} from '../lib/variable-utils';
@@ -134,13 +135,21 @@ class ListMonitor extends React.Component {
     handleAdd () {
         // Add button appends a blank value and switches to it
         const {vm, targetId, id: variableId} = this.props;
-        const newListValue = getVariableValue(vm, targetId, variableId).concat(['']);
+        const list = getVariable(vm, targetId, variableId);
+        const newListValue = list.value.concat(['']);
         setVariableValue(vm, targetId, variableId, newListValue);
         this.setState({
             activeIndex: newListValue.length - 1,
             activeValue: '',
-            inputDidChange: false
+            inputDidChange: false,
+            locked: false,
         });
+        // Adding an item unlocks the list.
+        list.locked = false;
+        this.props.vm.runtime.requestUpdateMonitor(new Map([
+            ['id', variableId],
+            ['locked', false]
+        ]));
     }
 
     handleLock() {
