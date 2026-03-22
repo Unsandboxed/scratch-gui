@@ -8,10 +8,29 @@
 
 .body {
     background: $ui-modal-background;
-    padding: 1.5rem 2.25rem;
-    min-height: 150px;
+    min-height: 400px;
     max-height: calc(100vh - 250px);
     overflow-y: auto;
+    display: flex;
+}
+
+.menu, .content {
+    padding: 1.5rem 2.25rem;
+    overflow-y: auto;
+}
+
+.menu {
+    flex: 1;
+    border-right: solid 1px $ui-black-transparent;
+}
+
+.menu > p {
+    margin: 0.5em 0em;
+    cursor: pointer;
+}
+
+.content {
+    flex: 5;
 }
 
 /* For small screens, such as in the embed */

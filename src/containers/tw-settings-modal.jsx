@@ -30,8 +30,12 @@ class UsernameModal extends React.Component {
             'handleStageWidthChange',
             'handleStageHeightChange',
             'handleDisableCompilerChange',
-            'handleStoreProjectOptions'
+            'handleStoreProjectOptions',
+            'handleChangeCategory'
         ]);
+        this.state = {
+            category: "appearance"
+        };
     }
     handleFramerateChange (e) {
         this.props.vm.setFramerate(e.target.checked ? 30 : 60);
@@ -85,6 +89,11 @@ class UsernameModal extends React.Component {
     handleStoreProjectOptions () {
         this.props.vm.storeProjectOptions();
     }
+    handleChangeCategory (e) {
+        const newCategory = e.target.getAttribute("category");
+        this.setState({category: newCategory});
+        console.log(this.state);
+    }
     render () {
         const {
             /* eslint-disable no-unused-vars */
@@ -96,6 +105,7 @@ class UsernameModal extends React.Component {
         return (
             <SettingsModalComponent
                 onClose={this.props.onClose}
+                category={this.state.category}
                 onFramerateChange={this.handleFramerateChange}
                 onCustomizeFramerate={this.handleCustomizeFramerate}
                 onHighQualityPenChange={this.handleHighQualityPenChange}
@@ -107,6 +117,7 @@ class UsernameModal extends React.Component {
                 onStageWidthChange={this.handleStageWidthChange}
                 onStageHeightChange={this.handleStageHeightChange}
                 onDisableCompilerChange={this.handleDisableCompilerChange}
+                onChangeCategory={this.handleChangeCategory}
                 stageWidth={this.props.customStageSize.width}
                 stageHeight={this.props.customStageSize.height}
                 customStageSizeEnabled={
@@ -146,6 +157,7 @@ UsernameModal.propTypes = {
         width: PropTypes.number,
         height: PropTypes.number
     }),
+    category: PropTypes.string,
     disableCompiler: PropTypes.bool
 };
 

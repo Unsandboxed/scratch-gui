@@ -73,8 +73,8 @@ $sides: 20rem;
     color: $ui-modal-header-foreground;
 
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 1.2rem;
-    font-weight: bold;
+    font-size: 1rem;
+    font-weight: normal;
 }
 
 .header-item {
