@@ -6,6 +6,8 @@ import {connect} from 'react-redux';
 import {closeSettingsModal} from '../reducers/modals';
 import SettingsModalComponent from '../components/tw-settings-modal/settings-modal.jsx';
 import {defaultStageSize} from '../reducers/custom-stage-size';
+import {changeStageLayout} from '../reducers/editor-settings.js';
+import {changeSettings} from '../lib/themes/settingsPersistance.js';
 
 const messages = defineMessages({
     newFramerate: {
@@ -19,6 +21,9 @@ class UsernameModal extends React.Component {
     constructor (props) {
         super(props);
         bindAll(this, [
+            'handleChangeCategory',
+
+            // project settings
             'handleFramerateChange',
             'handleCustomizeFramerate',
             'handleHighQualityPenChange',
@@ -31,12 +36,23 @@ class UsernameModal extends React.Component {
             'handleStageHeightChange',
             'handleDisableCompilerChange',
             'handleStoreProjectOptions',
-            'handleChangeCategory'
+
+            // appearance settings
+            'handleStageLayoutChange'
         ]);
         this.state = {
-            category: "appearance"
+            category: "appearance",
+
+            // appearance settings
+            stageOnLeft: false,
         };
     }
+    handleChangeCategory (e) {
+        const newCategory = e.target.getAttribute("category");
+        this.setState({category: newCategory});
+    }
+
+    // project settings
     handleFramerateChange (e) {
         this.props.vm.setFramerate(e.target.checked ? 30 : 60);
     }
@@ -89,11 +105,13 @@ class UsernameModal extends React.Component {
     handleStoreProjectOptions () {
         this.props.vm.storeProjectOptions();
     }
-    handleChangeCategory (e) {
-        const newCategory = e.target.getAttribute("category");
-        this.setState({category: newCategory});
-        console.log(this.state);
+
+    // appearance settings
+    handleStageLayoutChange (e) {
+        this.props.onChangeStageLayout({stageOnLeft: e.target.checked});
+        this.setState({stageOnLeft: e.target.checked});
     }
+
     render () {
         const {
             /* eslint-disable no-unused-vars */
@@ -106,6 +124,8 @@ class UsernameModal extends React.Component {
             <SettingsModalComponent
                 onClose={this.props.onClose}
                 category={this.state.category}
+
+                // project settings
                 onFramerateChange={this.handleFramerateChange}
                 onCustomizeFramerate={this.handleCustomizeFramerate}
                 onHighQualityPenChange={this.handleHighQualityPenChange}
@@ -125,6 +145,10 @@ class UsernameModal extends React.Component {
                     this.props.customStageSize.height !== defaultStageSize.height
                 }
                 onStoreProjectOptions={this.handleStoreProjectOptions}
+
+                // appearance settings
+                stageOnLeft={this.state.stageOnLeft}
+                onStageLayoutChange={this.handleStageLayoutChange}
                 {...props}
             />
         );
@@ -134,6 +158,9 @@ class UsernameModal extends React.Component {
 UsernameModal.propTypes = {
     intl: intlShape,
     onClose: PropTypes.func,
+    category: PropTypes.string,
+
+    // project settings
     vm: PropTypes.shape({
         renderer: PropTypes.shape({
             setUseHighQualityRender: PropTypes.func
@@ -158,11 +185,17 @@ UsernameModal.propTypes = {
         height: PropTypes.number
     }),
     category: PropTypes.string,
-    disableCompiler: PropTypes.bool
+    disableCompiler: PropTypes.bool,
+    
+    // appearance settings
+    stageOnLeft: PropTypes.bool,
+    onChangeStageLayout: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
     vm: state.scratchGui.vm,
+
+    // Project settings
     isEmbedded: state.scratchGui.mode.isEmbedded,
     framerate: state.scratchGui.tw.framerate,
     highQualityPen: state.scratchGui.tw.highQualityPen,
@@ -172,10 +205,17 @@ const mapStateToProps = state => ({
     removeLimits: !state.scratchGui.tw.runtimeOptions.miscLimits,
     warpTimer: state.scratchGui.tw.compilerOptions.warpTimer,
     customStageSize: state.scratchGui.customStageSize,
-    disableCompiler: !state.scratchGui.tw.compilerOptions.enabled
+    disableCompiler: !state.scratchGui.tw.compilerOptions.enabled,
+
+    // Appearance settings
+    stageOnLeft: state.scratchGui.editorSettings.stageOnLeft,
 });
 
 const mapDispatchToProps = dispatch => ({
+    onChangeStageLayout: setting => {
+        dispatch(changeStageLayout(setting));
+        changeSettings(setting)
+    },
     onClose: () => dispatch(closeSettingsModal())
 });
 

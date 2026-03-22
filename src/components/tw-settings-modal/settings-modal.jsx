@@ -74,7 +74,7 @@ class UnwrappedSetting extends React.Component {
             >
                 <div className={styles.label}>
                     {this.props.primary}
-                    <button
+                    {!this.props.noHelp && (<button
                         className={styles.helpIcon}
                         onClick={this.handleClickHelp}
                         title={this.props.intl.formatMessage(messages.help)}
@@ -83,9 +83,9 @@ class UnwrappedSetting extends React.Component {
                             src={helpIcon}
                             draggable={false}
                         />
-                    </button>
+                    </button>)}
                 </div>
-                {this.state.helpVisible && (
+                {!this.props.noHelp && this.state.helpVisible && (
                     <div className={styles.detail}>
                         {this.props.help}
                         {this.props.slug && <LearnMore slug={this.props.slug} />}
@@ -501,19 +501,32 @@ const ProjectSettings = props => (
     </Box>
 );
 
+const StageOnLeft = props => (
+    <BooleanSetting noHelp={true}
+        {...props}
+        label={
+            <FormattedMessage
+                defaultMessage="Stage on the left"
+                description="Put the stage on the left side."
+                id="tw.settingsModal.stateOnLeft"
+            />
+        }
+        slug="stage-on-left"
+    />
+);
+
 const AppearanceSettings = props => (
     <Box className={styles.content}>
         <Header>
             <FormattedMessage
-                defaultMessage="Appearance Test"
+                defaultMessage="Layout"
                 description="Settings modal section"
                 id="tw.settingsModal.appearanceTest"
             />
         </Header>
-        <CustomFPS
-            framerate={props.framerate}
-            onChange={props.onFramerateChange}
-            onCustomizeFramerate={props.onCustomizeFramerate}
+        <StageOnLeft
+            value={props.stageOnLeft}
+            onChange={props.onStageLayoutChange}
         />
     </Box>
 );
@@ -555,6 +568,9 @@ SettingsModalComponent.propTypes = {
     intl: intlShape,
     onClose: PropTypes.func,
     isEmbedded: PropTypes.bool,
+    onChangeCategory: PropTypes.func,
+
+    // project settings
     framerate: PropTypes.number,
     onFramerateChange: PropTypes.func,
     onCustomizeFramerate: PropTypes.func,
@@ -572,7 +588,9 @@ SettingsModalComponent.propTypes = {
     onWarpTimerChange: PropTypes.func,
     disableCompiler: PropTypes.bool,
     onDisableCompilerChange: PropTypes.func,
-    onChangeCategory: PropTypes.func
+
+    // appearance settings
+    onStageLayoutChange: PropTypes.func,
 };
 
 export default injectIntl(SettingsModalComponent);
