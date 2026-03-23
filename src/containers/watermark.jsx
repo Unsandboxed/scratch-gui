@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 import ThrottledPropertyHOC from '../lib/throttled-property-hoc.jsx';
 
 import VM from 'scratch-vm';
-import storage from '../lib/storage';
+import {default as storage, AssetLikeProp} from '../lib/storage';
 import getCostumeUrl from '../lib/get-costume-url';
 
 import WatermarkComponent from '../components/watermark/watermark.jsx';
@@ -38,7 +38,7 @@ class Watermark extends React.Component {
 }
 
 Watermark.propTypes = {
-    asset: PropTypes.instanceOf(storage.Asset),
+    asset: AssetLikeProp,
     vm: PropTypes.instanceOf(VM).isRequired
 };
 

@@ -1,4 +1,6 @@
-import ScratchStorage from '@turbowarp/scratch-storage';
+import VirtualMachine from 'scratch-vm';
+
+const ScratchStorage = VirtualMachine.$.modules.tw_scratchstorage();
 
 import defaultProject from './default-project';
 
@@ -82,6 +84,16 @@ class Storage extends ScratchStorage {
         ));
     }
 }
+
+export const AssetLikeProp = (props, propName, componentName) => {
+    const val = props[propName];
+    if (ScratchStorage.isAssetLike(val)) {
+        return null;
+    }
+    return new Error(
+        `Invalid prop \`${propName}\` supplied to \`${componentName}\`. Expected an AssetLike.`
+    );
+};
 
 const storage = new Storage();
 
