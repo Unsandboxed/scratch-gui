@@ -93,6 +93,7 @@
     "scratch-blocks": "github:Unsandboxed/scratch-blocks#develop-builds",
     "scratch-paint": "github:Unsandboxed/scratch-paint#develop",
     "scratch-render": "github:Unsandboxed/scratch-render#develop",
+    "scratch-storage": "github:Unsandboxed/scratch-storage#develop",
     "scratch-vm": "github:Unsandboxed/scratch-vm#develop",
     "style-loader": "^0.23.0",
     "text-encoding": "0.7.0",
