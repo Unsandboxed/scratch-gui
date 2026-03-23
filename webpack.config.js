@@ -71,7 +71,10 @@ const base = {
             loader: 'babel-loader',
             include: [
                 path.resolve(__dirname, 'src'),
-                /node_modules[\\/]scratch-[^\\/]+[\\/]src/,
+                /node_modules[\\/](@turbowarp[\\/])?scratch-[^\\/]+[\\/]src/,
+                // Include sub-scratch dependancies :D
+                // eslint-disable-next-line max-len
+                /node_modules[\\/](@turbowarp[\\/])?scratch-[^\\/]+[\\/]node_modules[\\/](@turbowarp[\\/])?scratch-[^\\/]+[\\/]src/,
                 /node_modules[\\/]pify/,
                 /node_modules[\\/]@vernier[\\/]godirect/
             ],
