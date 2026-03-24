@@ -547,10 +547,10 @@ class MenuBar extends React.Component {
                             }
                             // eslint-disable-next-line react/jsx-no-bind
                             onOpenCustomSettings={
-                                this.props.onClickAddonSettings &&
-                                this.props.onClickAddonSettings.bind(null, 'editor-theme3')
+                                this.props.onClickSettingsModal &&
+                                this.props.onClickSettingsModal.bind(null, 'editor-theme3')
                             }
-                            onClickAddonSettings={this.props.onClickAddonSettings}
+                            onClickSettingsModal={this.props.onClickSettingsModal}
                             onRequestClose={this.props.onRequestCloseSettings}
                             onRequestOpen={this.props.onClickSettings}
                             settingsMenuOpen={this.props.settingsMenuOpen}
@@ -1099,6 +1099,7 @@ const mapDispatchToProps = dispatch => ({
     onClickRestorePoints: () => dispatch(openRestorePointModal()),
     onClickSettings: () => dispatch(openSettingsMenu()),
     onClickSettingsModal: () => {
+        dispatch(closeSettingsMenu());
         dispatch(closeEditMenu());
         dispatch(openSettingsModal());
     },

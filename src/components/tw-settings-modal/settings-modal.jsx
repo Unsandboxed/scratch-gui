@@ -328,6 +328,7 @@ const DisableCompiler = props => (
 const CustomStageSize = ({
     customStageSizeEnabled,
     stageWidth,
+    onClickSettingsModal,
     onStageWidthChange,
     stageHeight,
     onStageHeightChange
@@ -389,6 +390,7 @@ const CustomStageSize = ({
 CustomStageSize.propTypes = {
     customStageSizeEnabled: PropTypes.bool,
     stageWidth: PropTypes.number,
+    onClickSettingsModal: PropTypes.func,
     onStageWidthChange: PropTypes.func,
     stageHeight: PropTypes.number,
     onStageHeightChange: PropTypes.func
@@ -582,6 +584,15 @@ const SettingsModalComponent = props => (
                     onClick={props.onChangeCategory}
                 >
                     Project
+                </div>
+                <div className={classNames(
+                    styles.category,{
+                    [styles.active]: props.category == "addons"
+                })}
+                    category="addons"
+                    onClick={() => { alert("addons callback") }}
+                >
+                    Addons
                 </div>
             </Box>
             {(props.category === "appearance") ?

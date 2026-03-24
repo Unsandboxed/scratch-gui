@@ -29,8 +29,8 @@ export const initialState = {
         warpTimer: false
     },
     runtimeOptions: {
-        maxClones: 300,
-        miscLimits: true,
+        maxClones: Infinity,
+        miscLimits: false,
         fencing: false
     },
     isWindowFullScreen: false,
