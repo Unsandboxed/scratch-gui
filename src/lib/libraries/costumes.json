@@ -2628,6 +2628,42 @@
         "rotationCenterY": 44
     },
     {
+        "assetId": "8a1add00cd006d22431a7b3847d0d002",
+        "name": "Sandy-a",
+        "tags": [
+            "animals"
+        ],
+        "bitmapResolution": 1,
+        "md5ext": "8a1add00cd006d22431a7b3847d0d002.svg",
+        "dataFormat": "svg",
+        "rotationCenterX": 44.156184159652724,
+        "rotationCenterY": 51.508237134270445
+    },
+    {
+        "assetId": "c7eb46e63d569f392d200bfaf9c609dd",
+        "name": "Sandy-b",
+        "tags": [
+            "animals"
+        ],
+        "bitmapResolution": 1,
+        "md5ext": "c7eb46e63d569f392d200bfaf9c609dd.svg",
+        "dataFormat": "svg",
+        "rotationCenterX": 52.33362218184814,
+        "rotationCenterY": 55.36285780562275
+    },
+    {
+        "assetId": "bc3a2c53308f92d0b176e0e35aa7beee",
+        "name": "Sandy-c",
+        "tags": [
+            "animals"
+        ],
+        "bitmapResolution": 1,
+        "md5ext": "bc3a2c53308f92d0b176e0e35aa7beee.svg",
+        "dataFormat": "svg",
+        "rotationCenterX": 43.19538319010644,
+        "rotationCenterY": 55.36286713427046
+    },
+    {
         "name": "Dani-a",
         "tags": [
             "people"
