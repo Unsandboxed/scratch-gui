@@ -2,12 +2,8 @@ import projectData from './project-data';
 
 /* eslint-disable import/no-unresolved */
 import overrideDefaultProject from '!arraybuffer-loader!./override-default-project.sb3';
-import backdrop from '!raw-loader!./cd21514d0531fdffb22204e0ec5ed84a.svg';
-import Sandy1 from '!raw-loader!./Sandy1.svg';
-import Sandy2 from '!raw-loader!./Sandy2.svg';
-import Sandy3 from '!raw-loader!./Sandy3.svg';
-/* eslint-enable import/no-unresolved */
-import {TextEncoder} from '../tw-text-encoder';
+
+import * as assets from './assets';
 
 const defaultProject = translator => {
     if (overrideDefaultProject.byteLength > 0) {
@@ -19,14 +15,6 @@ const defaultProject = translator => {
         }];
     }
 
-    let _TextEncoder;
-    if (typeof TextEncoder === 'undefined') {
-        _TextEncoder = require('text-encoding').TextEncoder;
-    } else {
-        _TextEncoder = TextEncoder;
-    }
-    const encoder = new _TextEncoder();
-
     const projectJson = projectData(translator);
     return [{
         id: 0,
@@ -34,25 +22,25 @@ const defaultProject = translator => {
         dataFormat: 'JSON',
         data: JSON.stringify(projectJson)
     }, {
-        id: 'cd21514d0531fdffb22204e0ec5ed84a',
+        id: assets.backdrop.hash,
         assetType: 'ImageVector',
         dataFormat: 'SVG',
-        data: encoder.encode(backdrop)
+        data: assets.backdrop.content
     }, {
-        id: '927d672925e7b99f7813735c484c6922',
+        id: assets.Sandy1.hash,
         assetType: 'ImageVector',
         dataFormat: 'SVG',
-        data: encoder.encode(Sandy1)
+        data: assets.Sandy1.content
     }, {
-        id: '5f0bf4c4fcf8a7b9ede17215f40c8440',
+        id: assets.Sandy2.hash,
         assetType: 'ImageVector',
         dataFormat: 'SVG',
-        data: encoder.encode(Sandy2)
+        data: assets.Sandy2.content
     }, {
-        id: 'f40bd8ae5c2514f84f100b4ffe7c94c7',
+        id: assets.Sandy3.hash,
         assetType: 'ImageVector',
         dataFormat: 'SVG',
-        data: encoder.encode(Sandy3)
+        data: assets.Sandy3.content
     }];
 };
 
