@@ -846,6 +846,8 @@ const makeOldToolboxXML = function (vm, isInitialSetup, isStage = true, targetId
     return everything.join('\n');
 };
 makeOldToolboxXML.exports = {
+    isOld: true,
+    
     make: (...args) => makeOldToolboxXML(...args),
     translate,
     xmlEscape,
