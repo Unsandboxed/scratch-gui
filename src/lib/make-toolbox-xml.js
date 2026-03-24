@@ -1123,6 +1123,8 @@ const makeToolboxXML = function (vm, isInitialSetup, isStage = true, targetId, c
     return everything.join('\n');
 };
 makeToolboxXML.exports = {
+    isOld: false,
+    
     make: (...args) => makeToolboxXML(...args),
     translate,
     xmlEscape,
