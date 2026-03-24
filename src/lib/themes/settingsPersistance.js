@@ -2,6 +2,7 @@ const STORAGE_KEY = 'usb:settings';
 
 const defaultSettings = {
     stageOnLeft: false,
+    oldToolbox: false,
 };
 
 /**

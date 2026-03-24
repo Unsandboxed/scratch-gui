@@ -506,12 +506,26 @@ const StageOnLeft = props => (
         {...props}
         label={
             <FormattedMessage
-                defaultMessage="Stage on the left"
+                defaultMessage="Left-Hand Stage"
                 description="Put the stage on the left side."
-                id="tw.settingsModal.stateOnLeft"
+                id="tw.settingsModal.stageOnLeft"
             />
         }
         slug="stage-on-left"
+    />
+);
+
+const OldToolbox = props => (
+    <BooleanSetting noHelp={true}
+        {...props}
+        label={
+            <FormattedMessage
+                defaultMessage="Legacy Block Palette"
+                description="Bring back the old block palette."
+                id="tw.settingsModal.oldToolbox"
+            />
+        }
+        slug="old-toolbox"
     />
 );
 
@@ -527,6 +541,10 @@ const AppearanceSettings = props => (
         <StageOnLeft
             value={props.stageOnLeft}
             onChange={props.onStageLayoutChange}
+        />
+        <OldToolbox
+            value={props.oldToolbox}
+            onChange={props.onToolboxChange}
         />
     </Box>
 );
@@ -569,6 +587,7 @@ SettingsModalComponent.propTypes = {
     onClose: PropTypes.func,
     isEmbedded: PropTypes.bool,
     onChangeCategory: PropTypes.func,
+    editorSettings: PropTypes.object,
 
     // project settings
     framerate: PropTypes.number,
@@ -591,6 +610,7 @@ SettingsModalComponent.propTypes = {
 
     // appearance settings
     onStageLayoutChange: PropTypes.func,
+    onToolboxChange: PropTypes.func,
 };
 
 export default injectIntl(SettingsModalComponent);

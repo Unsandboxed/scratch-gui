@@ -103,6 +103,7 @@ const GUIComponent = props => {
         costumesTabVisible,
         customStageSize,
         enableCommunity,
+        editorSettings,
         intl,
         isCreating,
         isEmbedded,
@@ -433,7 +434,6 @@ const GUIComponent = props => {
                                 <Backpack host={backpackHost} />
                             ) : null}
                         </Box>
-
                         <Box className={classNames(styles.stageAndTargetWrapper, styles[stageSize])}>
                             <StageWrapper
                                 isFullScreen={isFullScreen}
@@ -487,6 +487,7 @@ GUIComponent.propTypes = {
         width: PropTypes.number,
         height: PropTypes.number
     }),
+    editorSettings: PropTypes.object,
     enableCommunity: PropTypes.bool,
     intl: intlShape.isRequired,
     isCreating: PropTypes.bool,
@@ -574,7 +575,8 @@ const mapStateToProps = state => ({
     // This is the button's mode, as opposed to the actual current state
     blocksId: state.scratchGui.timeTravel.year.toString(),
     stageSizeMode: state.scratchGui.stageSize.stageSize,
-    theme: state.scratchGui.theme.theme
+    theme: state.scratchGui.theme.theme,
+    editorSettings: state.scratchGui.editorSettings
 });
 
 export default injectIntl(connect(

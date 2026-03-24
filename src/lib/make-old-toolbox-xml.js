@@ -746,9 +746,14 @@ const myBlocks = function (isInitialSetup, isStage, targetId, colors) {
 };
 
 // eslint-disable-next-line max-len
-const extraTurboWarpBlocks = `
-<block type="argument_reporter_boolean"><field name="VALUE">is compiled?</field></block>
-<block type="argument_reporter_boolean"><field name="VALUE">is Unsandboxed?</field></block>
+const usbBlocksColours = `colourmutprimary="#66757f" colourmutsecondary="#5c6a73" colourmuttertiary="#525e66" colourmutquaternary="#0B8E69"`;
+const extraUnsandboxedBlocks = `
+<block type="argument_reporter_boolean">
+  <field name="VALUE">is compiled?</field><mutation ${usbBlocksColours}></mutation>
+</block>
+<block type="argument_reporter_boolean">
+  <field name="VALUE">is Unsandboxed?</field><mutation ${usbBlocksColours}></mutation>
+</block>
 `;
 /* eslint-enable no-unused-vars */
 
@@ -756,6 +761,7 @@ const xmlOpen = '<xml style="display: none">';
 const xmlClose = '</xml>';
 
 /**
+ * @param {?VirtualMachine} vm - Virtual machine instance.
  * @param {!boolean} isInitialSetup - Whether the toolbox is for initial setup. If the mode is "initial setup",
  * blocks with localized default parameters (e.g. ask and wait) should not be loaded. (LLK/scratch-gui#5445)
  * @param {?boolean} isStage - Whether the toolbox is for a stage-type target. This is always set to true
@@ -771,7 +777,7 @@ const xmlClose = '</xml>';
  * @param {?object} colors - The colors for the theme.
  * @returns {string} - a ScratchBlocks-style XML document for the contents of the toolbox.
  */
-const makeToolboxXML = function (isInitialSetup, isStage = true, targetId, categoriesXML = [],
+const makeOldToolboxXML = function (vm, isInitialSetup, isStage = true, targetId, categoriesXML = [],
     costumeName = '', backdropName = '', soundName = '', colors = defaultBlockColors) {
     isStage = isInitialSetup || isStage;
     const gap = [categorySeparator];
@@ -830,7 +836,36 @@ const makeToolboxXML = function (isInitialSetup, isStage = true, targetId, categ
     }
 
     everything.push(xmlClose);
+    if (vm) {
+        vm.emit(
+            'MAKE_TOOLBOX_XML', makeOldToolboxXML.exports, everything,
+            isInitialSetup, isStage, targetId, categoriesXML,
+            costumeName, backdropName, soundName, colors
+        );
+    }
     return everything.join('\n');
 };
+makeOldToolboxXML.exports = {
+    make: (...args) => makeOldToolboxXML(...args),
+    translate,
+    xmlEscape,
 
-export default oldToolboxXML;
+    categorySeparator,
+    blockSeparator,
+    xmlOpen,
+    xmlClose,
+    usbBlocksColours,
+    extraUnsandboxedBlocks,
+
+    motion,
+    looks,
+    sound,
+    events,
+    control,
+    sensing,
+    operators,
+    variables,
+    myBlocks
+};
+
+export default makeOldToolboxXML;

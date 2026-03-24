@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import {closeSettingsModal} from '../reducers/modals';
 import SettingsModalComponent from '../components/tw-settings-modal/settings-modal.jsx';
 import {defaultStageSize} from '../reducers/custom-stage-size';
-import {changeStageLayout} from '../reducers/editor-settings.js';
+import {changeStageLayout, changeToolbox} from '../reducers/editor-settings.js';
 import {changeSettings} from '../lib/themes/settingsPersistance.js';
 
 const messages = defineMessages({
@@ -37,14 +37,16 @@ class UsernameModal extends React.Component {
             'handleDisableCompilerChange',
             'handleStoreProjectOptions',
 
-            // appearance settings
-            'handleStageLayoutChange'
+            // editor settings
+            'handleStageLayoutChange',
+            'handleToolboxChange',
         ]);
         this.state = {
             category: "appearance",
 
             // appearance settings
             stageOnLeft: false,
+            oldToolbox: false,
         };
     }
     handleChangeCategory (e) {
@@ -111,6 +113,10 @@ class UsernameModal extends React.Component {
         this.props.onChangeStageLayout({stageOnLeft: e.target.checked});
         this.setState({stageOnLeft: e.target.checked});
     }
+    handleToolboxChange (e) {
+        this.props.onChangeToolbox({oldToolbox: e.target.checked});
+        this.setState({oldToolbox: e.target.checked});
+    }
 
     render () {
         const {
@@ -149,6 +155,8 @@ class UsernameModal extends React.Component {
                 // appearance settings
                 stageOnLeft={this.state.stageOnLeft}
                 onStageLayoutChange={this.handleStageLayoutChange}
+                oldToolbox={this.state.oldToolbox}
+                onToolboxChange={this.handleToolboxChange}
                 {...props}
             />
         );
@@ -186,10 +194,12 @@ UsernameModal.propTypes = {
     }),
     category: PropTypes.string,
     disableCompiler: PropTypes.bool,
-    
+
     // appearance settings
     stageOnLeft: PropTypes.bool,
     onChangeStageLayout: PropTypes.func,
+    oldToolbox: PropTypes.bool,
+    onChangeToolbox: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
@@ -209,11 +219,16 @@ const mapStateToProps = state => ({
 
     // Appearance settings
     stageOnLeft: state.scratchGui.editorSettings.stageOnLeft,
+    oldToolbox: state.scratchGui.editorSettings.oldToolbox,
 });
 
 const mapDispatchToProps = dispatch => ({
     onChangeStageLayout: setting => {
         dispatch(changeStageLayout(setting));
+        changeSettings(setting)
+    },
+    onChangeToolbox: setting => {
+        dispatch(changeToolbox(setting));
         changeSettings(setting)
     },
     onClose: () => dispatch(closeSettingsModal())

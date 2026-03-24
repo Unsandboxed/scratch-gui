@@ -2,6 +2,7 @@ import bindAll from 'lodash.bindall';
 import debounce from 'lodash.debounce';
 import defaultsDeep from 'lodash.defaultsdeep';
 import makeToolboxXML from '../lib/make-toolbox-xml';
+import makeOldToolboxXML from '../lib/make-old-toolbox-xml';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {intlShape, injectIntl, defineMessages} from 'react-intl';
@@ -242,7 +243,8 @@ class Blocks extends React.Component {
             this.props.locale !== nextProps.locale ||
             this.props.anyModalVisible !== nextProps.anyModalVisible ||
             this.props.stageSize !== nextProps.stageSize ||
-            this.props.customStageSize !== nextProps.customStageSize
+            this.props.customStageSize !== nextProps.customStageSize ||
+            this.props.oldToolbox !== nextProps.oldToolbox
         );
     }
     componentDidUpdate (prevProps) {
@@ -255,6 +257,11 @@ class Blocks extends React.Component {
         // different from the previously rendered toolbox xml.
         // Do not check against prevProps.toolboxXML because that may not have been rendered.
         if (this.props.isVisible && this.props.toolboxXML !== this._renderedToolboxXML) {
+            this.requestToolboxUpdate();
+        }
+
+        if (this.props.isVisible && prevProps.oldToolbox !== this.props.oldToolbox) {
+            this.props.vm.refreshWorkspace();
             this.requestToolboxUpdate();
         }
 
@@ -482,7 +489,10 @@ class Blocks extends React.Component {
                 this.props.vm.runtime.getBlocksXML(target),
                 this.props.theme
             );
-            return makeToolboxXML(this.props.vm, false, target.isStage, target.id, dynamicBlocksXML,
+
+            let makeToolboxXMLCallback = makeToolboxXML;
+            if (this.props.oldToolbox) makeToolboxXMLCallback = makeOldToolboxXML;
+            return makeToolboxXMLCallback(this.props.vm, false, target.isStage, target.id, dynamicBlocksXML,
                 targetCostumes[targetCostumes.length - 1].name,
                 stageCostumes[stageCostumes.length - 1].name,
                 targetSounds.length > 0 ? targetSounds[targetSounds.length - 1].name : '',
@@ -709,12 +719,14 @@ class Blocks extends React.Component {
             canUseCloud,
             customStageSize,
             customProceduresVisible,
+            editorSettings,
             extensionLibraryVisible,
             options,
             stageSize,
             vm,
             isRtl,
             isVisible,
+            oldToolbox,
             onActivateColorPicker,
             onOpenConnectionModal,
             onOpenSoundRecorder,
@@ -783,11 +795,13 @@ Blocks.propTypes = {
         height: PropTypes.number
     }),
     customProceduresVisible: PropTypes.bool,
+    editorSettings: PropTypes.object,
     extensionLibraryVisible: PropTypes.bool,
     isRtl: PropTypes.bool,
     isVisible: PropTypes.bool,
     locale: PropTypes.string.isRequired,
     messages: PropTypes.objectOf(PropTypes.string),
+    oldToolbox: PropTypes.bool,
     onActivateColorPicker: PropTypes.func,
     onActivateCustomProcedures: PropTypes.func,
     onOpenConnectionModal: PropTypes.func,
@@ -847,9 +861,11 @@ const mapStateToProps = state => ({
     ),
     customStageSize: state.scratchGui.customStageSize,
     extensionLibraryVisible: state.scratchGui.modals.extensionLibrary,
+    editorSettings: state.scratchGui.editorSettings,
     isRtl: state.locales.isRtl,
     locale: state.locales.locale,
     messages: state.locales.messages,
+    oldToolbox: state.scratchGui.editorSettings.oldToolbox,
     toolboxXML: state.scratchGui.toolbox.toolboxXML,
     customProceduresVisible: state.scratchGui.customProcedures.active,
     workspaceMetrics: state.scratchGui.workspaceMetrics,

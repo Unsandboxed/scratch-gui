@@ -7,6 +7,14 @@
     flex-grow: 1;
 }
 
+[stagelayout="right"] .target-pane {
+    flex-direction: row;
+}
+
+[stagelayout="left"] .target-pane {
+    flex-direction: row-reverse;
+}
+
 .stage-selector-wrapper {
     display: flex;
     flex-basis: 72px;
