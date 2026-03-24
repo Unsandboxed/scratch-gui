@@ -15,7 +15,12 @@ import {APP_NAME} from '../../lib/brand.js';
 
 /* eslint-disable react/no-multi-comp */
 
-const EnableNewSettings = true;
+const handleClickAddonSettings = addonId => {
+    // addonId might be a string of the addon to focus on, undefined, or an event (treat like undefined)
+    const path = process.env.ROUTING_STYLE === 'wildcard' ? 'addons' : 'addons.html';
+    const url = `${process.env.ROOT}${path}${typeof addonId === 'string' ? `#${addonId}` : ''}`;
+    window.open(url);
+};
 
 const BufferedInput = BufferedInputHOC(Input);
 
@@ -560,6 +565,18 @@ const AppearanceSettings = props => (
     </Box>
 );
 
+const BlockSettings = props => (
+    <Box className={styles.content}>
+        <Header>
+            <FormattedMessage
+                defaultMessage="Nothing yet"
+                description="Settings modal section"
+                id="tw.settingsModal.nothingYet"
+            />
+        </Header>
+    </Box>
+);
+
 const SettingsModalComponent = props => (
     <Modal
         className={styles.modalContent}
@@ -571,15 +588,6 @@ const SettingsModalComponent = props => (
             <Box className={styles.menu}>
                 <div className={classNames(
                     styles.category,{
-                    [styles.active]: props.category == "appearance"
-                })}
-                    category="appearance"
-                    onClick={props.onChangeCategory}
-                >
-                    Appearance
-                </div>
-                <div className={classNames(
-                    styles.category,{
                     [styles.active]: props.category == "project"
                 })}
                     category="project"
@@ -589,16 +597,37 @@ const SettingsModalComponent = props => (
                 </div>
                 <div className={classNames(
                     styles.category,{
+                    [styles.active]: props.category == "appearance"
+                })}
+                    category="appearance"
+                    onClick={props.onChangeCategory}
+                >
+                    Appearance
+                </div>
+                <div className={classNames(
+                    styles.category,{
+                    [styles.active]: props.category == "blocks"
+                })}
+                    category="blocks"
+                    onClick={props.onChangeCategory}
+                >
+                    Blocks
+                </div>
+                <div className={classNames(
+                    styles.category,{
                     [styles.active]: props.category == "addons"
                 })}
                     category="addons"
-                    onClick={() => { alert("addons callback") }}
+                    onClick={() => { handleClickAddonSettings() }}
                 >
                     Addons
                 </div>
             </Box>
             {(props.category === "appearance") ?
             <AppearanceSettings
+                {...props}
+            /> : (props.category === "blocks") ?
+            <BlockSettings
                 {...props}
             /> :
             <ProjectSettings

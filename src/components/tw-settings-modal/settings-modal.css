@@ -8,7 +8,7 @@
 
 .body {
     background: $ui-modal-background;
-    min-height: 400px;
+    min-height: calc(100vh - 250px);
     max-height: calc(100vh - 250px);
     overflow-y: auto;
     display: flex;
