@@ -152,7 +152,6 @@ EditMenu.propTypes = {
     canChangeTheme: PropTypes.bool,
     isRtl: PropTypes.bool,
     onClickDesktopSettings: PropTypes.func,
-    onClickAddonSettings: PropTypes.func,
     onOpenCustomSettings: PropTypes.func,
     handleRestoreOption: PropTypes.func,
     restoreOptionMessage: PropTypes.func,

@@ -15,6 +15,8 @@ import {APP_NAME} from '../../lib/brand.js';
 
 /* eslint-disable react/no-multi-comp */
 
+const EnableNewSettings = true;
+
 const BufferedInput = BufferedInputHOC(Input);
 
 const messages = defineMessages({
