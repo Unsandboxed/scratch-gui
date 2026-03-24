@@ -533,15 +533,22 @@ const AppearanceSettings = props => (
     <Box className={styles.content}>
         <Header>
             <FormattedMessage
-                defaultMessage="Layout"
+                defaultMessage="Interface"
                 description="Settings modal section"
-                id="tw.settingsModal.appearanceTest"
+                id="tw.settingsModal.interface"
             />
         </Header>
         <StageOnLeft
             value={props.stageOnLeft}
             onChange={props.onStageLayoutChange}
         />
+        <Header>
+            <FormattedMessage
+                defaultMessage="Code Editor"
+                description="Settings modal section"
+                id="tw.settingsModal.codeEditor"
+            />
+        </Header>
         <OldToolbox
             value={props.oldToolbox}
             onChange={props.onToolboxChange}
@@ -558,18 +565,24 @@ const SettingsModalComponent = props => (
     >
         <Box className={styles.body}>
             <Box className={styles.menu}>
-                <p 
+                <div className={classNames(
+                    styles.category,{
+                    [styles.active]: props.category == "appearance"
+                })}
                     category="appearance"
                     onClick={props.onChangeCategory}
                 >
                     Appearance
-                </p>
-                <p 
+                </div>
+                <div className={classNames(
+                    styles.category,{
+                    [styles.active]: props.category == "project"
+                })}
                     category="project"
                     onClick={props.onChangeCategory}
                 >
                     Project
-                </p>
+                </div>
             </Box>
             {(props.category === "appearance") ?
             <AppearanceSettings

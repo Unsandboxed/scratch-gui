@@ -42,7 +42,7 @@ class UsernameModal extends React.Component {
             'handleToolboxChange',
         ]);
         this.state = {
-            category: "appearance",
+            category: "project",
 
             // appearance settings
             stageOnLeft: false,

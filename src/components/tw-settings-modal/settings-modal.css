@@ -3,7 +3,7 @@
 @import "../../css/default-colors.css";
 
 .modal-content {
-    max-width: 750px;
+    max-width: 900px;;
 }
 
 .body {
@@ -15,7 +15,7 @@
 }
 
 .menu, .content {
-    padding: 1.5rem 2.25rem;
+    padding: 1.5rem;
     overflow-y: auto;
 }
 
@@ -41,6 +41,23 @@
     .body {
         max-height: calc(100vh - 150px);
     }
+}
+
+.category {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem 1rem;
+    margin: 0.25rem 0;
+    width: 8rem;
+    border-radius: 4px;
+}
+.category.active {
+    background: $badge-background;
+}
+.category:hover,
+.category:focus-within {
+    background: $badge-border;
+    cursor: pointer;
 }
 
 .setting {
@@ -71,6 +88,17 @@
 .setting tr,
 .setting td,
 .setting th {
+    padding: 0;
+    margin: 0;
+    border: 1px solid $ui-tertiary;
+}
+
+.category table {
+    border-collapse: collapse;
+}
+.category tr,
+.category td,
+.category th {
     padding: 0;
     margin: 0;
     border: 1px solid $ui-tertiary;
