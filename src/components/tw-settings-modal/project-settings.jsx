@@ -9,7 +9,7 @@ import styles from './settings-modal.css';
 import {APP_NAME} from '../../lib/brand.js';
 
 const BufferedInput = BufferedInputHOC(Input);
-import {BooleanSetting, Setting, Header} from './global-components.jsx';
+import {BooleanSetting, Setting, Header, LearnMore} from './global-components.jsx';
 
 const HighQualityPen = props => (
     <BooleanSetting

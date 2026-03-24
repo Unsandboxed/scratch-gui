@@ -132,6 +132,7 @@ Header.propTypes = {
 };
 
 export {
+    LearnMore,
     BooleanSetting,
     Setting,
     Header,
