@@ -1,6 +1,8 @@
 import {defineMessages} from 'react-intl';
 import sharedMessages from '../shared-messages';
 
+import * as assets from './assets';
+
 let messages = defineMessages({
     variable: {
         defaultMessage: 'my variable',
@@ -38,9 +40,9 @@ const projectData = translateFunction => {
                 currentCostume: 0,
                 costumes: [
                     {
-                        assetId: 'cd21514d0531fdffb22204e0ec5ed84a',
+                        assetId: assets.backdrop.hash,
                         name: translator(messages.backdrop, {index: 1}),
-                        md5ext: 'cd21514d0531fdffb22204e0ec5ed84a.svg',
+                        md5ext: `${assets.backdrop.hash}.svg`,
                         dataFormat: 'svg',
                         rotationCenterX: 240,
                         rotationCenterY: 180
@@ -60,28 +62,28 @@ const projectData = translateFunction => {
                 currentCostume: 0,
                 costumes: [
                     {
-                        assetId: '927d672925e7b99f7813735c484c6922',
+                        assetId: assets.Sandy1.hash,
                         name: translator(messages.costume, {index: 1}),
                         bitmapResolution: 1,
-                        md5ext: '927d672925e7b99f7813735c484c6922.svg',
+                        md5ext: `${assets.Sandy1.hash}.svg`,
                         dataFormat: 'svg',
                         rotationCenterX: 44.156184159652724,
                         rotationCenterY: 51.508237134270445
                     },
                     {
-                        assetId: '5f0bf4c4fcf8a7b9ede17215f40c8440',
+                        assetId: assets.Sandy2.hash,
                         name: translator(messages.costume, {index: 2}),
                         bitmapResolution: 1,
-                        md5ext: '5f0bf4c4fcf8a7b9ede17215f40c8440.svg',
+                        md5ext: `${assets.Sandy2.hash}.svg`,
                         dataFormat: 'svg',
                         rotationCenterX: 52.33362218184814,
                         rotationCenterY: 55.36285780562275
                     },
                     {
-                        assetId: 'f40bd8ae5c2514f84f100b4ffe7c94c7',
+                        assetId: assets.Sandy3.hash,
                         name: translator(messages.costume, {index: 3}),
                         bitmapResolution: 1,
-                        md5ext: 'f40bd8ae5c2514f84f100b4ffe7c94c7.svg',
+                        md5ext: `${assets.Sandy3.hash}.svg`,
                         dataFormat: 'svg',
                         rotationCenterX: 43.19538319010644,
                         rotationCenterY: 55.36286713427046
