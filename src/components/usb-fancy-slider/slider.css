@@ -1,0 +1,30 @@
+@import "../../css/colors.css";
+
+/* Credits and acknowledgements to Blockly for 
+getting these to work on different browsers. */
+
+
+.slider {
+    appearance: none;
+    height: 8px;
+    border-radius: 4px;
+    transition: .2s;
+    background: $ui-white;
+    border: 1px solid $ui-black-transparent;
+    outline: none;
+}
+
+.slider:hover, .slider:focus, .slider:active {
+    box-shadow: 0 0 0 3px $looks-transparent;
+}
+
+.slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: $looks-secondary;
+    border: 1px solid $looks-transparent;
+    box-shadow: 0 0 0 3px $looks-transparent;
+    cursor: pointer;
+}

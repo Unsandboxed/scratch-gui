@@ -4,6 +4,7 @@ import React from 'react';
 import classNames from 'classnames';
 import bindAll from 'lodash.bindall';
 import FancyCheckbox from '../tw-fancy-checkbox/checkbox.jsx';
+import FancySlider from '../usb-fancy-slider/slider.jsx';
 import DocumentationLink from '../tw-documentation-link/documentation-link.jsx';
 import styles from './settings-modal.css';
 import helpIcon from './help-icon.svg';
@@ -121,6 +122,19 @@ BooleanSetting.propTypes = {
     label: PropTypes.node.isRequired
 };
 
+const SliderSetting = ({value, onChange, label, ...props}) => (
+    <FancySlider
+        {...props}
+        onChange={onChange}
+    />
+);
+SliderSetting.propTypes = {
+    onChange: PropTypes.func.isRequired,
+    value: PropTypes.bool.isRequired,
+    label: PropTypes.node.isRequired
+};
+
+
 const Header = props => (
     <div className={styles.header}>
         {props.children}
@@ -135,6 +149,7 @@ export {
     LearnMore,
     BooleanSetting,
     Setting,
+    SliderSetting,
     Header,
 }
 // export default injectIntl({
