@@ -2,7 +2,8 @@
 @import "../../css/units.css";
 @import "../../css/z-index.css";
 
-.sprite-selector {
+.sprite-selector-right,
+.sprite-selector-left {
     flex-grow: 1;
     position: relative;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -14,6 +15,18 @@
     border-width: 1px;
     border-style: solid;
     border-bottom: 0;
+}
+
+[dir="ltr"] .sprite-selector-right,
+[dir="rtl"] .sprite-selector-left {
+    margin-right: calc(0.5rem / 2);
+    margin-left: 0;
+}
+
+[dir="rtl"] .sprite-selector-right,
+[dir="ltr"] .sprite-selector-left {
+    margin-left: calc(0.5rem / 2);
+    margin-right: 0;
 }
 
 .sprite-wrapper {

@@ -329,7 +329,7 @@ const GUIComponent = props => {
                     onToggleLoginOpen={onToggleLoginOpen}
                 />
                 <Box className={styles.bodyWrapper}>
-                    <Box className={styles.flexWrapper}>
+                    <Box className={(editorSettings.stageOnLeft) ? styles.flexWrapperLeft : styles.flexWrapperRight}>
                         <Box className={styles.editorWrapper}>
                             <Tabs
                                 forceRenderTabPanel
@@ -444,6 +444,7 @@ const GUIComponent = props => {
                             />
                             <Box className={styles.targetWrapper}>
                                 <TargetPane
+                                    editorSettings={editorSettings}
                                     stageSize={stageSize}
                                     vm={vm}
                                 />

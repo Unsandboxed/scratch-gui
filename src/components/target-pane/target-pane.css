@@ -1,30 +1,36 @@
 @import "../../css/units.css";
 
-.target-pane {
+.target-pane-right,
+.target-pane-left {
     /* Makes columns for the sprite library selector + and the stage selector */
     display: flex;
     flex-direction: row;
     flex-grow: 1;
 }
 
-[stagelayout="right"] .target-pane {
+.target-pane-right {
     flex-direction: row;
 }
 
-[stagelayout="left"] .target-pane {
+.target-pane-left {
     flex-direction: row-reverse;
 }
 
-.stage-selector-wrapper {
+.stage-selector-wrapper-right,
+.stage-selector-wrapper-left {
     display: flex;
     flex-basis: 72px;
     flex-shrink: 0;
 }
 
-[dir="ltr"] .stage-selector-wrapper {
+[dir="rtl"] .stage-selector-wrapper-right
+[dir="ltr"] .stage-selector-wrapper-left {
     margin-left: calc($space / 2);
+    margin-right: 0;
 }
 
-[dir="rtl"] .stage-selector-wrapper {
+[dir="ltr"] .stage-selector-wrapper-right
+[dir="rtl"] .stage-selector-wrapper-left {
+    margin-left: 0;
     margin-right: calc($space / 2);
 }

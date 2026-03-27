@@ -19,6 +19,7 @@ import styles from './target-pane.css';
 const TargetPane = ({
     camera,
     editingTarget,
+    editorSettings,
     fileInputRef,
     hoveredTarget,
     spriteLibraryVisible,
@@ -53,13 +54,13 @@ const TargetPane = ({
     ...componentProps
 }) => (
     <div
-        className={styles.targetPane}
+        className={(editorSettings.stageOnLeft) ? styles.targetPaneLeft : styles.targetPaneRight}
         {...componentProps}
     >
-
         <SpriteSelectorComponent
             camera={camera}
             editingTarget={editingTarget}
+            editorSettings={editorSettings}
             hoveredTarget={hoveredTarget}
             raised={raiseSprites}
             selectedId={editingTarget}
@@ -88,7 +89,7 @@ const TargetPane = ({
             onSpriteUpload={onSpriteUpload}
             onSurpriseSpriteClick={onSurpriseSpriteClick}
         />
-        <div className={styles.stageSelectorWrapper}>
+        <div className={(editorSettings.stageOnLeft) ? styles.stageSelectorWrapperLeft : styles.stageSelectorWrapperRight}>
             {stage.id && <StageSelector
                 asset={
                     stage.costume &&
@@ -138,6 +139,7 @@ const spriteShape = PropTypes.shape({
 TargetPane.propTypes = {
     camera: PropTypes.object,
     editingTarget: PropTypes.string,
+    editorSettings: PropTypes.object,
     extensionLibraryVisible: PropTypes.bool,
     fileInputRef: PropTypes.func,
     hoveredTarget: PropTypes.shape({

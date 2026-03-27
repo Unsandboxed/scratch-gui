@@ -10,7 +10,7 @@
     */
     display: block;
 
-    border-radius: $space;
+    border-radius: 0rem;
     border: $stage-standard-border-width solid $ui-black-transparent;
     overflow: hidden;
 
@@ -29,6 +29,10 @@
     /* reset dark styles inherited from dark mode */
     color-scheme: light;
     color: $text-primary-default;
+}
+
+.stage-corners {
+    border-radius: $space;
 }
 
 .stage.full-screen {

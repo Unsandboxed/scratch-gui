@@ -25,13 +25,6 @@ const BlockHeight = props => (
                     onChange={props.onChange}
                     className={styles.customStageSizeInput}
                 />
-                <span>{'×'}</span>
-                <BufferedInput
-                    value={props.value}
-                    onChange={props.onChange}
-                    className={styles.customStageSizeInput}
-                    type="number"
-                />
             </div>
         )}
     />
@@ -41,33 +34,74 @@ BlockHeight.propTypes = {
     onChange: PropTypes.func,
 };
 
-const NotchSize = props => (
+const NotchHeight = props => (
     <Setting 
         noHelp={true}
         primary={(
             <div className={classNames(styles.label, styles.customStageSize)}>
                 <FormattedMessage
-                    defaultMessage="Notch Size:"
+                    defaultMessage="Notch Height:"
                     description="Notch Size option"
-                    id="tw.settingsModal.notchSize"
+                    id="tw.settingsModal.notchHeight"
                 />
                 <SliderSetting
                     value={props.value}
                     onChange={props.onChange}
                     className={styles.customStageSizeInput}
                 />
-                <span>{'×'}</span>
-                <BufferedInput
+            </div>
+        )}
+    />
+);
+NotchHeight.propTypes = {
+    value: PropTypes.number,
+    onChange: PropTypes.func,
+};
+
+const CornerRadius = props => (
+    <Setting 
+        noHelp={true}
+        primary={(
+            <div className={classNames(styles.label, styles.customStageSize)}>
+                <FormattedMessage
+                    defaultMessage="Corner Radius:"
+                    description="Corner Radius option"
+                    id="tw.settingsModal.cornerRadius"
+                />
+                <SliderSetting
                     value={props.value}
                     onChange={props.onChange}
                     className={styles.customStageSizeInput}
-                    type="number"
                 />
             </div>
         )}
     />
 );
-NotchSize.propTypes = {
+CornerRadius.propTypes = {
+    value: PropTypes.number,
+    onChange: PropTypes.func,
+};
+
+const CornerCurve = props => (
+    <Setting 
+        noHelp={true}
+        primary={(
+            <div className={classNames(styles.label, styles.customStageSize)}>
+                <FormattedMessage
+                    defaultMessage="Corner Curve:"
+                    description="Corner Curve option"
+                    id="tw.settingsModal.cornerCurve"
+                />
+                <SliderSetting
+                    value={props.value}
+                    onChange={props.onChange}
+                    className={styles.customStageSizeInput}
+                />
+            </div>
+        )}
+    />
+);
+CornerCurve.propTypes = {
     value: PropTypes.number,
     onChange: PropTypes.func,
 };
@@ -83,13 +117,23 @@ const BlockSettings = props => (
         </Header>
         <BlockHeight
             {...props}
-            value={50}
-            onChange={() => {console.log("gay 2")}}
+            value={props.blockHeight}
+            onChange={props.onBlockHeightChange}
         />
-        <NotchSize
+        <NotchHeight
             {...props}
-            value={50}
-            onChange={() => {console.log("gay 2")}}
+            value={props.notchHeight}
+            onChange={props.onNotchHeightChange}
+        />
+        <CornerRadius
+            {...props}
+            value={props.cornerRadius}
+            onChange={props.onCornerRadiusChange}
+        />
+        <CornerCurve
+            {...props}
+            value={props.cornerCurve}
+            onChange={props.onCornerCurveChange}
         />
         <Header>
             <FormattedMessage
@@ -100,9 +144,16 @@ const BlockSettings = props => (
         </Header>
     </Box>
 );
-
 BlockSettings.propTypes = {
     intl: intlShape,
+    blockHeight: PropTypes.number,
+    onBlockHeightChange: PropTypes.func,
+    notchHeight: PropTypes.number,
+    onNotchHeightChange: PropTypes.func,
+    cornerRadius: PropTypes.number,
+    onCornerRadiusChange: PropTypes.func,
+    cornerCurve: PropTypes.number,
+    onCornerCurveChange: PropTypes.func
 };
 
 export default injectIntl(BlockSettings);

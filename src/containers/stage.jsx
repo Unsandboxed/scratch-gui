@@ -104,6 +104,7 @@ class Stage extends React.Component {
             this.props.isColorPicking !== nextProps.isColorPicking ||
             this.state.colorInfo !== nextState.colorInfo ||
             this.props.isFullScreen !== nextProps.isFullScreen ||
+            this.props.stageRoundCorners !== nextProps.stageRoundCorners ||
             this.props.isWindowFullScreen !== nextProps.isWindowFullScreen ||
             this.props.dimensions !== nextProps.dimensions ||
             this.state.question !== nextState.question ||
@@ -527,6 +528,7 @@ Stage.propTypes = {
     micIndicator: PropTypes.bool,
     onActivateColorPicker: PropTypes.func,
     onDeactivateColorPicker: PropTypes.func,
+    stageRoundCorners: PropTypes.bool,
     stageSize: PropTypes.oneOf(Object.keys(STAGE_DISPLAY_SIZES)).isRequired,
     useEditorDragStyle: PropTypes.bool,
     vm: PropTypes.instanceOf(VM).isRequired
@@ -552,6 +554,7 @@ const mapStateToProps = state => ({
     dimensions: state.scratchGui.tw.dimensions,
     isStarted: state.scratchGui.vmStatus.started,
     micIndicator: state.scratchGui.micIndicator,
+    stageRoundCorners: state.scratchGui.editorSettings.stageRoundCorners,
     // Do not use editor drag style in fullscreen or player mode.
     useEditorDragStyle: !(state.scratchGui.mode.isFullScreen || state.scratchGui.mode.isPlayerOnly)
 });

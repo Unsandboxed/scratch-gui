@@ -18,6 +18,7 @@ const StageWrapperComponent = function (props) {
         isRtl,
         isRendererSupported,
         loading,
+        stageRoundCorners,
         stageSize,
         vm
     } = props;
@@ -45,6 +46,7 @@ const StageWrapperComponent = function (props) {
                 {
                     isRendererSupported ?
                         <Stage
+                            stageRoundCorners={stageRoundCorners}
                             stageSize={stageSize}
                             vm={vm}
                         /> :
@@ -65,6 +67,7 @@ StageWrapperComponent.propTypes = {
     isRtl: PropTypes.bool.isRequired,
     loading: PropTypes.bool,
     stageSize: PropTypes.oneOf(Object.keys(STAGE_DISPLAY_SIZES)).isRequired,
+    stageRoundCorners: PropTypes.bool,
     vm: PropTypes.instanceOf(VM).isRequired
 };
 

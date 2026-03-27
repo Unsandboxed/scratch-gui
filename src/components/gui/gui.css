@@ -17,15 +17,9 @@
     box-sizing: border-box;
 }
 
-.flex-wrapper {
+.flex-wrapper-right,
+.flex-wrapper-left {
     display: flex;
-
-    /*
-        Make 2 columns:
-        a) for the blocks + workspace panes, and
-        b) for combined stage menu + stage + sprite/stage selectors
-    */
-    flex-direction: row;
     height: 100%;
 
     /*
@@ -34,6 +28,20 @@
         TW: and also fix double horizontal scrollbar at some screen sizes in paint editor
     */
     overflow: hidden;
+}
+
+.flex-wrapper-right {
+    /*
+        Make 2 columns:
+        a) for the blocks + workspace panes, and
+        b) for combined stage menu + stage + sprite/stage selectors
+    */
+    flex-direction: row;
+}
+
+.flex-wrapper-left {
+    flex-direction: row-reverse;
+    overflow-x: hidden;
 }
 
 .editor-wrapper {

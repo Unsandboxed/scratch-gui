@@ -115,7 +115,18 @@ SettingsModalComponent.propTypes = {
 
     // appearance settings
     onStageLayoutChange: PropTypes.func,
+    onStageCornersChange: PropTypes.func,
     onToolboxChange: PropTypes.func,
+
+    // block settings
+    blockHeight: PropTypes.number,
+    onBlockHeightChange: PropTypes.func,
+    notchHeight: PropTypes.number,
+    onNotchHeightChange: PropTypes.func,
+    cornerRadius: PropTypes.number,
+    onCornerRadiusChange: PropTypes.func,
+    cornerCurve: PropTypes.number,
+    onCornerCurveChange: PropTypes.func
 };
 
 export default injectIntl(SettingsModalComponent);

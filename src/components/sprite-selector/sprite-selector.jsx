@@ -45,6 +45,7 @@ const SpriteSelectorComponent = function (props) {
     const {
         camera,
         editingTarget,
+        editorSettings,
         hoveredTarget,
         intl,
         onChangeSpriteDirection,
@@ -83,7 +84,7 @@ const SpriteSelectorComponent = function (props) {
     }
     return (
         <Box
-            className={styles.spriteSelector}
+            className={(editorSettings.stageOnLeft) ? styles.spriteSelectorLeft : styles.spriteSelectorRight}
             {...componentProps}
         >
             <CameraInfo
@@ -163,6 +164,7 @@ const SpriteSelectorComponent = function (props) {
 SpriteSelectorComponent.propTypes = {
     camera: PropTypes.object,
     editingTarget: PropTypes.string,
+    editorSettings: PropTypes.object,
     hoveredTarget: PropTypes.shape({
         hoveredSprite: PropTypes.string,
         receivedBlocks: PropTypes.bool

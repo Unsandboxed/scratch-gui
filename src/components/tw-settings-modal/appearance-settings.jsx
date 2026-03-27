@@ -20,6 +20,20 @@ const StageOnLeft = props => (
     />
 );
 
+const StageRoundCorners = props => (
+    <BooleanSetting noHelp={true}
+        {...props}
+        label={
+            <FormattedMessage
+                defaultMessage="Rounded Stage Corners"
+                description="Add or remove rounded stage corners."
+                id="tw.settingsModal.stageRoundCorners"
+            />
+        }
+        slug="stage-on-left"
+    />
+);
+
 const OldToolbox = props => (
     <BooleanSetting noHelp={true}
         {...props}
@@ -47,6 +61,10 @@ const AppearanceSettings = props => (
             value={props.stageOnLeft}
             onChange={props.onStageLayoutChange}
         />
+        <StageRoundCorners
+            value={props.stageRoundCorners}
+            onChange={props.onStageCornersChange}
+        />
         <Header>
             <FormattedMessage
                 defaultMessage="Code Editor"
@@ -66,6 +84,7 @@ AppearanceSettings.propTypes = {
 
     // appearance settings
     onStageLayoutChange: PropTypes.func,
+    onStageCornersChange: PropTypes.func,
     onToolboxChange: PropTypes.func,
 };
 

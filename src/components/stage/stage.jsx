@@ -27,6 +27,7 @@ const StageComponent = props => {
         colorInfo,
         micIndicator,
         question,
+        stageRoundCorners,
         stageSize,
         useEditorDragStyle,
         onDeactivateColorPicker,
@@ -56,6 +57,7 @@ const StageComponent = props => {
                 <Box
                     className={classNames(
                         styles.stage,
+                        {[styles.stageCorners]: stageRoundCorners},
                         {[styles.fullScreen]: isFullScreen}
                     )}
                     style={{
@@ -168,6 +170,7 @@ StageComponent.propTypes = {
     onDoubleClick: PropTypes.func,
     onQuestionAnswered: PropTypes.func,
     question: PropTypes.string,
+    stageRoundCorners: PropTypes.boolean,
     stageSize: PropTypes.oneOf(Object.keys(STAGE_DISPLAY_SIZES)).isRequired,
     useEditorDragStyle: PropTypes.bool
 };

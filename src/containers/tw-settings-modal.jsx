@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import {closeSettingsModal} from '../reducers/modals';
 import SettingsModalComponent from '../components/tw-settings-modal/settings-modal.jsx';
 import {defaultStageSize} from '../reducers/custom-stage-size';
-import {changeStageLayout, changeToolbox} from '../reducers/editor-settings.js';
+import {changeStageLayout, changeToolbox, changeStageCorners} from '../reducers/editor-settings.js';
 import {changeSettings} from '../lib/themes/settingsPersistance.js';
 
 const messages = defineMessages({
@@ -39,6 +39,7 @@ class UsernameModal extends React.Component {
 
             // editor settings
             'handleStageLayoutChange',
+            'handleStageCornersChange',
             'handleToolboxChange',
         ]);
         this.state = {
@@ -46,6 +47,7 @@ class UsernameModal extends React.Component {
 
             // appearance settings
             stageOnLeft: false,
+            stageRoundCorners: true,
             oldToolbox: false,
         };
     }
@@ -113,6 +115,10 @@ class UsernameModal extends React.Component {
         this.props.onChangeStageLayout({stageOnLeft: e.target.checked});
         this.setState({stageOnLeft: e.target.checked});
     }
+    handleStageCornersChange (e) {
+        this.props.onChangeStageCorners({stageRoundCorners: e.target.checked});
+        this.setState({stageRoundCorners: e.target.checked});
+    }
     handleToolboxChange (e) {
         this.props.onChangeToolbox({oldToolbox: e.target.checked});
         this.setState({oldToolbox: e.target.checked});
@@ -155,6 +161,8 @@ class UsernameModal extends React.Component {
                 // appearance settings
                 stageOnLeft={this.state.stageOnLeft}
                 onStageLayoutChange={this.handleStageLayoutChange}
+                stageRoundCorners={this.state.stageRoundCorners}
+                onStageCornersChange={this.handleStageCornersChange}
                 oldToolbox={this.state.oldToolbox}
                 onToolboxChange={this.handleToolboxChange}
                 {...props}
@@ -198,6 +206,8 @@ UsernameModal.propTypes = {
     // appearance settings
     stageOnLeft: PropTypes.bool,
     onChangeStageLayout: PropTypes.func,
+    stageRoundCorners: PropTypes.bool,
+    onChangeStageCorners: PropTypes.func,
     oldToolbox: PropTypes.bool,
     onChangeToolbox: PropTypes.func,
 };
@@ -219,12 +229,17 @@ const mapStateToProps = state => ({
 
     // Appearance settings
     stageOnLeft: state.scratchGui.editorSettings.stageOnLeft,
+    stageRoundCorners: state.scratchGui.editorSettings.stageRoundCorners,
     oldToolbox: state.scratchGui.editorSettings.oldToolbox,
 });
 
 const mapDispatchToProps = dispatch => ({
     onChangeStageLayout: setting => {
         dispatch(changeStageLayout(setting));
+        changeSettings(setting)
+    },
+    onChangeStageCorners: setting => {
+        dispatch(changeStageCorners(setting));
         changeSettings(setting)
     },
     onChangeToolbox: setting => {
