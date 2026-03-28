@@ -2,14 +2,15 @@ import {FormattedMessage, intlShape, injectIntl} from 'react-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
-import Box from '../box/box.jsx';
-import Input from '../forms/input.jsx';
-import BufferedInputHOC from '../forms/buffered-input-hoc.jsx';
-import styles from './settings-modal.css';
+import Box from '../../box/box.jsx';
+import Input from '../../forms/input.jsx';
+import BufferedInputHOC from '../../forms/buffered-input-hoc.jsx';
+import styles from '../settings-modal.css';
+import {APP_NAME} from '../../../lib/brand.js';
 
 const BufferedInput = BufferedInputHOC(Input);
-import {SliderSetting, Setting, Header} from './global-components.jsx';
-import BlockPreview from './block-preview.jsx';
+import {SliderSetting, Setting, Header} from '../global-components.jsx';
+import BlockPreview from '../block-preview.jsx';
 
 const BlockHeight = props => (
     <Setting 

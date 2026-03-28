@@ -52,14 +52,25 @@
     cursor: pointer;
 }
 
+.category img {
+    transition: opacity 0.15s;
+    filter: $filter-icon-black;
+    opacity: 0.5;
+}
+.category:hover img {
+    opacity: 0.9;
+}
+
 .category, .setting {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
     padding: 0.5rem 1rem;
     margin: 0.25rem 0;
     border-radius: 4px;
     transition: background 0.15s;
 }
+
 .setting.active {
     background: $badge-background;
 }

@@ -1,10 +1,10 @@
 import {FormattedMessage, intlShape, injectIntl} from 'react-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Box from '../box/box.jsx';
-import styles from './settings-modal.css';
+import Box from '../../box/box.jsx';
+import styles from '../settings-modal.css';
 
-import {BooleanSetting, Setting, Header} from './global-components.jsx';
+import {BooleanSetting, Setting, Header} from '../global-components.jsx';
 
 const StageOnLeft = props => (
     <BooleanSetting noHelp={true}

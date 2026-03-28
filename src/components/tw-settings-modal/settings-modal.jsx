@@ -6,9 +6,11 @@ import Box from '../box/box.jsx';
 import Modal from '../../containers/modal.jsx';
 import styles from './settings-modal.css';
 
-import AppearanceSettings from './appearance-settings.jsx';
-import BlockSettings from './block-settings.jsx';
-import ProjectSettings from './project-settings.jsx';
+import openLinkIcon from './open-link.svg';
+
+import AppearanceSettings from './categories/appearance-settings.jsx';
+import BlockSettings from './categories/block-settings.jsx';
+import ProjectSettings from './categories/project-settings.jsx';
 
 /* eslint-disable react/no-multi-comp */
 
@@ -65,12 +67,29 @@ const SettingsModalComponent = props => (
                 </div>
                 <div className={classNames(
                     styles.category,{
+                    [styles.active]: props.category == "shortcuts"
+                })}
+                    category="shortcuts"
+                    onClick={props.onChangeCategory}
+                >
+                    Shortcuts
+                </div>
+
+                <div className={classNames(
+                    styles.category,{
                     [styles.active]: props.category == "addons"
                 })}
                     category="addons"
                     onClick={handleClickAddonSettings}
                 >
                     Addons
+                    <img
+                        width={20}
+                        height={20}
+                        className={styles.openLink}
+                        src={openLinkIcon}
+                        draggable={false}
+                    />
                 </div>
             </Box>
             {(props.category === "appearance") ?
