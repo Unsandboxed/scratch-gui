@@ -9,6 +9,7 @@ import styles from './settings-modal.css';
 
 const BufferedInput = BufferedInputHOC(Input);
 import {SliderSetting, Setting, Header} from './global-components.jsx';
+import BlockPreview from './block-preview.jsx';
 
 const BlockHeight = props => (
     <Setting 
@@ -108,6 +109,7 @@ CornerCurve.propTypes = {
 
 const BlockSettings = props => (
     <Box className={styles.content}>
+        <BlockPreview/>
         <Header>
             <FormattedMessage
                 defaultMessage="Scale"
