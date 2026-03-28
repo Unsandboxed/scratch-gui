@@ -29,6 +29,8 @@ const isTrustedExtension = url => (
 
     // For development.
     url.startsWith('http://localhost:8000/') ||
+    url.startsWith('http://localhost:8001/') ||
+
 
     // Experimentally allowing Pen Group extensions.
     url.startsWith('https://pen-group.github.io/extensions/') ||
