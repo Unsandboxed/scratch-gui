@@ -79,6 +79,10 @@
     background: $badge-border;
 }
 
+.divider {
+    border-top: 1px dashed $ui-black-transparent;
+}
+
 .label {
     height: 32px;
     display: flex;

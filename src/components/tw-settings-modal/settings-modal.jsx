@@ -75,6 +75,8 @@ const SettingsModalComponent = props => (
                     Shortcuts
                 </div>
 
+                <div className={styles.divider}/>
+
                 <div className={classNames(
                     styles.category,{
                     [styles.active]: props.category == "addons"
