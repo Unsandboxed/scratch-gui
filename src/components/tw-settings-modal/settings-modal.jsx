@@ -8,6 +8,7 @@ import styles from './settings-modal.css';
 
 import openLinkIcon from './open-link.svg';
 
+import AddonsContainer from './categories/addons-container.jsx';
 import AppearanceSettings from './categories/appearance-settings.jsx';
 import BlockSettings from './categories/block-settings.jsx';
 import ProjectSettings from './categories/project-settings.jsx';
@@ -82,7 +83,7 @@ const SettingsModalComponent = props => (
                     [styles.active]: props.category == "addons"
                 })}
                     category="addons"
-                    onClick={handleClickAddonSettings}
+                    onClick={props.onChangeCategory}
                 >
                     Addons
                     <img
@@ -99,6 +100,9 @@ const SettingsModalComponent = props => (
                 {...props}
             /> : (props.category === "blocks") ?
             <BlockSettings
+                {...props}
+            /> : (props.category === "addons") ?
+            <AddonsContainer
                 {...props}
             /> :
             <ProjectSettings

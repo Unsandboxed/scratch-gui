@@ -3,7 +3,7 @@
 @import "../../css/default-colors.css";
 
 .modal-content {
-    max-width: 900px;;
+    max-width: 900px;
 }
 
 .body {
@@ -30,6 +30,12 @@
 }
 
 .content {
+    flex: 5;
+}
+
+.container {
+    display: flex;
+    overflow-y: auto;
     flex: 5;
 }
 
