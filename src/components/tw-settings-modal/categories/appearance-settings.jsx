@@ -7,7 +7,7 @@ import styles from '../settings-modal.css';
 import {BooleanSetting, Setting, Header} from '../global-components.jsx';
 
 const StageOnLeft = props => (
-    <BooleanSetting noHelp={true}
+    <BooleanSetting noSlug={true}
         {...props}
         label={
             <FormattedMessage
@@ -16,12 +16,20 @@ const StageOnLeft = props => (
                 id="tw.settingsModal.stageOnLeft"
             />
         }
+        help={
+            <FormattedMessage
+                // eslint-disable-next-line max-len
+                defaultMessage="Displays stage on the left side of the editor, like in Scratch\u2122 2.0."
+                description="Left-hand stage setting help"
+                id="tw.settingsModal.stageOnLeftHelp"
+            />
+        }
         slug="stage-on-left"
     />
 );
 
 const StageRoundCorners = props => (
-    <BooleanSetting noHelp={true}
+    <BooleanSetting noSlug={true}
         {...props}
         label={
             <FormattedMessage
@@ -30,18 +38,32 @@ const StageRoundCorners = props => (
                 id="tw.settingsModal.stageRoundCorners"
             />
         }
+        help={
+            <FormattedMessage
+                defaultMessage="Adds rounded corners to the stage."
+                description="Round stage corners setting help."
+                id="tw.settingsModal.stageRoundCornersHelp"
+            />
+        }
         slug="stage-on-left"
     />
 );
 
 const OldToolbox = props => (
-    <BooleanSetting noHelp={true}
+    <BooleanSetting noSlug={true}
         {...props}
         label={
             <FormattedMessage
                 defaultMessage="Legacy Block Palette"
                 description="Bring back the old block palette."
                 id="tw.settingsModal.oldToolbox"
+            />
+        }
+        help={
+            <FormattedMessage
+                defaultMessage="Reverts to the original TurboWarp block palette."
+                description="Old toolbox setting help."
+                id="tw.settingsModal.oldToolboxHelp"
             />
         }
         slug="old-toolbox"

@@ -82,7 +82,7 @@ class UnwrappedSetting extends React.Component {
                 {!this.props.noHelp && this.state.helpVisible && (
                     <div className={styles.detail}>
                         {this.props.help}
-                        {this.props.slug && <LearnMore slug={this.props.slug} />}
+                        {this.props.slug && !this.props.noSlug &&<LearnMore slug={this.props.slug} />}
                     </div>
                 )}
                 {this.props.secondary}
