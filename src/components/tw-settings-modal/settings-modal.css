@@ -49,6 +49,9 @@
     }
 }
 
+.category {
+    flex-direction: row;
+}
 .category.active {
     background: $badge-background;
 }
@@ -69,7 +72,6 @@
 
 .category, .setting {
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
     padding: 0.5rem 1rem;
     margin: 0.25rem 0;
@@ -77,6 +79,9 @@
     transition: background 0.15s;
 }
 
+.setting {
+    flex-direction: column;
+}
 .setting.active {
     background: $badge-background;
 }
