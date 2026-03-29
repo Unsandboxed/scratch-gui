@@ -110,7 +110,9 @@ CornerCurve.propTypes = {
 
 const BlockSettings = props => (
     <Box className={styles.content}>
-        <BlockPreview/>
+        <BlockPreview
+            {...props}
+        />
         <Header>
             <FormattedMessage
                 defaultMessage="Scale"
@@ -120,22 +122,24 @@ const BlockSettings = props => (
         </Header>
         <BlockHeight
             {...props}
-            value={props.blockHeight}
+            min={25}
+            max={150}
+            value={props.blockSettings.blockHeight}
             onChange={props.onBlockHeightChange}
         />
         <NotchHeight
             {...props}
-            value={props.notchHeight}
+            value={props.blockSettings.notchHeight}
             onChange={props.onNotchHeightChange}
         />
         <CornerRadius
             {...props}
-            value={props.cornerRadius}
+            value={props.blockSettings.cornerRadius}
             onChange={props.onCornerRadiusChange}
         />
         <CornerCurve
             {...props}
-            value={props.cornerCurve}
+            value={props.blockSettings.cornerCurve}
             onChange={props.onCornerCurveChange}
         />
         <Header>
@@ -149,14 +153,7 @@ const BlockSettings = props => (
 );
 BlockSettings.propTypes = {
     intl: intlShape,
-    blockHeight: PropTypes.number,
-    onBlockHeightChange: PropTypes.func,
-    notchHeight: PropTypes.number,
-    onNotchHeightChange: PropTypes.func,
-    cornerRadius: PropTypes.number,
-    onCornerRadiusChange: PropTypes.func,
-    cornerCurve: PropTypes.number,
-    onCornerCurveChange: PropTypes.func
+    blockSettings: PropTypes.object,
 };
 
 export default injectIntl(BlockSettings);

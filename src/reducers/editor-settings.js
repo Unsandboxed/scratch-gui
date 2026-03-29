@@ -3,6 +3,7 @@ import {getSettings} from '../lib/themes/settingsPersistance';
 const STAGE_LAYOUT = 'editor-settings/STAGE_LAYOUT'
 const STAGE_CORNERS = 'editor-settings/STAGE_CORNERS'
 const OLD_TOOLBOX = 'editor-settings/OLD_TOOLBOX'
+const BLOCK_SETTINGS = 'editor-settings/BLOCK_SETTINGS'
 
 export const initialState = getSettings();
 
@@ -20,6 +21,10 @@ const reducer = function (state, action) {
     case OLD_TOOLBOX:
         return Object.assign({}, state, {
             oldToolbox: action.oldToolbox
+        });
+    case BLOCK_SETTINGS:
+        return Object.assign({}, state, {
+            blockSettings: action.blockSettings
         });
     default:
         return state;
@@ -47,10 +52,18 @@ const changeToolbox = function (setting) {
     };
 };
 
+const changeBlockSettings = function (setting) {
+    return {
+        type: BLOCK_SETTINGS,
+        blockSettings: setting['blockSettings']
+    };
+};
+
 export {
     reducer as default,
     initialState as editorSettingsInitialState,
     changeStageLayout,
     changeStageCorners,
+    changeBlockSettings,
     changeToolbox
 };

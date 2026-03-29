@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import {closeSettingsModal} from '../reducers/modals';
 import SettingsModalComponent from '../components/tw-settings-modal/settings-modal.jsx';
 import {defaultStageSize} from '../reducers/custom-stage-size';
-import {changeStageLayout, changeToolbox, changeStageCorners} from '../reducers/editor-settings.js';
+import {changeStageLayout, changeToolbox, changeStageCorners, changeBlockSettings} from '../reducers/editor-settings.js';
 import {changeSettings} from '../lib/themes/settingsPersistance.js';
 
 const messages = defineMessages({
@@ -41,6 +41,9 @@ class UsernameModal extends React.Component {
             'handleStageLayoutChange',
             'handleStageCornersChange',
             'handleToolboxChange',
+
+            // block settings
+            'handleBlockHeightChange',
         ]);
         this.state = {
             category: "project",
@@ -49,8 +52,20 @@ class UsernameModal extends React.Component {
             stageOnLeft: false,
             stageRoundCorners: true,
             oldToolbox: false,
+
+            // block settings
+            blockHeight: 40,
+            notchHeight: undefined,
+            cornerRadius: undefined,
+            cornerCurve: undefined,
         };
     }
+    // shouldComponentUpdate (nextProps, nextState) {
+    //     return (
+    //         this.props !== nextProps ||
+    //         this.state.blockHeight !== nextState.blockHeight
+    //     );
+    // }
     handleChangeCategory (e) {
         const newCategory = e.target.getAttribute("category");
         this.setState({category: newCategory});
@@ -124,6 +139,12 @@ class UsernameModal extends React.Component {
         this.setState({oldToolbox: e.target.checked});
     }
 
+    // block settings
+    handleBlockHeightChange (e) {
+        this.props.onChangeBlockSettings({blockHeight: e.target.value});
+        this.setState({blockHeight: e.target.value});
+    }
+
     render () {
         const {
             /* eslint-disable no-unused-vars */
@@ -165,6 +186,15 @@ class UsernameModal extends React.Component {
                 onStageCornersChange={this.handleStageCornersChange}
                 oldToolbox={this.state.oldToolbox}
                 onToolboxChange={this.handleToolboxChange}
+
+                // block settings
+                blockSettings={{
+                    blockHeight: this.state.blockHeight,
+                    notchHeight: this.state.notchHeight,
+                    cornerCurve: this.state.cornerCurve,
+                    cornerRadius: this.state.cornerRadius,
+                }}
+                onBlockHeightChange={this.handleBlockHeightChange}
                 {...props}
             />
         );
@@ -210,6 +240,8 @@ UsernameModal.propTypes = {
     onChangeStageCorners: PropTypes.func,
     oldToolbox: PropTypes.bool,
     onChangeToolbox: PropTypes.func,
+
+    blockSettings: PropTypes.object,
 };
 
 const mapStateToProps = state => ({
@@ -230,7 +262,9 @@ const mapStateToProps = state => ({
     // Appearance settings
     stageOnLeft: state.scratchGui.editorSettings.stageOnLeft,
     stageRoundCorners: state.scratchGui.editorSettings.stageRoundCorners,
-    oldToolbox: state.scratchGui.editorSettings.oldToolbox,
+
+    // // Block settings
+    // blockSettings: state.scratchGui.editorSettings.blockSettings,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -244,6 +278,10 @@ const mapDispatchToProps = dispatch => ({
     },
     onChangeToolbox: setting => {
         dispatch(changeToolbox(setting));
+        changeSettings(setting)
+    },
+    onChangeBlockSettings: setting => {
+        dispatch(changeBlockSettings(setting));
         changeSettings(setting)
     },
     onClose: () => dispatch(closeSettingsModal())
