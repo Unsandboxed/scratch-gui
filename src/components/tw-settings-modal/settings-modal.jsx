@@ -66,7 +66,8 @@ const SettingsModalComponent = props => (
                 >
                     Blocks
                 </div> */}
-                <div className={classNames(
+
+                {/* <div className={classNames(
                     styles.category,{
                     [styles.active]: props.category == "shortcuts"
                 })}
@@ -74,7 +75,7 @@ const SettingsModalComponent = props => (
                     onClick={props.onChangeCategory}
                 >
                     Shortcuts
-                </div>
+                </div> */}
 
                 <div className={styles.divider}/>
 
