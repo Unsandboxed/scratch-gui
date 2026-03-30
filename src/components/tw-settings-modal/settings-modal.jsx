@@ -57,7 +57,7 @@ const SettingsModalComponent = props => (
                 >
                     Appearance
                 </div>
-                <div className={classNames(
+                {/* <div className={classNames(
                     styles.category,{
                     [styles.active]: props.category == "blocks"
                 })}
@@ -65,7 +65,7 @@ const SettingsModalComponent = props => (
                     onClick={props.onChangeCategory}
                 >
                     Blocks
-                </div>
+                </div> */}
                 <div className={classNames(
                     styles.category,{
                     [styles.active]: props.category == "shortcuts"
@@ -98,9 +98,9 @@ const SettingsModalComponent = props => (
             {(props.category === "appearance") ?
             <AppearanceSettings
                 {...props}
-            /> : (props.category === "blocks") ?
-            <BlockSettings
-                {...props}
+            // /> : (props.category === "blocks") ?
+            // <BlockSettings
+            //     {...props}
             /> : (props.category === "addons") ?
             <AddonsContainer
                 {...props}
