@@ -14,7 +14,6 @@ export default {
   "color-picker": () => import(/* webpackChunkName: "addon-default-entry" */ "../addons/color-picker/_runtime_entry.js"),
   "columns": () => import(/* webpackChunkName: "addon-entry-columns" */ "../addons/columns/_runtime_entry.js"),
   "copy-reporter": () => import(/* webpackChunkName: "addon-entry-copy-reporter" */ "../addons/copy-reporter/_runtime_entry.js"),
-  "custom-block-shape": () => import(/* webpackChunkName: "addon-entry-custom-block-shape" */ "../addons/custom-block-shape/_runtime_entry.js"),
   "custom-block-text": () => import(/* webpackChunkName: "addon-entry-custom-block-text" */ "../addons/custom-block-text/_runtime_entry.js"),
   "custom-menu-bar": () => import(/* webpackChunkName: "addon-entry-custom-menu-bar" */ "../addons/custom-menu-bar/_runtime_entry.js"),
   "custom-zoom": () => import(/* webpackChunkName: "addon-entry-custom-zoom" */ "../addons/custom-zoom/_runtime_entry.js"),

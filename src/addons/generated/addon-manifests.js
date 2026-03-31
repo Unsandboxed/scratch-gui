@@ -13,7 +13,6 @@ import _clones from "../addons/clones/_manifest_entry.js";
 import _color_picker from "../addons/color-picker/_manifest_entry.js";
 import _columns from "../addons/columns/_manifest_entry.js";
 import _copy_reporter from "../addons/copy-reporter/_manifest_entry.js";
-import _custom_block_shape from "../addons/custom-block-shape/_manifest_entry.js";
 import _custom_block_text from "../addons/custom-block-text/_manifest_entry.js";
 import _custom_menu_bar from "../addons/custom-menu-bar/_manifest_entry.js";
 import _custom_zoom from "../addons/custom-zoom/_manifest_entry.js";
@@ -94,7 +93,6 @@ export default {
   "color-picker": _color_picker,
   "columns": _columns,
   "copy-reporter": _copy_reporter,
-  "custom-block-shape": _custom_block_shape,
   "custom-block-text": _custom_block_text,
   "custom-menu-bar": _custom_menu_bar,
   "custom-zoom": _custom_zoom,

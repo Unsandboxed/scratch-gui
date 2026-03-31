@@ -15,7 +15,6 @@ const addons = [
     'color-picker',
     'columns',
     'copy-reporter',
-    'custom-block-shape',
     'custom-block-text',
     'custom-menu-bar',
     'custom-zoom',
