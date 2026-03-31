@@ -111,7 +111,6 @@ export default {
   "editor-number-arrow-keys": _editor_number_arrow_keys,
   "editor-searchable-dropdowns": _editor_searchable_dropdowns,
   "editor-sounds": _editor_sounds,
-  "editor-square-inputs": _editor_square_inputs,
   "editor-stage-left": _editor_stage_left,
   "editor-stepping": _editor_stepping,
   "editor-theme3": _editor_theme3,
