@@ -53,6 +53,7 @@
     "css-loader": "^1.0.0",
     "dapjs": "2.3.0",
     "es6-object-assign": "1.1.0",
+    "extensions": "github:Unsandboxed/extensions#develop",
     "get-float-time-domain-data": "0.1.0",
     "get-user-media-promise": "1.1.4",
     "intl": "1.2.5",
