@@ -558,23 +558,40 @@ class Tab extends EventTargetShim {
         this.traps.getBlockly().then(ScratchBlocks => {
             const oldShow = ScratchBlocks.ContextMenu.show;
             ScratchBlocks.ContextMenu.show = function (event, items, rtl) {
-                const gesture = ScratchBlocks.mainWorkspace.currentGesture_;
-                const block = gesture.targetBlock_;
+                const gesture = ScratchBlocks.mainWorkspace && ScratchBlocks.mainWorkspace.currentGesture_;
+                const block = gesture ? gesture.targetBlock_ : null;
+
+                // Determine context from the DOM target first; gesture state can
+                // be stale for custom menu sources such as frames.
+                const target = event && event.target;
+                const hasClosest = !!(target && target.closest);
+                const isFrameContext = hasClosest && !!target.closest('.blocklyFrame');
+                const isBubbleContext = hasClosest && !!target.closest('.blocklyBubbleCanvas');
+                const isFlyoutContext = hasClosest &&
+                    (!!target.closest('.blocklyFlyout') || !!target.closest('.blocklyFlyoutBackground'));
+
+                // Frame menus should be treated as workspace menus so block-only
+                // addons don't receive an invalid block context.
+                const inFlyout = isFrameContext ? false :
+                    (isFlyoutContext || !!(gesture && gesture.flyout_));
+                const startBubble = isFrameContext ? null :
+                    (isBubbleContext ? (gesture && gesture.startBubble_) : (gesture && gesture.startBubble_));
+                const menuBlock = isFrameContext ? null : block;
 
                 // eslint-disable-next-line no-shadow
                 for (const {callback, workspace, blocks, flyout, comments} of contextMenuCallbacks) {
                     const injectMenu =
                         // Workspace
-                        (workspace && !block && !gesture.flyout_ && !gesture.startBubble_) ||
+                        (workspace && !menuBlock && !inFlyout && !startBubble) ||
                         // Block in workspace
-                        (blocks && block && !gesture.flyout_) ||
+                        (blocks && menuBlock && !inFlyout) ||
                         // Block in flyout
-                        (flyout && gesture.flyout_) ||
+                        (flyout && inFlyout) ||
                         // Comments
-                        (comments && gesture.startBubble_);
+                        (comments && startBubble);
                     if (injectMenu) {
                         try {
-                            items = callback(items, block);
+                            items = callback(items, menuBlock);
                         } catch (e) {
                             console.error('Error while calling context menu callback: ', e);
                         }
