@@ -214,6 +214,7 @@ class SpriteInfo extends React.Component {
                             rotationStyle={this.props.rotationStyle}
                             onChangeDirection={this.props.onChangeDirection}
                             onChangeRotationStyle={this.props.onChangeRotationStyle}
+                            removeRotationStyle={false}
                         />
                     </div>
                 </div>
@@ -239,6 +240,7 @@ SpriteInfo.propTypes = {
     onClickNotVisible: PropTypes.func,
     onClickVisible: PropTypes.func,
     rotationStyle: PropTypes.string,
+    removeRotationStyle: PropTypes.bool,
     size: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number

@@ -2,3 +2,7 @@
     justify-content: center;
     margin-bottom: 1rem;
 }
+
+.dial-only {
+    padding-bottom: 0.25rem;
+}

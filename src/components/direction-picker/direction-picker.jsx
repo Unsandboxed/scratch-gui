@@ -64,12 +64,12 @@ const DirectionPicker = props => (
     >
         <Popover
             body={
-                <div>
+                <div className={props.removeRotationStyle ? styles.dialOnly : null}>
                     <Dial
                         direction={props.direction}
                         onChange={props.onChangeDirection}
                     />
-                    <ToggleButtons
+                    {!props.removeRotationStyle && <ToggleButtons
                         className={styles.buttonRow}
                         buttons={[
                             {
@@ -97,7 +97,7 @@ const DirectionPicker = props => (
                                 title: props.intl.formatMessage(messages.dontRotate)
                             }
                         ]}
-                    />
+                    />}
                 </div>
             }
             isOpen={props.popoverOpen}
@@ -124,6 +124,7 @@ DirectionPicker.propTypes = {
     disabled: PropTypes.bool.isRequired,
     intl: intlShape,
     labelAbove: PropTypes.bool,
+    removeRotationStyle: PropTypes.bool,
     onChangeDirection: PropTypes.func.isRequired,
     onClickAllAround: PropTypes.func.isRequired,
     onClickDontRotate: PropTypes.func.isRequired,
@@ -136,7 +137,8 @@ DirectionPicker.propTypes = {
 };
 
 DirectionPicker.defaultProps = {
-    labelAbove: false
+    labelAbove: false,
+    removeRotationStyle: false
 };
 
 const WrappedDirectionPicker = injectIntl(DirectionPicker);

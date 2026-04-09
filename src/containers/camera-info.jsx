@@ -21,8 +21,12 @@ CameraInfo.propTypes = {
     ...CameraInfoComponent.propTypes,
     onChangeX: PropTypes.func,
     onChangeY: PropTypes.func,
+    onChangeZoom: PropTypes.func,
+    onChangeDirection: PropTypes.func,
     x: PropTypes.number,
-    y: PropTypes.number
+    y: PropTypes.number,
+    zoom: PropTypes.number,
+    direction: PropTypes.number
 };
 
 export default CameraInfo;

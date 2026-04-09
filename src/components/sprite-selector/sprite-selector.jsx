@@ -54,6 +54,8 @@ const SpriteSelectorComponent = function (props) {
         onChangeSpriteVisibility,
         onChangeCameraX,
         onChangeCameraY,
+        onChangeCameraZoom,
+        onChangeCameraDirection,
         onClickCenter,
         onClickCenterOnTarget,
         onChangeSpriteX,
@@ -89,11 +91,15 @@ const SpriteSelectorComponent = function (props) {
             <CameraInfo
                 x={camera.camera.x}
                 y={camera.camera.y}
+                zoom={camera.camera.zoom}
+                direction={camera.camera.direction}
                 stageSize={stageSize}
                 onClickCenter={onClickCenter}
                 onClickCenterOnTarget={onClickCenterOnTarget}
                 onChangeX={onChangeCameraX}
                 onChangeY={onChangeCameraY}
+                onChangeZoom={onChangeCameraZoom}
+                onChangeDirection={onChangeCameraDirection}
             />
             <SpriteInfo
                 direction={selectedSprite.direction}
@@ -175,6 +181,8 @@ SpriteSelectorComponent.propTypes = {
     onChangeSpriteVisibility: PropTypes.func,
     onChangeCameraX: PropTypes.func,
     onChangeCameraY: PropTypes.func,
+    onChangeCameraZoom: PropTypes.func,
+    onChangeCameraDirection: PropTypes.func,
     onChangeSpriteX: PropTypes.func,
     onChangeSpriteY: PropTypes.func,
     onClickCenter: PropTypes.func,
