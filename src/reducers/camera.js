@@ -3,7 +3,9 @@ const CAMERA_UPDATE = 'scratch-gui/camera/CAMERA_UPDATE';
 const initialState = {
     camera: {
         x: 0,
-        y: 0
+        y: 0,
+        zoom: 100,
+        direction: 90
     }
 };
 

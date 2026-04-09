@@ -31,7 +31,8 @@ export const initialState = {
     runtimeOptions: {
         maxClones: 300,
         miscLimits: true,
-        fencing: false
+        fencing: false,
+        stickyCamera: true
     },
     isWindowFullScreen: false,
     dimensions: [0, 0],

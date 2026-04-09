@@ -570,8 +570,47 @@ const camera = function (isInitialSetup, isStage, targetId, colors) {
             </value>
         </block>
         ${blockSeparator}
+        <block type="camera_turnright">
+            <value name="DEGREES">
+                <shadow type="math_number">
+                    <field name="NUM">15</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="camera_turnleft">
+            <value name="DEGREES">
+                <shadow type="math_number">
+                    <field name="NUM">15</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="camera_pointindirection">
+            <value name="DIRECTION">
+                <shadow type="math_number">
+                    <field name="NUM">90</field>
+                </shadow>
+            </value>
+        </block>
+        ${blockSeparator}
+        <block type="camera_setzoom">
+            <value name="ZOOM">
+                <shadow type="math_number">
+                    <field name="NUM">100</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="camera_changezoom">
+            <value name="ZOOM">
+                <shadow type="math_number">
+                    <field name="NUM">10</field>
+                </shadow>
+            </value>
+        </block>
+        ${blockSeparator}
         <block type="camera_xposition"/>
         <block type="camera_yposition"/>
+        <block type="camera_zoom"/>
+        <block type="camera_rotation"/>
         ${categorySeparator}
     </category>
     `;
