@@ -1071,6 +1071,93 @@ const extraUnsandboxedBlocks = `
 const xmlOpen = '<xml style="display: none">';
 const xmlClose = '</xml>';
 
+const coreCategoryIds = new Set([
+    'motion',
+    'looks',
+    'sound',
+    'event',
+    'control',
+    'sensing',
+    'camera',
+    'operators',
+    'string',
+    'data',
+    'procedures'
+]);
+
+const getCategoryContents = categoryXML => {
+    if (!categoryXML) {
+        return '';
+    }
+    const categoryStart = categoryXML.indexOf('>');
+    const categoryEnd = categoryXML.lastIndexOf('</category>');
+    if (categoryStart < 0 || categoryEnd < 0 || categoryEnd <= categoryStart) {
+        return '';
+    }
+    return categoryXML.substring(categoryStart + 1, categoryEnd);
+};
+
+const appendCategoryContents = (categoryXML, contentList) => {
+    if (!categoryXML || !contentList || contentList.length === 0) {
+        return categoryXML;
+    }
+
+    const nonEmptyContent = contentList.filter(content => content.trim().length > 0);
+    if (nonEmptyContent.length === 0) {
+        return categoryXML;
+    }
+
+    const closeTag = '</category>';
+    const closeTagIndex = categoryXML.lastIndexOf(closeTag);
+    if (closeTagIndex < 0) {
+        return categoryXML;
+    }
+
+    return `${categoryXML.substring(0, closeTagIndex)}${nonEmptyContent.join('\n')}${categoryXML.substring(closeTagIndex)}`;
+};
+
+const collectAppendedCategoryBlocks = categoriesXML => {
+    const directCategories = [];
+    const appendCandidates = [];
+
+    for (const categoryInfo of categoriesXML) {
+        if (typeof categoryInfo.appendTo === 'string' && categoryInfo.appendTo) {
+            appendCandidates.push(categoryInfo);
+        } else {
+            directCategories.push(categoryInfo);
+        }
+    }
+
+    const availableCategoryIds = new Set(coreCategoryIds);
+    for (const categoryInfo of directCategories) {
+        availableCategoryIds.add(categoryInfo.id);
+    }
+
+    const appendBlocksByCategory = Object.create(null);
+    for (const categoryInfo of appendCandidates) {
+        const targetCategory = categoryInfo.appendTo;
+        if (targetCategory === categoryInfo.id || !availableCategoryIds.has(targetCategory)) {
+            directCategories.push(categoryInfo);
+            continue;
+        }
+
+        const categoryContents = getCategoryContents(categoryInfo.xml || '');
+        if (categoryContents.trim().length === 0) {
+            continue;
+        }
+
+        if (!appendBlocksByCategory[targetCategory]) {
+            appendBlocksByCategory[targetCategory] = [];
+        }
+        appendBlocksByCategory[targetCategory].push(categoryContents);
+    }
+
+    return {
+        categoriesXML: directCategories,
+        appendBlocksByCategory
+    };
+};
+
 /**
  * @param {?VirtualMachine} vm - Virtual machine instance.
  * @param {!boolean} isInitialSetup - Whether the toolbox is for initial setup. If the mode is "initial setup",
@@ -1081,6 +1168,7 @@ const xmlClose = '</xml>';
  * @param {?Array.<object>} categoriesXML - optional array of `{id,xml}` for categories. This can include both core
  * and other extensions: core extensions will be placed in the normal Scratch order; others will go at the bottom.
  * @property {string} id - the extension / category ID.
+ * @property {string} [appendTo] - optional category ID to append this category's blocks into.
  * @property {string} xml - the `<category>...</category>` XML for this extension / category.
  * @param {?string} costumeName - The name of the default selected costume dropdown.
  * @param {?string} backdropName - The name of the default selected backdrop dropdown.
@@ -1098,6 +1186,14 @@ const makeToolboxXML = function (vm, isInitialSetup, isStage = true, targetId, c
     soundName = xmlEscape(soundName);
 
     categoriesXML = categoriesXML.slice();
+    const {
+        categoriesXML: categorizedXML,
+        appendBlocksByCategory
+    } = collectAppendedCategoryBlocks(categoriesXML);
+    categoriesXML = categorizedXML;
+    const applyAppendedCategoryBlocks = (categoryId, categoryXML) =>
+        appendCategoryContents(categoryXML, appendBlocksByCategory[categoryId]);
+
     const moveCategory = categoryId => {
         const index = categoriesXML.findIndex(categoryInfo => categoryInfo.id === categoryId);
         if (index >= 0) {
@@ -1107,18 +1203,30 @@ const makeToolboxXML = function (vm, isInitialSetup, isStage = true, targetId, c
         }
         // return `undefined`
     };
-    const motionXML = moveCategory('motion') || motion(isInitialSetup, isStage, targetId, colors.motion);
-    const looksXML = moveCategory('looks') ||
+    let motionXML = moveCategory('motion') || motion(isInitialSetup, isStage, targetId, colors.motion);
+    let looksXML = moveCategory('looks') ||
         looks(isInitialSetup, isStage, targetId, costumeName, backdropName, colors.looks);
-    const soundXML = moveCategory('sound') || sound(isInitialSetup, isStage, targetId, soundName, colors.sounds);
-    const eventsXML = moveCategory('event') || events(isInitialSetup, isStage, targetId, colors.event);
-    const controlXML = moveCategory('control') || control(isInitialSetup, isStage, targetId, colors.control);
-    const sensingXML = moveCategory('sensing') || sensing(isInitialSetup, isStage, targetId, colors.sensing);
-    const cameraXML = moveCategory('camera') || camera(isInitialSetup, isStage, targetId, colors.camera);
-    const operatorsXML = moveCategory('operators') || operators(isInitialSetup, isStage, targetId, colors.operators);
-    const stringXML = moveCategory('string') || string(isInitialSetup, isStage, targetId, colors.string);
-    const variablesXML = moveCategory('data') || variables(isInitialSetup, isStage, targetId, colors.data);
-    const myBlocksXML = moveCategory('procedures') || myBlocks(isInitialSetup, isStage, targetId, colors.more);
+    let soundXML = moveCategory('sound') || sound(isInitialSetup, isStage, targetId, soundName, colors.sounds);
+    let eventsXML = moveCategory('event') || events(isInitialSetup, isStage, targetId, colors.event);
+    let controlXML = moveCategory('control') || control(isInitialSetup, isStage, targetId, colors.control);
+    let sensingXML = moveCategory('sensing') || sensing(isInitialSetup, isStage, targetId, colors.sensing);
+    let cameraXML = moveCategory('camera') || camera(isInitialSetup, isStage, targetId, colors.camera);
+    let operatorsXML = moveCategory('operators') || operators(isInitialSetup, isStage, targetId, colors.operators);
+    let stringXML = moveCategory('string') || string(isInitialSetup, isStage, targetId, colors.string);
+    let variablesXML = moveCategory('data') || variables(isInitialSetup, isStage, targetId, colors.data);
+    let myBlocksXML = moveCategory('procedures') || myBlocks(isInitialSetup, isStage, targetId, colors.more);
+
+    motionXML = applyAppendedCategoryBlocks('motion', motionXML);
+    looksXML = applyAppendedCategoryBlocks('looks', looksXML);
+    soundXML = applyAppendedCategoryBlocks('sound', soundXML);
+    eventsXML = applyAppendedCategoryBlocks('event', eventsXML);
+    controlXML = applyAppendedCategoryBlocks('control', controlXML);
+    sensingXML = applyAppendedCategoryBlocks('sensing', sensingXML);
+    cameraXML = applyAppendedCategoryBlocks('camera', cameraXML);
+    operatorsXML = applyAppendedCategoryBlocks('operators', operatorsXML);
+    stringXML = applyAppendedCategoryBlocks('string', stringXML);
+    variablesXML = applyAppendedCategoryBlocks('data', variablesXML);
+    myBlocksXML = applyAppendedCategoryBlocks('procedures', myBlocksXML);
 
     // Always display Unsandboxed blocks as the first extension, if it exists,
     // and also add an "is compiled?" block to the top.
@@ -1126,6 +1234,7 @@ const makeToolboxXML = function (vm, isInitialSetup, isStage = true, targetId, c
     if (unsandboxedXML && !unsandboxedXML.includes(extraUnsandboxedBlocks)) {
         unsandboxedXML = unsandboxedXML.replace('<block', `${extraUnsandboxedBlocks}<block`);
     }
+    unsandboxedXML = applyAppendedCategoryBlocks('tw', unsandboxedXML);
 
     const everything = [
         xmlOpen,
@@ -1147,7 +1256,7 @@ const makeToolboxXML = function (vm, isInitialSetup, isStage = true, targetId, c
     }
 
     for (const extensionCategory of categoriesXML) {
-        everything.push(gap, extensionCategory.xml);
+        everything.push(gap, applyAppendedCategoryBlocks(extensionCategory.id, extensionCategory.xml));
     }
 
     everything.push(xmlClose);
