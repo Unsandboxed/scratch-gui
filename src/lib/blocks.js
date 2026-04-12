@@ -156,6 +156,37 @@ export default function (vm) {
 
     const eventColors = ScratchBlocks.Colours.event;
 
+    const looksEffectsMenu = function () {
+        const builtinEffects = [
+            [ScratchBlocks.Msg.LOOKS_EFFECT_COLOR, 'COLOR'],
+            [ScratchBlocks.Msg.LOOKS_EFFECT_FISHEYE, 'FISHEYE'],
+            [ScratchBlocks.Msg.LOOKS_EFFECT_WHIRL, 'WHIRL'],
+            [ScratchBlocks.Msg.LOOKS_EFFECT_PIXELATE, 'PIXELATE'],
+            [ScratchBlocks.Msg.LOOKS_EFFECT_MOSAIC, 'MOSAIC'],
+            [ScratchBlocks.Msg.LOOKS_EFFECT_BRIGHTNESS, 'BRIGHTNESS'],
+            [ScratchBlocks.Msg.LOOKS_EFFECT_GHOST, 'GHOST']
+        ];
+
+        if (!vm || !vm.runtime || typeof vm.runtime.getSpriteShaderEffects !== 'function') {
+            return builtinEffects;
+        }
+
+        const seen = new Set(builtinEffects.map(([, value]) => String(value).toLowerCase()));
+        const customMenuItems = [];
+        for (const effectInfo of vm.runtime.getSpriteShaderEffects()) {
+            if (!effectInfo || effectInfo.showInMenu === false) continue;
+
+            const name = String(effectInfo.name || '').trim().toLowerCase();
+            if (!name || seen.has(name)) continue;
+
+            const menuName = String(effectInfo.menuName || name).trim() || name;
+            customMenuItems.push([menuName, name]);
+            seen.add(name);
+        }
+
+        return builtinEffects.concat(customMenuItems);
+    };
+
     ScratchBlocks.Blocks.sound_sounds_menu.init = function () {
         const json = jsonForMenuBlock('SOUND_MENU', soundsMenu, soundColors, []);
         this.jsonInit(json);
@@ -169,6 +200,60 @@ export default function (vm) {
     ScratchBlocks.Blocks.looks_backdrops.init = function () {
         const json = jsonForMenuBlock('BACKDROP', backdropsMenu, looksColors, []);
         this.jsonInit(json);
+    };
+
+    ScratchBlocks.Blocks.looks_changeeffectby.init = function () {
+        this.jsonInit({
+            message0: ScratchBlocks.Msg.LOOKS_CHANGEEFFECTBY,
+            args0: [
+                {
+                    type: 'field_dropdown',
+                    name: 'EFFECT',
+                    options: looksEffectsMenu
+                },
+                {
+                    type: 'input_value',
+                    name: 'CHANGE'
+                }
+            ],
+            category: ScratchBlocks.Categories.looks,
+            extensions: ['colours_looks', 'shape_statement']
+        });
+    };
+
+    ScratchBlocks.Blocks.looks_seteffectto.init = function () {
+        this.jsonInit({
+            message0: ScratchBlocks.Msg.LOOKS_SETEFFECTTO,
+            args0: [
+                {
+                    type: 'field_dropdown',
+                    name: 'EFFECT',
+                    options: looksEffectsMenu
+                },
+                {
+                    type: 'input_value',
+                    name: 'VALUE'
+                }
+            ],
+            category: ScratchBlocks.Categories.looks,
+            extensions: ['colours_looks', 'shape_statement']
+        });
+    };
+
+    ScratchBlocks.Blocks.looks_effect.init = function () {
+        this.jsonInit({
+            message0: ScratchBlocks.Msg.LOOKS_EFFECT,
+            args0: [
+                {
+                    type: 'field_dropdown',
+                    name: 'EFFECT',
+                    options: looksEffectsMenu
+                }
+            ],
+            category: ScratchBlocks.Categories.looks,
+            checkboxInFlyout: true,
+            extensions: ['colours_looks', 'output_number']
+        });
     };
 
     ScratchBlocks.Blocks.event_whenbackdropswitchesto.init = function () {
