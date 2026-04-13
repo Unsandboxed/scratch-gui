@@ -843,6 +843,7 @@ Blocks.defaultProps = {
 const mapStateToProps = state => ({
     anyModalVisible: (
         Object.keys(state.scratchGui.modals).some(key => state.scratchGui.modals[key]) ||
+        Object.keys(state.scratchGui.extensionModals.modals).length > 0 ||
         state.scratchGui.mode.isFullScreen
     ),
     customStageSize: state.scratchGui.customStageSize,

@@ -6,6 +6,7 @@ import Box from '../box/box.jsx';
 import Label from '../forms/label.jsx';
 import Input from '../forms/input.jsx';
 import BufferedInputHOC from '../forms/buffered-input-hoc.jsx';
+import DirectionPicker from '../../containers/direction-picker.jsx';
 
 import {injectIntl, intlShape, defineMessages, FormattedMessage} from 'react-intl';
 
@@ -21,6 +22,7 @@ import centerOnTargetIcon from '!../../lib/tw-recolor/build!./icon--center-on-ta
 import ToggleButtons from '../toggle-buttons/toggle-buttons.jsx';
 
 const BufferedInput = BufferedInputHOC(Input);
+const noop = () => {};
 
 const messages = defineMessages({
     centerCameraAction: {
@@ -39,11 +41,10 @@ class CameraInfo extends React.Component {
     shouldComponentUpdate (nextProps) {
         return (
             this.props.stageSize !== nextProps.stageSize ||
-            // Only update these if rounded value has changed
-            // Math.round(this.props.direction) !== Math.round(nextProps.direction) ||
-            // Math.round(this.props.size) !== Math.round(nextProps.size) ||
             Math.round(this.props.x) !== Math.round(nextProps.x) ||
-            Math.round(this.props.y) !== Math.round(nextProps.y)
+            Math.round(this.props.y) !== Math.round(nextProps.y) ||
+            Math.round(this.props.zoom) !== Math.round(nextProps.zoom) ||
+            Math.round(this.props.direction) !== Math.round(nextProps.direction)
         );
     }
     render () {
@@ -56,6 +57,14 @@ class CameraInfo extends React.Component {
                 defaultMessage="Camera"
                 description="Camera info label"
                 id="gui.CameraInfo.camera"
+            />
+        );
+
+        const zoomLabel = (
+            <FormattedMessage
+                defaultMessage="Zoom"
+                description="Camera info zoom label"
+                id="gui.CameraInfo.zoom"
             />
         );
 
@@ -115,12 +124,48 @@ class CameraInfo extends React.Component {
             </div>
         );
 
+        const zoom = (
+            <div className={classNames(styles.group, styles.largerInput)}>
+                <Label
+                    secondary
+                    above={labelAbove}
+                    text={zoomLabel}
+                >
+                    <BufferedInput
+                        small
+                        disabled={this.props.disabled}
+                        label={zoomLabel}
+                        tabIndex="0"
+                        type="number"
+                        value={this.props.disabled ? '' : Math.round(this.props.zoom)}
+                        onSubmit={this.props.onChangeZoom}
+                    />
+                </Label>
+            </div>
+        );
+
+        const rotation = (
+            <div className={classNames(styles.group, styles.largerInput)}>
+                <DirectionPicker
+                    direction={Math.round(this.props.direction)}
+                    disabled={this.props.disabled}
+                    labelAbove={labelAbove}
+                    rotationStyle="all around"
+                    onChangeDirection={this.props.onChangeDirection}
+                    onChangeRotationStyle={noop}
+                    removeRotationStyle={true}
+                />
+            </div>
+        );
+
         if (stageSize === STAGE_DISPLAY_SIZES.small) {
             return (
                 <Box className={styles.cameraInfo}>
                     <div className={classNames(styles.row)}>
                         {xPosition}
                         {yPosition}
+                        {zoom}
+                        {rotation}
                     </div>
                 </Box>
             );
@@ -128,7 +173,7 @@ class CameraInfo extends React.Component {
 
         return (
             <Box className={styles.cameraInfo}>
-                <div className={classNames(styles.row)}>
+                <div className={classNames(styles.row, styles.rowPrimary)}>
                     <div className={styles.group}>
                         <Label
                             above={labelAbove}
@@ -138,6 +183,8 @@ class CameraInfo extends React.Component {
                     </div>
                     {xPosition}
                     {yPosition}
+                </div>
+                <div className={classNames(styles.row, styles.rowSecondary)}>
                     <ToggleButtons
                         buttons={[
                             {
@@ -153,6 +200,8 @@ class CameraInfo extends React.Component {
                         ]}
                         disabled={this.props.disabled}
                     />
+                    {zoom}
+                    {rotation}
                 </div>
             </Box>
         );
@@ -164,11 +213,15 @@ CameraInfo.propTypes = {
     intl: intlShape,
     onChangeX: PropTypes.func,
     onChangeY: PropTypes.func,
+    onChangeZoom: PropTypes.func,
+    onChangeDirection: PropTypes.func,
     onClickCenter: PropTypes.func,
     onClickCenterOnTarget: PropTypes.func,
     stageSize: PropTypes.oneOf(Object.keys(STAGE_DISPLAY_SIZES)).isRequired,
     x: PropTypes.number,
-    y: PropTypes.number
+    y: PropTypes.number,
+    zoom: PropTypes.number,
+    direction: PropTypes.number
 };
 
 export default injectIntl(CameraInfo);

@@ -23,6 +23,7 @@ class UsernameModal extends React.Component {
             'handleCustomizeFramerate',
             'handleHighQualityPenChange',
             'handleInterpolationChange',
+            'handleStickyCameraChange',
             'handleInfiniteClonesChange',
             'handleEnableFencingChange',
             'handleRemoveLimitsChange',
@@ -50,6 +51,11 @@ class UsernameModal extends React.Component {
     }
     handleInterpolationChange (e) {
         this.props.vm.setInterpolation(e.target.checked);
+    }
+    handleStickyCameraChange (e) {
+        this.props.vm.setRuntimeOptions({
+            stickyCamera: e.target.checked
+        });
     }
     handleInfiniteClonesChange (e) {
         this.props.vm.setRuntimeOptions({
@@ -100,6 +106,7 @@ class UsernameModal extends React.Component {
                 onCustomizeFramerate={this.handleCustomizeFramerate}
                 onHighQualityPenChange={this.handleHighQualityPenChange}
                 onInterpolationChange={this.handleInterpolationChange}
+                onStickyCameraChange={this.handleStickyCameraChange}
                 onInfiniteClonesChange={this.handleInfiniteClonesChange}
                 onEnableFencingChange={this.handleEnableFencingChange}
                 onRemoveLimitsChange={this.handleRemoveLimitsChange}
@@ -138,6 +145,7 @@ UsernameModal.propTypes = {
     framerate: PropTypes.number,
     highQualityPen: PropTypes.bool,
     interpolation: PropTypes.bool,
+    stickyCamera: PropTypes.bool,
     infiniteClones: PropTypes.bool,
     enableFencing: PropTypes.bool,
     removeLimits: PropTypes.bool,
@@ -155,6 +163,7 @@ const mapStateToProps = state => ({
     framerate: state.scratchGui.tw.framerate,
     highQualityPen: state.scratchGui.tw.highQualityPen,
     interpolation: state.scratchGui.tw.interpolation,
+    stickyCamera: state.scratchGui.tw.runtimeOptions.stickyCamera,
     infiniteClones: state.scratchGui.tw.runtimeOptions.maxClones === Infinity,
     enableFencing: state.scratchGui.tw.runtimeOptions.fencing,
     removeLimits: !state.scratchGui.tw.runtimeOptions.miscLimits,

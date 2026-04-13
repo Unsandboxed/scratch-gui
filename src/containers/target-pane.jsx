@@ -41,6 +41,8 @@ class TargetPane extends React.Component {
             'handleChangeSpriteY',
             'handleChangeCameraX',
             'handleChangeCameraY',
+            'handleChangeCameraZoom',
+            'handleChangeCameraDirection',
             'handleClickCenter',
             'handleClickCenterOnTarget',
             'handleDeleteSprite',
@@ -90,6 +92,12 @@ class TargetPane extends React.Component {
     handleChangeCameraY (y) {
         this.props.vm.runtime.camera.y = y;
         this.props.vm.runtime.camera.emitCameraUpdate();
+    }
+    handleChangeCameraZoom (zoom) {
+        this.props.vm.runtime.camera.setZoom(zoom);
+    }
+    handleChangeCameraDirection (direction) {
+        this.props.vm.runtime.camera.setDirection(direction);
     }
     handleClickCenter () {
         this.props.vm.runtime.camera.setXY(0, 0);
@@ -263,6 +271,8 @@ class TargetPane extends React.Component {
                 onChangeSpriteY={this.handleChangeSpriteY}
                 onChangeCameraX={this.handleChangeCameraX}
                 onChangeCameraY={this.handleChangeCameraY}
+                onChangeCameraZoom={this.handleChangeCameraZoom}
+                onChangeCameraDirection={this.handleChangeCameraDirection}
                 onClickCenter={this.handleClickCenter}
                 onClickCenterOnTarget={this.handleClickCenterOnTarget}
                 onDeleteSprite={this.handleDeleteSprite}

@@ -178,11 +178,7 @@ class Stage extends React.Component {
         this.rect = this.canvas.getBoundingClientRect();
     }
     getScratchCoords (x, y) {
-        const nativeSize = this.renderer.getNativeSize();
-        return [
-            (nativeSize[0] / this.rect.width) * (x - (this.rect.width / 2)),
-            (nativeSize[1] / this.rect.height) * (y - (this.rect.height / 2))
-        ];
+        return this.renderer.clientSpaceToScratchPoint(x, y);
     }
     getColorInfo (x, y) {
         return {
@@ -238,12 +234,16 @@ class Stage extends React.Component {
                 const spritePosition = this.getScratchCoords(mousePosition[0], mousePosition[1]);
                 this.props.vm.postSpriteInfo({
                     x: spritePosition[0] + this.state.dragOffset[0],
-                    y: -(spritePosition[1] + this.state.dragOffset[1]),
+                    y: spritePosition[1] + this.state.dragOffset[1],
                     force: true
                 });
             }
         } else if (this.state.mouseDown && this.state.isDraggingCamera) {
-            this.props.vm.runtime.camera.setXY(this.state.cam[0] - (x - this.state.start[0]), this.state.cam[1] + (y - this.state.start[1]));
+            const [deltaX, deltaY] = this.renderer.clientDeltaToScratchDelta(
+                x - this.state.start[0],
+                y - this.state.start[1]
+            );
+            this.props.vm.runtime.camera.setXY(this.state.cam[0] - deltaX, this.state.cam[1] - deltaY);
         }
         const coordinates = {
             x: mousePosition[0],
@@ -365,16 +365,17 @@ class Stage extends React.Component {
         this.setState({mouseDownTimeoutId: null});
     }
     /**
-     * Initialize the position of the "dragged sprite" canvas
+     * Initialize the position of the "dragged sprite" canvas.
      * @param {DrawableExtraction} drawableData The data returned from renderer.extractDrawableScreenSpace
-     * @param {number} x The x position of the initial drag event
-     * @param {number} y The y position of the initial drag event
+     * @param {number} x The x position of the initial drag event (client-space)
+     * @param {number} y The y position of the initial drag event (client-space)
+     * @param {number} scratchX The scratch-world x coordinate of the pick point
+     * @param {number} scratchY The scratch-world y coordinate of the pick point
      */
-    drawDragCanvas (drawableData, x, y) {
+    drawDragCanvas (drawableData, x, y, scratchX, scratchY) {
         const {
             imageData,
-            x: boundsX,
-            y: boundsY,
+            scratchBounds,
             width: boundsWidth,
             height: boundsHeight
         } = drawableData;
@@ -385,10 +386,21 @@ class Stage extends React.Component {
         this.dragCanvas.style.height = `${boundsHeight}px`;
 
         this.dragCanvas.getContext('2d').putImageData(imageData, 0, 0);
-        // Position so that pick location is at (0, 0) so that  positionDragCanvas()
-        // can use translation to move to mouse position smoothly.
-        this.dragCanvas.style.left = `${boundsX - x}px`;
-        this.dragCanvas.style.top = `${boundsY - y}px`;
+
+        // Find where the pick point falls within the sprite image in CSS pixels.
+        // scratchBounds is in Scratch world-space; the image maps left→right / top→bottom.
+        const scratchW = scratchBounds.right - scratchBounds.left;
+        const scratchH = scratchBounds.top - scratchBounds.bottom;
+        const pickXInCanvas = ((scratchX - scratchBounds.left) / scratchW) * boundsWidth;
+        const pickYInCanvas = ((scratchBounds.top - scratchY) / scratchH) * boundsHeight;
+
+        // Place the canvas so the pick point is at CSS position (0,0) in stage space.
+        // positionDragCanvas() then rotate/scales around (0,0) and translates to the cursor.
+        this.dragCanvas.style.left = `${-pickXInCanvas}px`;
+        this.dragCanvas.style.top = `${-pickYInCanvas}px`;
+        // Keep the transform-origin at the pick point so that camera rotation/scale
+        // leave the grab point stationary while the image rotates around it.
+        this.dragCanvas.style.transformOrigin = `${pickXInCanvas}px ${pickYInCanvas}px`;
         this.dragCanvas.style.display = 'block';
     }
     clearDragCanvas () {
@@ -396,9 +408,11 @@ class Stage extends React.Component {
         this.dragCanvas.style.display = 'none';
     }
     positionDragCanvas (mouseX, mouseY) {
-        // mouseX/Y are relative to stage top/left, and dragCanvas is already
-        // positioned so that the pick location is at (0,0).
-        this.dragCanvas.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+        // Apply camera rotation and zoom so the ghost matches the stage appearance,
+        // then translate so the original pick point ends up under the cursor.
+        const {dir, zoom} = this.renderer.cameraState;
+        this.dragCanvas.style.transform =
+            `translate(${mouseX}px, ${mouseY}px) rotate(${dir}rad) scale(${zoom})`;
     }
     onStartCameraDrag (x, y) {
         this.setState({button: null});
@@ -437,7 +451,7 @@ class Stage extends React.Component {
 
         const [scratchMouseX, scratchMouseY] = this.getScratchCoords(x, y);
         const offsetX = target.x - scratchMouseX;
-        const offsetY = -(target.y + scratchMouseY);
+        const offsetY = target.y - scratchMouseY;
 
         this.props.vm.startDrag(targetId);
         this.setState({
@@ -448,7 +462,7 @@ class Stage extends React.Component {
         if (this.props.useEditorDragStyle) {
             // Extract the drawable art
             const drawableData = this.renderer.extractDrawableScreenSpace(drawableId);
-            this.drawDragCanvas(drawableData, x, y);
+            this.drawDragCanvas(drawableData, x, y, scratchMouseX, scratchMouseY);
             this.positionDragCanvas(x, y);
             this.props.vm.postSpriteInfo({visible: false});
             this.props.vm.renderer.draw();
@@ -472,7 +486,7 @@ class Stage extends React.Component {
                 mouseY > 0 && mouseY < this.rect.height) {
                 const spritePosition = this.getScratchCoords(mouseX, mouseY);
                 spriteInfo.x = spritePosition[0] + this.state.dragOffset[0];
-                spriteInfo.y = -(spritePosition[1] + this.state.dragOffset[1]);
+                spriteInfo.y = spritePosition[1] + this.state.dragOffset[1];
                 spriteInfo.force = true;
             }
             this.props.vm.postSpriteInfo(spriteInfo);

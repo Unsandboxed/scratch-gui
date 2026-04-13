@@ -199,6 +199,16 @@ const messages = defineMessages({
         defaultMessage: 'camera y',
         description: 'Label for the camera y position monitor when shown on the stage',
         id: 'gui.opcodeLabels.cameray'
+    },
+    camera_zoom: {
+        defaultMessage: 'camera zoom',
+        description: 'Label for the camera zoom monitor when shown on the stage',
+        id: 'gui.opcodeLabels.camerazoom'
+    },
+    camera_rotation: {
+        defaultMessage: 'camera rotation',
+        description: 'Label for the camera rotation monitor when shown on the stage',
+        id: 'gui.opcodeLabels.camerarotation'
     }
 });
 
@@ -253,7 +263,9 @@ class OpcodeLabels {
 
             // Camera
             camera_xposition: {category: 'camera'},
-            camera_yposition: {category: 'camera'}
+            camera_yposition: {category: 'camera'},
+            camera_zoom: {category: 'camera'},
+            camera_rotation: {category: 'camera'}
         };
 
         // Initialize opcodeMap with default strings
@@ -360,6 +372,8 @@ class OpcodeLabels {
         // Camera
         this._opcodeMap.camera_xposition.labelFn = () => this._translator(messages.camera_xposition);
         this._opcodeMap.camera_yposition.labelFn = () => this._translator(messages.camera_yposition);
+        this._opcodeMap.camera_zoom.labelFn = () => this._translator(messages.camera_zoom);
+        this._opcodeMap.camera_rotation.labelFn = () => this._translator(messages.camera_rotation);
     }
 
     /**

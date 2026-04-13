@@ -81,7 +81,9 @@ const SBFileUploaderHOC = function (WrappedComponent) {
                             types: [
                                 {
                                     description: 'Unsandboxed Project',
-                                    '*/*': ['.ubp']
+                                    accept: {
+                                        '*/*': ['.ubp']
+                                    }
                                 },
                                 {
                                     description: 'Scratch Project',

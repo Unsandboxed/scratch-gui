@@ -38,22 +38,6 @@ export default class DevTools {
   }
   async addContextMenus() {
     const blockly = await this.addon.tab.traps.getBlockly();
-    const oldCleanUpFunc = blockly.WorkspaceSvg.prototype.cleanUp;
-    const self = this;
-    blockly.WorkspaceSvg.prototype.cleanUp = function () {
-      if (self.addon.settings.get("enableCleanUpPlus")) {
-        self.doCleanUp();
-      } else {
-        oldCleanUpFunc.call(this);
-      }
-    };
-
-    let originalMsg = blockly.Msg.CLEAN_UP;
-    if (this.addon.settings.get("enableCleanUpPlus")) blockly.Msg.CLEAN_UP = this.m("clean-plus");
-    this.addon.settings.addEventListener("change", () => {
-      if (this.addon.settings.get("enableCleanUpPlus")) blockly.Msg.CLEAN_UP = this.m("clean-plus");
-      else blockly.Msg.CLEAN_UP = originalMsg;
-    });
 
     this.addon.tab.createBlockContextMenu(
       (items, block) => {
@@ -586,9 +570,6 @@ export default class DevTools {
    * @param ids Set of previously known ids
    */
   beginDragOfNewBlocksNotInIDs(ids) {
-    if (!this.addon.settings.get("enablePasteBlocksAtMouse")) {
-      return;
-    }
     let wksp = this.getWorkspace();
     let topBlocks = wksp.getTopBlocks();
     for (const block of topBlocks) {

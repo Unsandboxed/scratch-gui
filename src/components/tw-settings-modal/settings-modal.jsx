@@ -214,6 +214,27 @@ const Interpolation = props => (
     />
 );
 
+const StickyCamera = props => (
+    <BooleanSetting
+        {...props}
+        label={
+            <FormattedMessage
+                defaultMessage="Stick Sprites to Camera"
+                description="Sticky Camera setting"
+                id="tw.settingsModal.stickyCamera"
+            />
+        }
+        help={
+            <FormattedMessage
+                defaultMessage="Sprites that go to the camera will instead go to the camera's final position on that frame, regardless of execution order."
+                description="Sticky Camera setting help"
+                id="tw.settingsModal.stickyCameraHelp"
+            />
+        }
+        slug="sticky-camera"
+    />
+);
+
 const InfiniteClones = props => (
     <BooleanSetting
         {...props}
@@ -461,6 +482,10 @@ const SettingsModalComponent = props => (
                 value={props.highQualityPen}
                 onChange={props.onHighQualityPenChange}
             />
+            <StickyCamera
+                value={props.stickyCamera}
+                onChange={props.onStickyCameraChange}
+            />
             <WarpTimer
                 value={props.warpTimer}
                 onChange={props.onWarpTimerChange}
@@ -519,6 +544,8 @@ SettingsModalComponent.propTypes = {
     onHighQualityPenChange: PropTypes.func,
     interpolation: PropTypes.bool,
     onInterpolationChange: PropTypes.func,
+    stickyCamera: PropTypes.bool,
+    onStickyCameraChange: PropTypes.func,
     infiniteClones: PropTypes.bool,
     onInfiniteClonesChange: PropTypes.func,
     enableFencing: PropTypes.bool,
