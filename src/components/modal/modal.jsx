@@ -21,6 +21,7 @@ const ModalComponent = props => (
         })}
         contentLabel={props.contentLabel}
         overlayClassName={styles.modalOverlay}
+        style={props.style}
         onRequestClose={props.onRequestClose}
     >
         <Box
@@ -107,7 +108,11 @@ ModalComponent.propTypes = {
     headerImage: PropTypes.string,
     isRtl: PropTypes.bool,
     onHelp: PropTypes.func,
-    onRequestClose: PropTypes.func
+    onRequestClose: PropTypes.func,
+    style: PropTypes.shape({
+        content: PropTypes.object,
+        overlay: PropTypes.object
+    })
 };
 
 export default ModalComponent;

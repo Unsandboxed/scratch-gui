@@ -37,6 +37,7 @@ import TWRestorePointManager from '../../containers/tw-restore-point-manager.jsx
 import TWFontsModal from '../../containers/tw-fonts-modal.jsx';
 import TWUnknownPlatformModal from '../../containers/tw-unknown-platform-modal.jsx';
 import TWInvalidProjectModal from '../../containers/tw-invalid-project-modal.jsx';
+import TWExtensionModals from '../../containers/tw-extension-modals.jsx';
 // import TWWindChimeSubmitter from '../../containers/tw-windchime-submitter.jsx';
 
 import {STAGE_SIZE_MODES, FIXED_WIDTH, UNCONSTRAINED_NON_STAGE_WIDTH} from '../../lib/layout-constants';
@@ -194,6 +195,7 @@ const GUIComponent = props => {
                 {fontsModalVisible && <TWFontsModal />}
                 {unknownPlatformModalVisible && <TWUnknownPlatformModal />}
                 {invalidProjectModalVisible && <TWInvalidProjectModal />}
+                <TWExtensionModals />
             </React.Fragment>
         );
 
