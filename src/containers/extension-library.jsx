@@ -2,6 +2,7 @@ import bindAll from 'lodash.bindall';
 import PropTypes from 'prop-types';
 import React from 'react';
 import VM from 'scratch-vm';
+import UnsandboxedExtensions from 'extensions';
 import {defineMessages, injectIntl, intlShape} from 'react-intl';
 import log from '../lib/log';
 
@@ -14,6 +15,7 @@ import extensionLibraryContent, {
 } from '../lib/libraries/extensions/index.jsx';
 import extensionTags from '../lib/libraries/tw-extension-tags';
 import galleryInsetIcon from '../lib/libraries/extensions/gallery/tw-icon-small.svg';
+import customExtensionInsetIcon from '../lib/libraries/extensions/custom/custom-small.svg';
 
 import LibraryComponent from '../components/library/library.jsx';
 import extensionIcon from '../components/action-menu/icon--sprite.svg';
@@ -42,9 +44,41 @@ const translateGalleryItem = (extension, locale) => ({
     description: extension.descriptionTranslations[locale] || extension.description
 });
 
-let cachedGallery = null;
+let cachedUnsandboxedGallery = null;
 
-const fetchLibrary = async () => {
+const constructUnsandboxedLibrary = async () => {
+    const extensions = UnsandboxedExtensions.extensions;
+    const manifests = UnsandboxedExtensions.manifests;
+    const images = UnsandboxedExtensions.images;
+
+    let gallery = [];
+    const list = Object.keys(extensions);
+    for (const name of list) {
+        const manifest = manifests[name]();
+
+        gallery.push({
+            name: manifest.name ?? name,
+            // TODO: Support translations
+            nameTranslations: {},
+            description: manifest.description ?? "Description goes here",
+            // TODO: Support translations
+            descriptionTranslations: {},
+            extensionId: manifest.id ?? name,
+            iconURL: images[name](),
+            insetIconURL: customExtensionInsetIcon,
+            insetColor: manifest.insetIconColor ?? '#66757f',
+            tags: ['usb'],
+            credits: manifest.createdBy,
+            featured: true
+        });
+    }
+
+    return gallery.filter(extension => !blacklist.has(extension.extensionId));
+}
+
+let cachedTurboWarpGallery = null;
+
+const fetchTurboWarpLibrary = async () => {
     const res = await fetch('https://extensions.turbowarp.org/generated-metadata/extensions-v0.json');
     if (!res.ok) {
         throw new Error(`HTTP status ${res.status}`);
@@ -85,7 +119,7 @@ const fetchLibrary = async () => {
             text: sample
         })) : null,
         featured: true
-    })).filter(extension => !blacklist.has(extension.extensionId));
+    })).filter(extension => !blacklist.has(extension.extensionId));;
 };
 
 class ExtensionLibrary extends React.PureComponent {
@@ -95,7 +129,8 @@ class ExtensionLibrary extends React.PureComponent {
             'handleItemSelect'
         ]);
         this.state = {
-            gallery: cachedGallery,
+            unsandboxedGallery: cachedUnsandboxedGallery,
+            turbowarpGallery: cachedTurboWarpGallery,
             galleryError: null,
             galleryTimedOut: false
         };
@@ -108,11 +143,27 @@ class ExtensionLibrary extends React.PureComponent {
                 });
             }, 750);
 
-            fetchLibrary()
+            constructUnsandboxedLibrary()
                 .then(gallery => {
-                    cachedGallery = gallery;
+                    cachedUnsandboxedGallery = gallery;
                     this.setState({
-                        gallery
+                        unsandboxedGallery: cachedUnsandboxedGallery
+                    });
+                    clearTimeout(timeout);
+                })
+                .catch(error => {
+                    log.error(error);
+                    this.setState({
+                        galleryError: error
+                    });
+                    clearTimeout(timeout);
+                });
+
+            fetchTurboWarpLibrary()
+                .then(gallery => {
+                    cachedTurboWarpGallery = gallery;
+                    this.setState({
+                        turbowarpGallery: cachedTurboWarpGallery
                     });
                     clearTimeout(timeout);
                 })
@@ -162,18 +213,22 @@ class ExtensionLibrary extends React.PureComponent {
     }
     render () {
         let library = null;
-        if (this.state.gallery || this.state.galleryError || this.state.galleryTimedOut) {
+        if ((this.state.turbowarpGallery && this.state.unsandboxedGallery) || this.state.galleryError || this.state.galleryTimedOut) {
             library = extensionLibraryContent.map(toLibraryItem);
             library.push('---');
-            if (this.state.gallery) {
+            if ((this.state.turbowarpGallery && this.state.unsandboxedGallery)) {
+                library.push(
+                    ...this.state.unsandboxedGallery
+                        .map(toLibraryItem),
+                );
                 library.push(toLibraryItem(galleryMore));
                 library.push(toLibraryItem(penGroupGallery));
                 const locale = this.props.intl.locale;
                 library.push(
-                    ...this.state.gallery
+                    ...this.state.turbowarpGallery
                         .filter(i => i.extensionId !== 'faceSensing')
                         .map(i => translateGalleryItem(i, locale))
-                        .map(toLibraryItem)
+                        .map(toLibraryItem),
                 );
             } else if (this.state.galleryError) {
                 library.push(toLibraryItem(galleryError));
