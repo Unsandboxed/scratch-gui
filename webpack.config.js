@@ -61,10 +61,6 @@ const base = {
     resolve: {
         symlinks: false,
         alias: {
-            '@turbowarp/scratch-storage$': path.resolve(
-                __dirname,
-                'node_modules/@turbowarp/scratch-storage/src/index.js'
-            ),
             'text-encoding$': path.resolve(__dirname, 'src/lib/tw-text-encoder'),
             'scratch-render-fonts$': path.resolve(__dirname, 'src/lib/tw-scratch-render-fonts')
         }
