@@ -112,12 +112,17 @@ export default async function ({ addon, msg, console }) {
     if (addon.tab.editorMode !== "editor") return;
     if (addon.tab.redux.state.scratchGui.editorTab.activeTabIndex !== 0) return;
 
-    blockTypes = BlockTypeInfo.getBlocks(Blockly, vm, Blockly.getMainWorkspace(), msg);
-    querier.indexWorkspace([...blockTypes]);
-    blockTypes.sort((a, b) => {
-      const prio = (block) => ["operators", "data"].indexOf(block.category.name) - block.id.startsWith("data_");
-      return prio(b) - prio(a);
-    });
+    try {
+      blockTypes = BlockTypeInfo.getBlocks(Blockly, vm, Blockly.getMainWorkspace(), msg);
+      querier.indexWorkspace([...blockTypes]);
+      blockTypes.sort((a, b) => {
+        const prio = (block) => ["operators", "data"].indexOf(block.category.name) - block.id.startsWith("data_");
+        return prio(b) - prio(a);
+      });
+    } catch (e) {
+      console.error("middle-click-popup failed to index blocks", e);
+      return;
+    }
 
     previewScale = window.innerWidth * 0.00005 + addon.settings.get("popup_scale") / 100;
     previewWidth = (window.innerWidth * addon.settings.get("popup_width")) / 100;

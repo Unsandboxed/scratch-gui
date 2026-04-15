@@ -443,10 +443,19 @@ export class BlockTypeInfo {
       if (input.connection) {
         const innerBlock = input.connection.targetBlock();
         if (innerBlock) {
-          if (innerBlock.inputList.length !== 1 || innerBlock.inputList[0].fieldRow.length !== 1)
-            throw new Error("This should never happen.");
-          let innerField = innerBlock.inputList[0].fieldRow[0];
-          addFieldInputs(innerField, inputIdx, -1);
+          const innerInput = innerBlock.inputList?.[0];
+          const innerField = innerInput?.fieldRow?.[0];
+          if (innerBlock.inputList?.length === 1 && innerInput?.fieldRow?.length === 1 && innerField) {
+            addFieldInputs(innerField, inputIdx, -1);
+          } else {
+            // Some custom blocks/extensions use nonstandard inner shadow structures.
+            // Skip specialized parsing so middle-click popup remains usable.
+            if (input.outlinePath) {
+              addInput(new BlockInputBoolean(inputIdx, -1));
+            } else {
+              addInput(new BlockInputString(inputIdx, -1, ""));
+            }
+          }
         } else {
           if (input.outlinePath) {
             addInput(new BlockInputBoolean(inputIdx, -1));
@@ -458,6 +467,10 @@ export class BlockTypeInfo {
     }
 
     if (workspaceForm.id === "of") {
+      if (inputs.length < 2 || !inputs[0] || !inputs[1]) {
+        return [new BlockTypeInfo(workspace, Blockly, vm, workspaceForm, domForm, parts, inputs)];
+      }
+
       let blocks = [];
 
       let baseVarInputIdx, baseTargetInputIdx;
@@ -474,6 +487,10 @@ export class BlockTypeInfo {
 
       let baseVarInput = inputs[baseVarInputIdx];
       let baseTargetInput = inputs[baseTargetInputIdx];
+
+      if (!Array.isArray(baseVarInput?.values) || !Array.isArray(baseTargetInput?.values)) {
+        return [new BlockTypeInfo(workspace, Blockly, vm, workspaceForm, domForm, parts, inputs)];
+      }
 
       const baseVarPartIdx = parts.indexOf(baseVarInput);
       const baseTargetPartIdx = parts.indexOf(baseTargetInput);
@@ -504,6 +521,7 @@ export class BlockTypeInfo {
           options = stageVariableOptions.map((variable) => [variable, variable]).concat(stageOptions);
         } else {
           const sprite = vm.runtime.getSpriteTargetByName(targetInput.value);
+          if (!sprite) continue;
           const spriteVariableOptions = sprite.getAllVariableNamesInScopeByType("", true);
           options = spriteVariableOptions.map((variable) => [variable, variable]).concat(spriteOptions);
         }
@@ -524,12 +542,24 @@ export class BlockTypeInfo {
         blocks.push(new BlockTypeInfo(workspace, Blockly, vm, workspaceForm, domForm, ofParts, ofInputs));
       }
 
+      if (blocks.length === 0) {
+        return [new BlockTypeInfo(workspace, Blockly, vm, workspaceForm, domForm, parts, inputs)];
+      }
+
       return blocks;
     } else if (workspaceForm.id === "control_stop") {
       // This block is special because when "other scripts in sprite" is selected the block
       //  needs to be BlockShape.End.
       const oldInput = inputs[0];
+      if (!oldInput || !Array.isArray(oldInput.values)) {
+        return [new BlockTypeInfo(workspace, Blockly, vm, workspaceForm, domForm, parts, inputs)];
+      }
+
       const otherScriptsOptionIdx = oldInput.values.findIndex((option) => option.string === "other scripts in sprite");
+      if (otherScriptsOptionIdx === -1) {
+        return [new BlockTypeInfo(workspace, Blockly, vm, workspaceForm, domForm, parts, inputs)];
+      }
+
       const otherScriptsOption = oldInput.values.splice(otherScriptsOptionIdx, 1)[0];
       const newInput = new BlockInputEnum(
         [[otherScriptsOption.string, otherScriptsOption.value]],
