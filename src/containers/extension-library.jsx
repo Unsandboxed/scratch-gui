@@ -28,6 +28,81 @@ const messages = defineMessages({
     }
 });
 
+const LOCAL_DEV_SERVER_PORT = 8001;
+const LOCAL_DEV_SERVER_FLAG = 'usb.useLocalExtensionDevServer';
+const LOCALHOST_HOSTNAMES = new Set(['localhost', '127.0.0.1', '::1']);
+
+const shouldUseLocalDevServer = () => {
+    if (typeof window === 'undefined' || !window.location) {
+        return false;
+    }
+
+    if (!LOCALHOST_HOSTNAMES.has(window.location.hostname)) {
+        return false;
+    }
+
+    try {
+        return window.localStorage.getItem(LOCAL_DEV_SERVER_FLAG) === '1';
+    } catch (error) {
+        return false;
+    }
+};
+
+const toLocalDevServerExtensionURL = subPath =>
+    `http://localhost:${LOCAL_DEV_SERVER_PORT}/extensions/${subPath}/index.js`;
+
+const isLocalDevServerExtensionURL = url =>
+    typeof url === 'string' &&
+    url.startsWith(`http://localhost:${LOCAL_DEV_SERVER_PORT}/extensions/`);
+
+const toSearchableText = value => {
+    if (typeof value === 'string') {
+        return value.trim().toLowerCase();
+    }
+
+    if (React.isValidElement(value) && value.props && typeof value.props.defaultMessage === 'string') {
+        return value.props.defaultMessage.trim().toLowerCase();
+    }
+
+    return '';
+};
+
+
+const dedupeExtensions = items => {
+    const seenIds = new Set();
+    const seenFallbackKeys = new Set();
+
+    return items.filter(item => {
+        if (!item) {
+            return false;
+        }
+
+        const extensionId = typeof item.extensionId === 'string' ? item.extensionId.trim().toLowerCase() : '';
+        if (extensionId) {
+            if (seenIds.has(extensionId)) {
+                return false;
+            }
+            seenIds.add(extensionId);
+            return true;
+        }
+
+        const name = toSearchableText(item.name);
+        const description = toSearchableText(item.description);
+        const fallbackKey = `${name}|${description}`;
+
+        if (!name && !description) {
+            return true;
+        }
+
+        if (seenFallbackKeys.has(fallbackKey)) {
+            return false;
+        }
+
+        seenFallbackKeys.add(fallbackKey);
+        return true;
+    });
+};
+
 const toLibraryItem = extension => {
     if (typeof extension === 'object') {
         return ({
@@ -44,17 +119,85 @@ const translateGalleryItem = (extension, locale) => ({
     description: extension.descriptionTranslations[locale] || extension.description
 });
 
+// Manual ordering for the full extension list by extension ID.
+const PRIMARY_EXTENSION_ORDER = [
+    'usbArrays',
+    'usbObjects',
+    'text', // tw animated text (lab/text)
+    'stretch', // wont be around for long but we want it to be high priority while it is
+    'pen',
+    'usbIteration',
+    'usbTemporaryData',
+    'usbRuntime',
+    'usbMouse',
+    'usbTouch',
+    'usbComments',
+    'music',
+    'videoSensing',
+    'text2speech',
+    'translate'
+];
+
+// Temporary curation mode to hide most non-Unsandboxed cards.
+const TEMP_MINIMAL_LIBRARY_MODE = false;
+
+// Allowlist of default extension IDs that stay visible in temporary curation mode.
+const TEMP_VISIBLE_DEFAULT_EXTENSION_IDS = ['custom_extension'];
+
+const orderById = (extensions, orderedIds) => {
+    if (!orderedIds.length) {
+        return extensions;
+    }
+
+    const orderMap = new Map(orderedIds.map((id, index) => [id, index]));
+    return extensions
+        .map((extension, index) => ({extension, index}))
+        .sort((left, right) => {
+            const leftOrder = orderMap.get(left.extension.extensionId);
+            const rightOrder = orderMap.get(right.extension.extensionId);
+
+            const leftRanked = typeof leftOrder === 'number';
+            const rightRanked = typeof rightOrder === 'number';
+
+            if (leftRanked && rightRanked) {
+                return leftOrder - rightOrder;
+            }
+            if (leftRanked) {
+                return -1;
+            }
+            if (rightRanked) {
+                return 1;
+            }
+
+            // Preserve source order for unranked items.
+            return left.index - right.index;
+        })
+        .map(item => item.extension);
+};
+
 let cachedUnsandboxedGallery = null;
 
 const constructUnsandboxedLibrary = async () => {
     const extensions = UnsandboxedExtensions.extensions;
     const manifests = UnsandboxedExtensions.manifests;
     const images = UnsandboxedExtensions.images;
+    const insetImages = UnsandboxedExtensions.insetImages || {};
+    const extensionPaths = UnsandboxedExtensions.extensionPaths || {};
+    const useLocalDevServer = shouldUseLocalDevServer();
 
     let gallery = [];
     const list = Object.keys(extensions);
     for (const name of list) {
         const manifest = manifests[name]();
+        const insetIconResolver = insetImages[name];
+        const extensionPath = extensionPaths[name];
+        const extensionURL = useLocalDevServer && typeof extensionPath === 'string'
+            ? toLocalDevServerExtensionURL(extensionPath)
+            : null;
+        const insetColor = manifest.insetIconColor ?? '#66757f';
+        const insetIconURL = typeof insetIconResolver === 'function'
+            ? (insetIconResolver() || customExtensionInsetIcon)
+            : customExtensionInsetIcon;
 
         gallery.push({
             name: manifest.name ?? name,
@@ -64,9 +207,10 @@ const constructUnsandboxedLibrary = async () => {
             // TODO: Support translations
             descriptionTranslations: {},
             extensionId: manifest.id ?? name,
+            extensionURL,
             iconURL: images[name](),
-            insetIconURL: customExtensionInsetIcon,
-            insetColor: manifest.insetIconColor ?? '#66757f',
+            insetIconURL,
+            insetColor,
             tags: ['usb'],
             credits: manifest.createdBy,
             featured: true
@@ -84,7 +228,13 @@ const fetchTurboWarpLibrary = async () => {
         throw new Error(`HTTP status ${res.status}`);
     }
     const data = await res.json();
-    return data.extensions.map(extension => ({
+    return data.extensions.map(extension => {
+        const rawCredits = [
+            ...(extension.original || []),
+            ...(extension.by || [])
+        ];
+
+        return ({
         name: extension.name,
         nameTranslations: extension.nameTranslations || {},
         description: extension.description,
@@ -95,10 +245,7 @@ const fetchTurboWarpLibrary = async () => {
         insetIconURL: galleryInsetIcon,
         insetColor: '#FF4C4C',
         tags: ['tw'],
-        credits: [
-            ...(extension.original || []),
-            ...(extension.by || [])
-        ].map(credit => {
+        credits: rawCredits.map(credit => {
             if (credit.link) {
                 return (
                     <a
@@ -119,7 +266,8 @@ const fetchTurboWarpLibrary = async () => {
             text: sample
         })) : null,
         featured: true
-    })).filter(extension => !blacklist.has(extension.extensionId));;
+        });
+    }).filter(extension => !blacklist.has(extension.extensionId));
 };
 
 class ExtensionLibrary extends React.PureComponent {
@@ -200,6 +348,14 @@ class ExtensionLibrary extends React.PureComponent {
                 this.props.onCategorySelected(extensionId);
             } else {
                 this.props.vm.extensionManager.loadExtensionURL(url)
+                    .catch(err => {
+                        if (!isLocalDevServerExtensionURL(url)) {
+                            throw err;
+                        }
+
+                        log.warn(`Falling back to bundled extension load for ${extensionId} after local dev server failure.`);
+                        return this.props.vm.extensionManager.loadExtensionURL(extensionId);
+                    })
                     .then(() => {
                         this.props.onCategorySelected(extensionId);
                     })
@@ -214,22 +370,69 @@ class ExtensionLibrary extends React.PureComponent {
     render () {
         let library = null;
         if ((this.state.turbowarpGallery && this.state.unsandboxedGallery) || this.state.galleryError || this.state.galleryTimedOut) {
-            library = extensionLibraryContent.map(toLibraryItem);
-            library.push('---');
+            library = [];
             if ((this.state.turbowarpGallery && this.state.unsandboxedGallery)) {
-                library.push(
-                    ...this.state.unsandboxedGallery
-                        .map(toLibraryItem),
-                );
-                library.push(toLibraryItem(galleryMore));
-                library.push(toLibraryItem(penGroupGallery));
                 const locale = this.props.intl.locale;
-                library.push(
-                    ...this.state.turbowarpGallery
-                        .filter(i => i.extensionId !== 'faceSensing')
-                        .map(i => translateGalleryItem(i, locale))
-                        .map(toLibraryItem),
+
+                const baseLibraryItems = extensionLibraryContent
+                    .map(toLibraryItem)
+                    .filter(item => {
+                        if (typeof item !== 'object' || !item.extensionId) {
+                            return false;
+                        }
+
+                        if (!TEMP_MINIMAL_LIBRARY_MODE) {
+                            return true;
+                        }
+
+                        return TEMP_VISIBLE_DEFAULT_EXTENSION_IDS.includes(item.extensionId);
+                    });
+                const baseExtensionItems = baseLibraryItems
+                    .filter(item => typeof item === 'object' && item.extensionId);
+
+                const translatedTurboWarp = this.state.turbowarpGallery
+                    .filter(i => i.extensionId !== 'faceSensing')
+                    .map(i => translateGalleryItem(i, locale));
+
+                const primaryOrderSet = new Set(PRIMARY_EXTENSION_ORDER);
+                const promotedTurboWarp = translatedTurboWarp
+                    .filter(item => primaryOrderSet.has(item.extensionId));
+
+                const allNonTurboWarpExtensions = [
+                    ...baseExtensionItems,
+                    ...this.state.unsandboxedGallery,
+                    ...promotedTurboWarp
+                ];
+
+                const uniqueNonTurboWarpExtensions = dedupeExtensions(allNonTurboWarpExtensions);
+                const seenIds = new Set(uniqueNonTurboWarpExtensions
+                    .map(item => item && item.extensionId)
+                    .filter(Boolean));
+
+                const orderedExtensions = orderById(uniqueNonTurboWarpExtensions, PRIMARY_EXTENSION_ORDER);
+
+                const turbowarpSection = orderById(
+                    translatedTurboWarp
+                        .filter(item => !seenIds.has(item.extensionId)),
+                    PRIMARY_EXTENSION_ORDER
                 );
+
+                library.push(
+                    ...orderedExtensions.map(toLibraryItem)
+                );
+
+                if (turbowarpSection.length > 0 || !TEMP_MINIMAL_LIBRARY_MODE) {
+                    library.push('---');
+
+                    if (!TEMP_MINIMAL_LIBRARY_MODE) {
+                        library.push(toLibraryItem(galleryMore));
+                        library.push(toLibraryItem(penGroupGallery));
+                    }
+
+                    library.push(
+                        ...turbowarpSection.map(toLibraryItem)
+                    );
+                }
             } else if (this.state.galleryError) {
                 library.push(toLibraryItem(galleryError));
             } else {
