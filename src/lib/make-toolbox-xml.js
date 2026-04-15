@@ -414,8 +414,9 @@ const control = function (isInitialSetup, isStage, targetId, colors) {
         </block>
         <block id="forever" type="control_forever"/>
         ${blockSeparator}
-        <block type="control_if"/>
-        <block type="control_if_else"/>
+        <block type="control_if_else_extends"/>
+        <block type="control_switch_case_extends"/>
+        ${blockSeparator}
         <block id="wait_until" type="control_wait_until"/>
         <block id="repeat_until" type="control_repeat_until"/>
         ${blockSeparator}
@@ -634,18 +635,7 @@ const string = function (isInitialSetup, isStage, targetId, colors) {
                     </shadow>
                 </value>
             </block>
-            <block type="operator_join">
-                <value name="STRING1">
-                    <shadow type="text">
-                        <field name="TEXT">${apple} </field>
-                    </shadow>
-                </value>
-                <value name="STRING2">
-                    <shadow type="text">
-                        <field name="TEXT">${banana}</field>
-                    </shadow>
-                </value>
-            </block>
+            <block type="string_join_extends"/>
             ${blockSeparator}
             <block type="string_reverse">
                 <value name="STRING">
@@ -818,7 +808,7 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
         id="operators"
         colour="${colors.primary}"
         secondaryColour="${colors.tertiary}">
-        <block type="operator_add">
+        <block type="operator_add_extends">
             <value name="NUM1">
                 <shadow type="math_number">
                     <field name="NUM"/>
@@ -830,7 +820,7 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
                 </shadow>
             </value>
         </block>
-        <block type="operator_subtract">
+        <block type="operator_subtract_extends">
             <value name="NUM1">
                 <shadow type="math_number">
                     <field name="NUM"/>
@@ -842,7 +832,7 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
                 </shadow>
             </value>
         </block>
-        <block type="operator_multiply">
+        <block type="operator_multiply_extends">
             <value name="NUM1">
                 <shadow type="math_number">
                     <field name="NUM"/>
@@ -854,7 +844,7 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
                 </shadow>
             </value>
         </block>
-        <block type="operator_divide">
+        <block type="operator_divide_extends">
             <value name="NUM1">
                 <shadow type="math_number">
                     <field name="NUM"/>
@@ -891,27 +881,37 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
                 </shadow>
             </value>
         </block>
-        <block type="operator_min">
-            <value name="NUM1">
-                <shadow type="math_number">
-                    <field name="NUM"/>
-                </shadow>
-            </value>
-            <value name="NUM2">
-                <shadow type="math_number">
-                    <field name="NUM"/>
+        <block type="operator_min_extends">
+            <value name="ARRAY">
+                <shadow type="operator_number_array_extends">
+                    <mutation argumentids="[&quot;NUM&quot;,&quot;NUM2&quot;]" extendcount="2"></mutation>
+                    <value name="NUM">
+                        <shadow type="math_number">
+                            <field name="NUM">0</field>
+                        </shadow>
+                    </value>
+                    <value name="NUM2">
+                        <shadow type="math_number">
+                            <field name="NUM">0</field>
+                        </shadow>
+                    </value>
                 </shadow>
             </value>
         </block>
-        <block type="operator_max">
-            <value name="NUM1">
-                <shadow type="math_number">
-                    <field name="NUM"/>
-                </shadow>
-            </value>
-            <value name="NUM2">
-                <shadow type="math_number">
-                    <field name="NUM"/>
+        <block type="operator_max_extends">
+            <value name="ARRAY">
+                <shadow type="operator_number_array_extends">
+                <mutation argumentids="[&quot;NUM&quot;,&quot;NUM2&quot;]" extendcount="2"></mutation>
+                    <value name="NUM">
+                        <shadow type="math_number">
+                            <field name="NUM">0</field>
+                        </shadow>
+                    </value>
+                    <value name="NUM2">
+                        <shadow type="math_number">
+                            <field name="NUM">0</field>
+                        </shadow>
+                    </value>
                 </shadow>
             </value>
         </block>
@@ -960,7 +960,7 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
             </value>
         </block>
         ${blockSeparator}
-        <block type="operator_gt">
+        <block type="operator_gt_extends">
             <value name="OPERAND1">
                 <shadow type="text">
                     <field name="TEXT"/>
@@ -972,7 +972,7 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
                 </shadow>
             </value>
         </block>
-        <block type="operator_gt_equals">
+        <block type="operator_gt_equals_extends">
             <value name="OPERAND1">
                 <shadow type="text">
                     <field name="TEXT"/>
@@ -984,7 +984,7 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
                 </shadow>
             </value>
         </block>
-        <block type="operator_lt">
+        <block type="operator_lt_extends">
             <value name="OPERAND1">
                 <shadow type="text">
                     <field name="TEXT"/>
@@ -996,7 +996,7 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
                 </shadow>
             </value>
         </block>
-        <block type="operator_lt_equals">
+        <block type="operator_lt_equals_extends">
             <value name="OPERAND1">
                 <shadow type="text">
                     <field name="TEXT"/>
@@ -1008,7 +1008,7 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
                 </shadow>
             </value>
         </block>
-        <block type="operator_equals">
+        <block type="operator_equals_extends">
             <value name="OPERAND1">
                 <shadow type="text">
                     <field name="TEXT"/>
@@ -1021,9 +1021,9 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
             </value>
         </block>
         ${blockSeparator}
-        <block type="operator_and"/>
-        <block type="operator_or"/>
-        <block type="operator_xor"/>
+        <block type="operator_and_extends"/>
+        <block type="operator_or_extends"/>
+        <block type="operator_xor_extends"/>
         <block type="operator_not"/>
         ${categorySeparator}
     </category>

@@ -58,6 +58,11 @@ const base = {
         ),
         publicPath: root
     },
+    watchOptions: {
+        // Keep watching linked Scratch repos and extensions so local edits hot-reload.
+        ignored: /node_modules[\\/](?!((@turbowarp[\\/])?scratch-[^\\/]+[\\/]|extensions[\\/]))/,
+        poll: 1000
+    },
     resolve: {
         symlinks: false,
         alias: {
@@ -85,6 +90,8 @@ const base = {
                 // Include sub-scratch dependancies :D
                 // eslint-disable-next-line max-len
                 /node_modules[\\/](@turbowarp[\\/])?scratch-[^\\/]+[\\/]node_modules[\\/](@turbowarp[\\/])?scratch-[^\\/]+[\\/]src/,
+                /node_modules[\\/]extensions[\\/]src/,
+                /node_modules[\\/]scratch-vm[\\/]node_modules[\\/]extensions[\\/]src/,
                 /node_modules[\\/]pify/,
                 /node_modules[\\/]@vernier[\\/]godirect/
             ],
