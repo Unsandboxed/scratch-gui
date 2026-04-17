@@ -1,5 +1,13 @@
 import LazyScratchBlocks from './tw-lazy-scratch-blocks';
 import AddonHooks from '../addons/hooks';
+import {activateTab, BLOCKS_TAB_INDEX} from '../reducers/editor-tab';
+import {
+    openExtensionEditorTab,
+    updateExtensionEditorTab,
+    closeExtensionEditorTab,
+    getOpenExtensionEditorTabs,
+    getExtensionEditorTabById
+} from '../reducers/extension-editor-tabs';
 import {
     openExtensionModal,
     updateExtensionModal,
@@ -80,6 +88,140 @@ const implementGuiAPI = Scratch => {
             }
         };
     };
+
+    const getActiveEditorTabIndex = state => (
+        state && state.scratchGui && state.scratchGui.editorTab
+            ? state.scratchGui.editorTab.activeTabIndex
+            : null
+    );
+
+    const editorTabsApi = {
+        open: options => {
+            const tabOptions = options || {};
+            const id = normalizeId(tabOptions.id || `extension-editor-tab-${Date.now()}`);
+            const store = getStore();
+            if (!store || !id) return null;
+
+            store.dispatch(openExtensionEditorTab({
+                id,
+                title: typeof tabOptions.title === 'string' ? tabOptions.title : id,
+                html: typeof tabOptions.html === 'string' ? tabOptions.html : '',
+                url: typeof tabOptions.url === 'string' ? tabOptions.url : '',
+                icon: typeof tabOptions.icon === 'string' ? tabOptions.icon : '',
+                className: typeof tabOptions.className === 'string' ? tabOptions.className : '',
+                order: Number.isFinite(Number(tabOptions.order)) ? Number(tabOptions.order) : undefined
+            }));
+
+            const shouldActivate = tabOptions.activate !== false;
+            if (shouldActivate) {
+                const createdTab = getExtensionEditorTabById(store.getState(), id);
+                if (createdTab) {
+                    store.dispatch(activateTab(createdTab.tabIndex));
+                }
+            }
+
+            return id;
+        },
+        update: options => {
+            const tabOptions = options || {};
+            const id = normalizeId(tabOptions.id);
+            const store = getStore();
+            if (!store || !id) return false;
+
+            const payload = {id};
+            if (Object.prototype.hasOwnProperty.call(tabOptions, 'title') && typeof tabOptions.title === 'string') {
+                payload.title = tabOptions.title;
+            }
+            if (Object.prototype.hasOwnProperty.call(tabOptions, 'html') && typeof tabOptions.html === 'string') {
+                payload.html = tabOptions.html;
+            }
+            if (Object.prototype.hasOwnProperty.call(tabOptions, 'url') && typeof tabOptions.url === 'string') {
+                payload.url = tabOptions.url;
+            }
+            if (Object.prototype.hasOwnProperty.call(tabOptions, 'icon') && typeof tabOptions.icon === 'string') {
+                payload.icon = tabOptions.icon;
+            }
+            if (Object.prototype.hasOwnProperty.call(tabOptions, 'className') && typeof tabOptions.className === 'string') {
+                payload.className = tabOptions.className;
+            }
+            if (Object.prototype.hasOwnProperty.call(tabOptions, 'order') && Number.isFinite(Number(tabOptions.order))) {
+                payload.order = Number(tabOptions.order);
+            }
+
+            if (Object.keys(payload).length > 1) {
+                store.dispatch(updateExtensionEditorTab(payload));
+            }
+
+            if (tabOptions.activate === true) {
+                const tab = getExtensionEditorTabById(store.getState(), id);
+                if (tab) {
+                    store.dispatch(activateTab(tab.tabIndex));
+                }
+            }
+
+            return true;
+        },
+        close: id => {
+            const normalizedId = normalizeId(id);
+            const store = getStore();
+            if (!store || !normalizedId) return false;
+
+            const state = store.getState();
+            const tab = getExtensionEditorTabById(state, normalizedId);
+            if (!tab) return false;
+
+            const wasActive = getActiveEditorTabIndex(state) === tab.tabIndex;
+            store.dispatch(closeExtensionEditorTab(normalizedId));
+
+            if (wasActive) {
+                store.dispatch(activateTab(BLOCKS_TAB_INDEX));
+            }
+
+            return true;
+        },
+        activate: id => {
+            const normalizedId = normalizeId(id);
+            const store = getStore();
+            if (!store || !normalizedId) return false;
+
+            const tab = getExtensionEditorTabById(store.getState(), normalizedId);
+            if (!tab) return false;
+
+            store.dispatch(activateTab(tab.tabIndex));
+            return true;
+        },
+        isActive: id => {
+            const normalizedId = normalizeId(id);
+            const store = getStore();
+            if (!store || !normalizedId) return false;
+
+            const state = store.getState();
+            const tab = getExtensionEditorTabById(state, normalizedId);
+            if (!tab) return false;
+
+            return getActiveEditorTabIndex(state) === tab.tabIndex;
+        },
+        list: () => {
+            const store = getStore();
+            if (!store) return [];
+
+            return getOpenExtensionEditorTabs(store.getState()).map(tab => ({
+                id: tab.id,
+                title: tab.title,
+                tabIndex: tab.tabIndex
+            }));
+        },
+        getBodyElement: id => {
+            const normalizedId = normalizeId(id);
+            if (!normalizedId) return null;
+
+            return document.querySelector(`[data-extension-editor-tab-body='${normalizedId}']`);
+        },
+        getThemeMetrics
+    };
+
+    Scratch.gui.editorTabs = editorTabsApi;
+    Scratch.gui.extensionEditorTabs = editorTabsApi;
 
     Scratch.gui.extensionModals = {
         open: options => {

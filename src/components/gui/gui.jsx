@@ -60,6 +60,39 @@ const messages = defineMessages({
     }
 });
 
+const BUILTIN_EDITOR_TAB_COUNT = 3;
+
+const ExtensionEditorTabBody = ({tab}) => {
+    const hasUrl = typeof tab.url === 'string' && tab.url.length > 0;
+    if (hasUrl) {
+        return (
+            <iframe
+                title={tab.title || tab.id}
+                src={tab.url}
+                className={styles.extensionEditorTabIframe}
+                data-extension-editor-tab-body={tab.id}
+            />
+        );
+    }
+
+    return (
+        <div
+            data-extension-editor-tab-body={tab.id}
+            className={styles.extensionEditorTabBodyContent}
+            dangerouslySetInnerHTML={{__html: tab.html || ''}}
+        />
+    );
+};
+
+ExtensionEditorTabBody.propTypes = {
+    tab: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        html: PropTypes.string,
+        title: PropTypes.string,
+        url: PropTypes.string
+    }).isRequired
+};
+
 const getFullscreenBackgroundColor = () => {
     const params = new URLSearchParams(location.search);
     if (params.has('fullscreen-background')) {
@@ -104,6 +137,7 @@ const GUIComponent = props => {
         costumesTabVisible,
         customStageSize,
         enableCommunity,
+        extensionEditorTabs,
         intl,
         isCreating,
         isEmbedded,
@@ -181,6 +215,29 @@ const GUIComponent = props => {
         FIXED_WIDTH +
         Math.max(0, customStageSize.width - FIXED_WIDTH)
     );
+
+    const orderedEditorTabs = Array.from(
+        {length: BUILTIN_EDITOR_TAB_COUNT},
+        (_, tabIndex) => ({tabIndex})
+    ).concat(extensionEditorTabs.map(tab => ({
+        id: tab.id,
+        tabIndex: tab.tabIndex
+    })));
+    const selectedTabPosition = orderedEditorTabs.findIndex(tab => tab.tabIndex === activeTabIndex);
+    // Keep unknown addon-specific tab indexes (like variable manager's index 3)
+    // outside react-tabs' managed range so they don't select extension tabs.
+    const selectedTabIndex = selectedTabPosition === -1 ? orderedEditorTabs.length : selectedTabPosition;
+    const handleTabSelect = selectedIndex => {
+        const nextTab = orderedEditorTabs[selectedIndex];
+        if (nextTab) {
+            onActivateTab(nextTab.tabIndex);
+            return;
+        }
+
+        // Preserve older behaviors that rely on out-of-range indexes.
+        onActivateTab(selectedIndex);
+    };
+
     return (<MediaQuery minWidth={unconstrainedWidth}>{isUnconstrained => {
         const stageSize = resolveStageSize(stageSizeMode, isUnconstrained);
 
@@ -335,10 +392,10 @@ const GUIComponent = props => {
                             <Tabs
                                 forceRenderTabPanel
                                 className={tabClassNames.tabs}
-                                selectedIndex={activeTabIndex}
+                                selectedIndex={selectedTabIndex}
                                 selectedTabClassName={tabClassNames.tabSelected}
                                 selectedTabPanelClassName={tabClassNames.tabPanelSelected}
-                                onSelect={onActivateTab}
+                                onSelect={handleTabSelect}
                             >
                                 <TabList className={tabClassNames.tabList}>
                                     <Tab className={tabClassNames.tab}>
@@ -388,6 +445,20 @@ const GUIComponent = props => {
                                             id="gui.gui.soundsTab"
                                         />
                                     </Tab>
+                                    {extensionEditorTabs.map(tab => (
+                                        <Tab
+                                            key={tab.id}
+                                            className={tabClassNames.tab}
+                                        >
+                                            {tab.icon ? (
+                                                <img
+                                                    draggable={false}
+                                                    src={tab.icon}
+                                                />
+                                            ) : null}
+                                            <span>{tab.title || tab.id}</span>
+                                        </Tab>
+                                    ))}
                                 </TabList>
                                 <TabPanel className={tabClassNames.tabPanel}>
                                     <Box className={styles.blocksWrapper}>
@@ -430,6 +501,16 @@ const GUIComponent = props => {
                                 <TabPanel className={tabClassNames.tabPanel}>
                                     {soundsTabVisible ? <SoundTab vm={vm} /> : null}
                                 </TabPanel>
+                                {extensionEditorTabs.map(tab => (
+                                    <TabPanel
+                                        key={tab.id}
+                                        className={tabClassNames.tabPanel}
+                                    >
+                                        <Box className={classNames(styles.extensionEditorTabBody, tab.className || '')}>
+                                            <ExtensionEditorTabBody tab={tab} />
+                                        </Box>
+                                    </TabPanel>
+                                ))}
                             </Tabs>
                             {backpackVisible ? (
                                 <Backpack host={backpackHost} />
@@ -490,6 +571,15 @@ GUIComponent.propTypes = {
         height: PropTypes.number
     }),
     enableCommunity: PropTypes.bool,
+    extensionEditorTabs: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        className: PropTypes.string,
+        html: PropTypes.string,
+        icon: PropTypes.string,
+        tabIndex: PropTypes.number.isRequired,
+        title: PropTypes.string,
+        url: PropTypes.string
+    })),
     intl: intlShape.isRequired,
     isCreating: PropTypes.bool,
     isEmbedded: PropTypes.bool,
@@ -562,6 +652,7 @@ GUIComponent.defaultProps = {
     canShare: false,
     canUseCloud: false,
     enableCommunity: false,
+    extensionEditorTabs: [],
     isCreating: false,
     isShared: false,
     isTotallyNormal: false,

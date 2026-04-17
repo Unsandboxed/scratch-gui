@@ -16,6 +16,7 @@ import extensionLibraryContent, {
 import extensionTags from '../lib/libraries/tw-extension-tags';
 import galleryInsetIcon from '../lib/libraries/extensions/gallery/tw-icon-small.svg';
 import customExtensionInsetIcon from '../lib/libraries/extensions/custom/custom-small.svg';
+import customExtensionIcon from '../lib/libraries/extensions/custom/custom.svg';
 
 import LibraryComponent from '../components/library/library.jsx';
 import extensionIcon from '../components/action-menu/icon--sprite.svg';
@@ -30,30 +31,64 @@ const messages = defineMessages({
 
 const LOCAL_DEV_SERVER_PORT = 8001;
 const LOCAL_DEV_SERVER_FLAG = 'usb.useLocalExtensionDevServer';
-const LOCALHOST_HOSTNAMES = new Set(['localhost', '127.0.0.1', '::1']);
+const LOCAL_DEV_SERVER_BASE_URL = `http://localhost:${LOCAL_DEV_SERVER_PORT}`;
+const LOCAL_DEV_FETCH_TIMEOUT_MS = 1200;
+const LOCAL_DEV_GALLERY_CACHE_TTL_MS = 30000;
 
-const shouldUseLocalDevServer = () => {
-    if (typeof window === 'undefined' || !window.location) {
-        return false;
-    }
-
-    if (!LOCALHOST_HOSTNAMES.has(window.location.hostname)) {
-        return false;
-    }
+const fetchWithTimeout = async (url, options = {}, timeoutMs = LOCAL_DEV_FETCH_TIMEOUT_MS) => {
+    const controller = typeof AbortController === 'function' ? new AbortController() : null;
+    const timeoutId = setTimeout(() => {
+        if (controller) {
+            controller.abort();
+        }
+    }, timeoutMs);
 
     try {
-        return window.localStorage.getItem(LOCAL_DEV_SERVER_FLAG) === '1';
-    } catch (error) {
+        return await fetch(url, {
+            ...options,
+            ...(controller ? {signal: controller.signal} : {})
+        });
+    } finally {
+        clearTimeout(timeoutId);
+    }
+};
+
+const shouldUseLocalDevServer = () => {
+    if (typeof window === 'undefined') {
         return false;
+    }
+
+    // Default to enabled to prioritize local development cards when the dev server is running.
+    // Users can explicitly disable by setting localStorage[LOCAL_DEV_SERVER_FLAG] = '0'.
+    try {
+        const localFlag = window.localStorage.getItem(LOCAL_DEV_SERVER_FLAG);
+        return localFlag !== '0';
+    } catch (error) {
+        return true;
     }
 };
 
 const toLocalDevServerExtensionURL = subPath =>
-    `http://localhost:${LOCAL_DEV_SERVER_PORT}/extensions/${subPath}/index.js`;
+    `${LOCAL_DEV_SERVER_BASE_URL}/extensions/${subPath}/index.js`;
 
 const isLocalDevServerExtensionURL = url =>
     typeof url === 'string' &&
-    url.startsWith(`http://localhost:${LOCAL_DEV_SERVER_PORT}/extensions/`);
+    url.startsWith(`${LOCAL_DEV_SERVER_BASE_URL}/extensions/`);
+
+const toLocalDevServerExtensionAssetURL = (subPath, assetName) =>
+    `${LOCAL_DEV_SERVER_BASE_URL}/extensions/${subPath}/${assetName}`;
+
+const toLocalDevServerMetadataURL = subPath =>
+    `${LOCAL_DEV_SERVER_BASE_URL}/extensions/${subPath}/metadata.json`;
+
+const toLocalDevServerGeneratedThumbnailURL = (subPath, color) => {
+    const query = new URLSearchParams();
+    query.set('subPath', subPath);
+    if (typeof color === 'string' && color.trim()) {
+        query.set('color', color.trim());
+    }
+    return `${LOCAL_DEV_SERVER_BASE_URL}/generated-thumbnail?${query.toString()}`;
+};
 
 const toSearchableText = value => {
     if (typeof value === 'string') {
@@ -106,11 +141,84 @@ const dedupeExtensions = items => {
 const toLibraryItem = extension => {
     if (typeof extension === 'object') {
         return ({
-            rawURL: extension.iconURL || extensionIcon,
+            rawURL: extension.iconURL || customExtensionIcon || extensionIcon,
             ...extension
         });
     }
     return extension;
+};
+
+const LOCAL_DEV_STATUS = {
+    LOCAL_ONLY: 'local-only',
+    LOCAL_OVERRIDE: 'local-override'
+};
+
+const normalizeCreditsForComparison = credits => {
+    if (!Array.isArray(credits)) {
+        return '';
+    }
+
+    return credits
+        .map(credit => {
+            if (typeof credit === 'string') {
+                return credit;
+            }
+
+            if (credit && typeof credit === 'object' && typeof credit.name === 'string') {
+                return credit.name;
+            }
+
+            return '';
+        })
+        .filter(Boolean)
+        .join('|');
+};
+
+const hasMeaningfulMetadataDiff = (localItem, bundledItem) => {
+    if (!localItem || !bundledItem) {
+        return false;
+    }
+
+    const localName = toSearchableText(localItem.name);
+    const bundledName = toSearchableText(bundledItem.name);
+    if (localName !== bundledName) {
+        return true;
+    }
+
+    const localDescription = toSearchableText(localItem.description);
+    const bundledDescription = toSearchableText(bundledItem.description);
+    if (localDescription !== bundledDescription) {
+        return true;
+    }
+
+    const localInsetColor = toSearchableText(localItem.insetColor);
+    const bundledInsetColor = toSearchableText(bundledItem.insetColor);
+    if (localInsetColor !== bundledInsetColor) {
+        return true;
+    }
+
+    return normalizeCreditsForComparison(localItem.credits) !== normalizeCreditsForComparison(bundledItem.credits);
+};
+
+const mergeDevTags = (...tagLists) => {
+    const tags = new Set();
+
+    for (const list of tagLists) {
+        if (!Array.isArray(list)) {
+            continue;
+        }
+
+        for (const tag of list) {
+            const normalized = typeof tag === 'string' ? tag.trim() : '';
+            if (normalized) {
+                tags.add(normalized);
+            }
+        }
+    }
+
+    tags.add('usb');
+    tags.add('dev');
+    return Array.from(tags);
 };
 
 const translateGalleryItem = (extension, locale) => ({
@@ -176,6 +284,32 @@ const orderById = (extensions, orderedIds) => {
 };
 
 let cachedUnsandboxedGallery = null;
+let cachedLocalDevServerGallery = null;
+let cachedLocalDevServerGalleryAt = 0;
+let cachedLocalDevServerGalleryPromise = null;
+
+const fetchLocalDevServerLibraryCached = async () => {
+    const now = Date.now();
+    if (cachedLocalDevServerGallery && (now - cachedLocalDevServerGalleryAt) < LOCAL_DEV_GALLERY_CACHE_TTL_MS) {
+        return cachedLocalDevServerGallery;
+    }
+
+    if (cachedLocalDevServerGalleryPromise) {
+        return cachedLocalDevServerGalleryPromise;
+    }
+
+    cachedLocalDevServerGalleryPromise = fetchLocalDevServerLibrary()
+        .then(items => {
+            cachedLocalDevServerGallery = items;
+            cachedLocalDevServerGalleryAt = Date.now();
+            return items;
+        })
+        .finally(() => {
+            cachedLocalDevServerGalleryPromise = null;
+        });
+
+    return cachedLocalDevServerGalleryPromise;
+};
 
 const constructUnsandboxedLibrary = async () => {
     const extensions = UnsandboxedExtensions.extensions;
@@ -217,8 +351,164 @@ const constructUnsandboxedLibrary = async () => {
         });
     }
 
+    const bundledById = new Map(gallery
+        .map(item => [item && item.extensionId, item])
+        .filter(([id]) => Boolean(id)));
+
+    if (useLocalDevServer) {
+        try {
+            const localGallery = await fetchLocalDevServerLibraryCached();
+            const promotedLocal = [];
+            const localById = new Map(localGallery
+                .map(item => [item && item.extensionId, item])
+                .filter(([id]) => Boolean(id)));
+
+            for (const localItem of localGallery) {
+                const extensionId = localItem && localItem.extensionId;
+                if (!extensionId) {
+                    continue;
+                }
+
+                const bundledItem = bundledById.get(extensionId);
+
+                if (!bundledItem) {
+                    promotedLocal.push({
+                        ...localItem,
+                        tags: mergeDevTags(localItem.tags),
+                        localDevStatus: LOCAL_DEV_STATUS.LOCAL_ONLY,
+                        featured: true
+                    });
+                }
+            }
+
+            const bundledWithLocalDefaults = gallery.map(item => {
+                const localItem = localById.get(item.extensionId);
+                if (!localItem) {
+                    return item;
+                }
+
+                const hasDiff = hasMeaningfulMetadataDiff(localItem, item);
+                return {
+                    ...item,
+                    ...localItem,
+                    // Keep bundled icon by default; fallback to recolored custom icon.
+                    iconURL: item.iconURL || localItem.iconURL || customExtensionIcon || extensionIcon,
+                    // Preserve bundled inset icon so local metadata doesn't flatten all badges.
+                    insetIconURL: item.insetIconURL || localItem.insetIconURL || customExtensionInsetIcon,
+                    insetColor: item.insetColor || localItem.insetColor,
+                    // Local dev source should be the default load URL whenever available.
+                    extensionURL: localItem.extensionURL || item.extensionURL,
+                    tags: mergeDevTags(item.tags, localItem.tags),
+                    localDevStatus: LOCAL_DEV_STATUS.LOCAL_OVERRIDE,
+                    localDevHasMetadataDiff: hasDiff,
+                    featured: true
+                };
+            });
+
+            gallery = dedupeExtensions([
+                ...promotedLocal,
+                ...bundledWithLocalDefaults
+            ]);
+        } catch (error) {
+            log.warn('Local extension development server metadata fetch failed; using bundled gallery metadata.', error);
+        }
+    }
+
     return gallery.filter(extension => !blacklist.has(extension.extensionId));
 }
+
+const fetchLocalDevServerLibrary = async () => {
+    const res = await fetchWithTimeout(`${LOCAL_DEV_SERVER_BASE_URL}/extensions.json`);
+    if (!res.ok) {
+        throw new Error(`Local extensions.json HTTP status ${res.status}`);
+    }
+
+    const extensionsMap = await res.json();
+    const extensionIds = Object.keys(extensionsMap || {});
+
+    const items = await Promise.all(extensionIds.map(async extensionId => {
+        const subPath = extensionsMap[extensionId];
+        if (typeof subPath !== 'string' || !subPath) {
+            return null;
+        }
+
+        try {
+            const metadataRes = await fetchWithTimeout(toLocalDevServerMetadataURL(subPath));
+            if (metadataRes.ok) {
+                const metadata = await metadataRes.json();
+                const insetColor = (metadata && metadata.insetColor) || '#66757f';
+
+                return {
+                    name: (metadata && metadata.name) || extensionId,
+                    nameTranslations: {},
+                    description: (metadata && metadata.description) || 'Description goes here',
+                    descriptionTranslations: {},
+                    extensionId: (metadata && metadata.extensionId) || extensionId,
+                    extensionURL: (metadata && metadata.extensionURL) || toLocalDevServerExtensionURL(subPath),
+                    iconURL: (metadata && metadata.iconURL) || toLocalDevServerGeneratedThumbnailURL(subPath, insetColor),
+                    insetIconURL: (metadata && metadata.insetIconURL) || customExtensionInsetIcon,
+                    insetColor,
+                    tags: ['usb'],
+                    credits: (metadata && metadata.createdBy) || [],
+                    localDevSourcePath: (metadata && metadata.subPath) || subPath,
+                    featured: true
+                };
+            }
+        } catch (error) {
+            // Fallback to legacy manifest/icon probing below.
+        }
+
+        const manifestUrl = toLocalDevServerExtensionAssetURL(subPath, 'manifest.json');
+        const manifestRes = await fetchWithTimeout(manifestUrl);
+        if (!manifestRes.ok) {
+            return null;
+        }
+
+        const manifest = await manifestRes.json();
+        const insetColor = (manifest && manifest.insetIconColor) || '#66757f';
+        const extensionURL = toLocalDevServerExtensionURL(subPath);
+
+        let iconURL = null;
+        const iconCandidates = [
+            toLocalDevServerExtensionAssetURL(subPath, 'icon.svg'),
+            toLocalDevServerExtensionAssetURL(subPath, 'icon.png')
+        ];
+
+        for (const candidate of iconCandidates) {
+            try {
+                const iconRes = await fetchWithTimeout(candidate);
+                if (iconRes.ok) {
+                    iconURL = candidate;
+                    break;
+                }
+            } catch (error) {
+                // Continue to next candidate.
+            }
+        }
+
+        if (!iconURL) {
+            iconURL = toLocalDevServerGeneratedThumbnailURL(subPath, insetColor);
+        }
+
+        return {
+            name: (manifest && manifest.name) || extensionId,
+            nameTranslations: {},
+            description: (manifest && manifest.description) || 'Description goes here',
+            descriptionTranslations: {},
+            extensionId: (manifest && manifest.id) || extensionId,
+            extensionURL,
+            iconURL,
+            insetIconURL: customExtensionInsetIcon,
+            insetColor,
+            tags: ['usb'],
+            credits: (manifest && manifest.createdBy) || [],
+            localDevSourcePath: subPath,
+            featured: true
+        };
+    }));
+
+    return items.filter(Boolean);
+};
 
 let cachedTurboWarpGallery = null;
 
@@ -284,44 +574,48 @@ class ExtensionLibrary extends React.PureComponent {
         };
     }
     componentDidMount () {
-        if (!this.state.gallery) {
+        if (!this.state.unsandboxedGallery || !this.state.turbowarpGallery) {
             const timeout = setTimeout(() => {
                 this.setState({
                     galleryTimedOut: true
                 });
             }, 750);
 
-            constructUnsandboxedLibrary()
-                .then(gallery => {
-                    cachedUnsandboxedGallery = gallery;
-                    this.setState({
-                        unsandboxedGallery: cachedUnsandboxedGallery
+            if (!this.state.unsandboxedGallery) {
+                constructUnsandboxedLibrary()
+                    .then(gallery => {
+                        cachedUnsandboxedGallery = gallery;
+                        this.setState({
+                            unsandboxedGallery: cachedUnsandboxedGallery
+                        });
+                        clearTimeout(timeout);
+                    })
+                    .catch(error => {
+                        log.error(error);
+                        this.setState({
+                            galleryError: error
+                        });
+                        clearTimeout(timeout);
                     });
-                    clearTimeout(timeout);
-                })
-                .catch(error => {
-                    log.error(error);
-                    this.setState({
-                        galleryError: error
-                    });
-                    clearTimeout(timeout);
-                });
+            }
 
-            fetchTurboWarpLibrary()
-                .then(gallery => {
-                    cachedTurboWarpGallery = gallery;
-                    this.setState({
-                        turbowarpGallery: cachedTurboWarpGallery
+            if (!this.state.turbowarpGallery) {
+                fetchTurboWarpLibrary()
+                    .then(gallery => {
+                        cachedTurboWarpGallery = gallery;
+                        this.setState({
+                            turbowarpGallery: cachedTurboWarpGallery
+                        });
+                        clearTimeout(timeout);
+                    })
+                    .catch(error => {
+                        log.error(error);
+                        this.setState({
+                            galleryError: error
+                        });
+                        clearTimeout(timeout);
                     });
-                    clearTimeout(timeout);
-                })
-                .catch(error => {
-                    log.error(error);
-                    this.setState({
-                        galleryError: error
-                    });
-                    clearTimeout(timeout);
-                });
+            }
         }
     }
     handleItemSelect (item) {
@@ -368,6 +662,14 @@ class ExtensionLibrary extends React.PureComponent {
         }
     }
     render () {
+        const hasDevelopmentCards = Array.isArray(this.state.unsandboxedGallery) &&
+            this.state.unsandboxedGallery.some(item =>
+                item && Array.isArray(item.tags) && item.tags.includes('dev')
+            );
+        const visibleTags = hasDevelopmentCards
+            ? extensionTags
+            : extensionTags.filter(tag => tag.tag !== 'dev');
+
         let library = null;
         if ((this.state.turbowarpGallery && this.state.unsandboxedGallery) || this.state.galleryError || this.state.galleryTimedOut) {
             library = [];
@@ -409,7 +711,20 @@ class ExtensionLibrary extends React.PureComponent {
                     .map(item => item && item.extensionId)
                     .filter(Boolean));
 
-                const orderedExtensions = orderById(uniqueNonTurboWarpExtensions, PRIMARY_EXTENSION_ORDER);
+                const localDevPriority = orderById(
+                    uniqueNonTurboWarpExtensions
+                        .filter(item => item && item.localDevStatus === LOCAL_DEV_STATUS.LOCAL_ONLY),
+                    PRIMARY_EXTENSION_ORDER
+                );
+
+                const localDevPriorityIds = new Set(localDevPriority
+                    .map(item => item && item.extensionId)
+                    .filter(Boolean));
+
+                const nonPriorityExtensions = uniqueNonTurboWarpExtensions
+                    .filter(item => !localDevPriorityIds.has(item.extensionId));
+
+                const orderedExtensions = orderById(nonPriorityExtensions, PRIMARY_EXTENSION_ORDER);
 
                 const turbowarpSection = orderById(
                     translatedTurboWarp
@@ -417,9 +732,15 @@ class ExtensionLibrary extends React.PureComponent {
                     PRIMARY_EXTENSION_ORDER
                 );
 
-                library.push(
-                    ...orderedExtensions.map(toLibraryItem)
-                );
+                if (localDevPriority.length > 0) {
+                    library.push(...localDevPriority.map(toLibraryItem));
+
+                    if (orderedExtensions.length > 0 || turbowarpSection.length > 0 || !TEMP_MINIMAL_LIBRARY_MODE) {
+                        library.push('---');
+                    }
+                }
+
+                library.push(...orderedExtensions.map(toLibraryItem));
 
                 if (turbowarpSection.length > 0 || !TEMP_MINIMAL_LIBRARY_MODE) {
                     library.push('---');
@@ -446,7 +767,7 @@ class ExtensionLibrary extends React.PureComponent {
                 filterable
                 persistableKey="extensionId"
                 id="extensionLibrary"
-                tags={extensionTags}
+                tags={visibleTags}
                 title={this.props.intl.formatMessage(messages.extensionTitle)}
                 visible={this.props.visible}
                 onItemSelected={this.handleItemSelect}

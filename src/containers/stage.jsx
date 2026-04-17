@@ -21,6 +21,9 @@ import {setHighQualityPenState} from '../reducers/tw';
 
 const colorPickerRadius = 20;
 const dragThreshold = 3; // Same as the block drag threshold
+const wheelLinePixels = 16;
+const wheelPagePixels = 100;
+const wheelZoomSensitivity = 0.0015;
 
 class Stage extends React.Component {
     constructor (props) {
@@ -28,7 +31,9 @@ class Stage extends React.Component {
         bindAll(this, [
             'attachMouseEvents',
             'cancelMouseDownTimeout',
+            'cancelCameraDragUpdate',
             'detachMouseEvents',
+            'flushCameraDragUpdate',
             'handleDoubleClick',
             'handleQuestionAnswered',
             'onMouseUp',
@@ -40,6 +45,7 @@ class Stage extends React.Component {
             'onStopCameraDrag',
             'onWheel',
             'onContextMenu',
+            'scheduleCameraDragUpdate',
             'updateRect',
             'questionListener',
             'setDragCanvas',
@@ -91,6 +97,9 @@ class Stage extends React.Component {
             this.props.vm.renderer.on('UseHighQualityRenderChanged', this.props.onHighQualityPenChanged);
         }
         this.props.vm.attachV2BitmapAdapter(new V2BitmapAdapter());
+
+        this.cameraDragRaf = null;
+        this.pendingCameraDragPoint = null;
     }
     componentDidMount () {
         this.attachRectEvents();
@@ -124,6 +133,7 @@ class Stage extends React.Component {
         this.detachMouseEvents(this.canvas);
         this.detachRectEvents();
         this.stopColorPickingLoop();
+        this.cancelCameraDragUpdate();
         this.props.vm.runtime.removeListener('QUESTION', this.questionListener);
     }
     questionListener (question) {
@@ -239,11 +249,7 @@ class Stage extends React.Component {
                 });
             }
         } else if (this.state.mouseDown && this.state.isDraggingCamera) {
-            const [deltaX, deltaY] = this.renderer.clientDeltaToScratchDelta(
-                x - this.state.start[0],
-                y - this.state.start[1]
-            );
-            this.props.vm.runtime.camera.setXY(this.state.cam[0] - deltaX, this.state.cam[1] - deltaY);
+            this.scheduleCameraDragUpdate(x, y);
         }
         const coordinates = {
             x: mousePosition[0],
@@ -252,6 +258,52 @@ class Stage extends React.Component {
             canvasHeight: this.rect.height
         };
         this.props.vm.postIOData('mouse', coordinates);
+    }
+    scheduleCameraDragUpdate (x, y) {
+        if (!this.state.isDraggingCamera || !Array.isArray(this.state.start) || !Array.isArray(this.state.cam)) {
+            return;
+        }
+
+        this.pendingCameraDragPoint = [x, y];
+
+        if (this.cameraDragRaf !== null) {
+            return;
+        }
+
+        if (typeof requestAnimationFrame !== 'function') {
+            this.flushCameraDragUpdate();
+            return;
+        }
+
+        this.cameraDragRaf = requestAnimationFrame(() => {
+            this.cameraDragRaf = null;
+            this.flushCameraDragUpdate();
+        });
+    }
+    flushCameraDragUpdate (point = null) {
+        if (!this.state.isDraggingCamera || !Array.isArray(this.state.start) || !Array.isArray(this.state.cam)) {
+            this.pendingCameraDragPoint = null;
+            return;
+        }
+
+        const nextPoint = point || this.pendingCameraDragPoint;
+        if (!Array.isArray(nextPoint) || nextPoint.length < 2) {
+            return;
+        }
+
+        const [deltaX, deltaY] = this.renderer.clientDeltaToScratchDelta(
+            nextPoint[0] - this.state.start[0],
+            nextPoint[1] - this.state.start[1]
+        );
+        this.props.vm.runtime.camera.setXY(this.state.cam[0] - deltaX, this.state.cam[1] - deltaY);
+        this.pendingCameraDragPoint = null;
+    }
+    cancelCameraDragUpdate () {
+        if (this.cameraDragRaf !== null && typeof cancelAnimationFrame === 'function') {
+            cancelAnimationFrame(this.cameraDragRaf);
+        }
+        this.cameraDragRaf = null;
+        this.pendingCameraDragPoint = null;
     }
     onMouseUp (e) {
         const {x, y} = getEventXY(e);
@@ -347,6 +399,43 @@ class Stage extends React.Component {
         }
     }
     onWheel (e) {
+        if (e.shiftKey && this.props.vm.runtime && this.props.vm.runtime.camera) {
+            this.updateRect();
+            const {x, y} = getEventXY(e);
+            const mousePosition = [x - this.rect.left, y - this.rect.top];
+
+            let normalizedDeltaY = Number(e.deltaY);
+            if (e.deltaMode === 1) {
+                normalizedDeltaY *= wheelLinePixels;
+            } else if (e.deltaMode === 2) {
+                normalizedDeltaY *= wheelPagePixels;
+            }
+
+            if (Number.isFinite(normalizedDeltaY) && normalizedDeltaY !== 0) {
+                const camera = this.props.vm.runtime.camera;
+                const beforeZoomScratchPosition = this.getScratchCoords(mousePosition[0], mousePosition[1]);
+
+                const zoomFactor = Math.pow(1 + wheelZoomSensitivity, -normalizedDeltaY);
+                const nextZoom = camera.zoom * zoomFactor;
+                camera.setZoom(nextZoom);
+
+                const afterZoomScratchPosition = this.getScratchCoords(mousePosition[0], mousePosition[1]);
+                if (Array.isArray(beforeZoomScratchPosition) && Array.isArray(afterZoomScratchPosition)) {
+                    const offsetX = beforeZoomScratchPosition[0] - afterZoomScratchPosition[0];
+                    const offsetY = beforeZoomScratchPosition[1] - afterZoomScratchPosition[1];
+
+                    if (Number.isFinite(offsetX) && Number.isFinite(offsetY) && (offsetX !== 0 || offsetY !== 0)) {
+                        camera.setXY(camera.x + offsetX, camera.y + offsetY);
+                    }
+                }
+
+                // Prevent stage wrapper/page scroll while using Shift+wheel for camera zoom.
+                if (typeof e.preventDefault === 'function') {
+                    e.preventDefault();
+                }
+            }
+        }
+
         const data = {
             deltaX: e.deltaX,
             deltaY: e.deltaY
@@ -418,6 +507,9 @@ class Stage extends React.Component {
         this.setState({button: null});
         if (this.state.dragId || this.props.isPlayerOnly) return;
 
+        this.cancelCameraDragUpdate();
+        this.pendingCameraDragPoint = [x, y];
+
         this.setState({
             isDraggingCamera: true,
             start: [x, y],
@@ -426,6 +518,10 @@ class Stage extends React.Component {
     }
     onStopCameraDrag (x, y) {
         if (!this.state.isDraggingCamera) return;
+
+        this.flushCameraDragUpdate([x, y]);
+        this.cancelCameraDragUpdate();
+
         this.setState({
             isDraggingCamera: false,
             start: null,

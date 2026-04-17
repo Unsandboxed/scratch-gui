@@ -17,6 +17,7 @@ import {
     COSTUMES_TAB_INDEX,
     SOUNDS_TAB_INDEX
 } from '../reducers/editor-tab';
+import {getOpenExtensionEditorTabs} from '../reducers/extension-editor-tabs';
 
 import {
     closeCostumeLibrary,
@@ -155,6 +156,7 @@ const mapStateToProps = state => {
         connectionModalVisible: state.scratchGui.modals.connectionModal,
         costumeLibraryVisible: state.scratchGui.modals.costumeLibrary,
         costumesTabVisible: state.scratchGui.editorTab.activeTabIndex === COSTUMES_TAB_INDEX,
+        extensionEditorTabs: getOpenExtensionEditorTabs(state),
         error: state.scratchGui.projectState.error,
         isError: getIsError(loadingState),
         isEmbedded: state.scratchGui.mode.isEmbedded,
