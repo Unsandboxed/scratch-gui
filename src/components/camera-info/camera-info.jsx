@@ -186,7 +186,10 @@ class CameraInfo extends React.Component {
                     })}
                     title={toggleLabel}
                     type="button"
-                    onClick={this.props.onToggleCollapsed}
+                    onClick={e => {
+                        e.stopPropagation();
+                        this.props.onToggleCollapsed();
+                    }}
                 >
                     <span className={styles.collapseToggleIcon} />
                 </button>
@@ -198,6 +201,7 @@ class CameraInfo extends React.Component {
                 <Box className={classNames(styles.cameraInfo, {
                     [styles.cameraInfoCollapsed]: isCollapsed
                 })}
+                    onClick={isCollapsed ? this.props.onToggleCollapsed : null}
                 >
                     {isCollapsed ? null : (
                         <div className={classNames(styles.row)}>
@@ -216,6 +220,7 @@ class CameraInfo extends React.Component {
             <Box className={classNames(styles.cameraInfo, {
                 [styles.cameraInfoCollapsed]: isCollapsed
             })}
+                onClick={isCollapsed ? this.props.onToggleCollapsed : null}
             >
                 {isCollapsed ? null : (
                     <div className={classNames(styles.row, styles.rowPrimary)}>

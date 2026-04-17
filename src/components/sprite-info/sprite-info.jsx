@@ -180,7 +180,10 @@ class SpriteInfo extends React.Component {
                     })}
                     title={toggleLabel}
                     type="button"
-                    onClick={this.props.onToggleCollapsed}
+                    onClick={e => {
+                        e.stopPropagation();
+                        this.props.onToggleCollapsed();
+                    }}
                 >
                     <span className={styles.collapseToggleIcon} />
                 </button>
@@ -192,6 +195,7 @@ class SpriteInfo extends React.Component {
                 <Box className={classNames(styles.spriteInfo, {
                     [styles.spriteInfoCollapsed]: isCollapsed
                 })}
+                    onClick={isCollapsed ? this.props.onToggleCollapsed : null}
                 >
                     {isCollapsed ? null : (
                         <div>
@@ -215,6 +219,7 @@ class SpriteInfo extends React.Component {
             <Box className={classNames(styles.spriteInfo, {
                 [styles.spriteInfoCollapsed]: isCollapsed
             })}
+                onClick={isCollapsed ? this.props.onToggleCollapsed : null}
             >
                 {isCollapsed ? null : (
                     <div>
