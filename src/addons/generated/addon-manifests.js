@@ -67,7 +67,6 @@ import _rename_broadcasts from "../addons/rename-broadcasts/_manifest_entry.js";
 import _reorder_custom_inputs from "../addons/reorder-custom-inputs/_manifest_entry.js";
 import _script_snap from "../addons/script-snap/_manifest_entry.js";
 import _search_sprites from "../addons/search-sprites/_manifest_entry.js";
-import _sprite_properties from "../addons/sprite-properties/_manifest_entry.js";
 import _swap_local_global from "../addons/swap-local-global/_manifest_entry.js";
 import _transparent_orphans from "../addons/transparent-orphans/_manifest_entry.js";
 import _tw_disable_cloud_variables from "../addons/tw-disable-cloud-variables/_manifest_entry.js";
@@ -146,7 +145,6 @@ export default {
   "reorder-custom-inputs": _reorder_custom_inputs,
   "script-snap": _script_snap,
   "search-sprites": _search_sprites,
-  "sprite-properties": _sprite_properties,
   "swap-local-global": _swap_local_global,
   "transparent-orphans": _transparent_orphans,
   "tw-disable-cloud-variables": _tw_disable_cloud_variables,

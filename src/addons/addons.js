@@ -70,7 +70,6 @@ const addons = [
     'reorder-custom-inputs',
     'script-snap',
     'search-sprites',
-    'sprite-properties',
     'swap-local-global',
     'transparent-orphans',
     'tw-disable-cloud-variables',

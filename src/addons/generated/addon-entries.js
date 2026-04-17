@@ -69,7 +69,6 @@ export default {
   "reorder-custom-inputs": () => import(/* webpackChunkName: "addon-default-entry" */ "../addons/reorder-custom-inputs/_runtime_entry.js"),
   "script-snap": () => import(/* webpackChunkName: "addon-entry-script-snap" */ "../addons/script-snap/_runtime_entry.js"),
   "search-sprites": () => import(/* webpackChunkName: "addon-entry-search-sprites" */ "../addons/search-sprites/_runtime_entry.js"),
-  "sprite-properties": () => import(/* webpackChunkName: "addon-entry-sprite-properties" */ "../addons/sprite-properties/_runtime_entry.js"),
   "swap-local-global": () => import(/* webpackChunkName: "addon-entry-swap-local-global" */ "../addons/swap-local-global/_runtime_entry.js"),
   "transparent-orphans": () => import(/* webpackChunkName: "addon-entry-transparent-orphans" */ "../addons/transparent-orphans/_runtime_entry.js"),
   "tw-disable-cloud-variables": () => import(/* webpackChunkName: "addon-entry-tw-disable-cloud-variables" */ "../addons/tw-disable-cloud-variables/_runtime_entry.js"),

@@ -55,6 +55,10 @@
     overflow-y: auto;
 }
 
+.sprite-properties-collapsed .scroll-wrapper {
+    height: calc(100% - 1.2rem);
+}
+
 .scroll-wrapper-dragging {
     background-color: $drop-highlight;
 }

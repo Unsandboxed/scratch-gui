@@ -34,6 +34,16 @@ const messages = defineMessages({
         id: 'gui.CameraInfo.centerOnTargetAction',
         defaultMessage: 'Move to current sprite',
         description: 'Tooltip for center-on-target button'
+    },
+    collapseCameraAction: {
+        id: 'gui.CameraInfo.collapseCameraAction',
+        defaultMessage: 'Hide',
+        description: 'Tooltip and label for camera info collapse button'
+    },
+    expandCameraAction: {
+        id: 'gui.CameraInfo.expandCameraAction',
+        defaultMessage: 'Show',
+        description: 'Tooltip and label for camera info expand button'
     }
 });
 
@@ -41,6 +51,7 @@ class CameraInfo extends React.Component {
     shouldComponentUpdate (nextProps) {
         return (
             this.props.stageSize !== nextProps.stageSize ||
+            this.props.isCollapsed !== nextProps.isCollapsed ||
             Math.round(this.props.x) !== Math.round(nextProps.x) ||
             Math.round(this.props.y) !== Math.round(nextProps.y) ||
             Math.round(this.props.zoom) !== Math.round(nextProps.zoom) ||
@@ -49,6 +60,7 @@ class CameraInfo extends React.Component {
     }
     render () {
         const {
+            isCollapsed,
             stageSize
         } = this.props;
 
@@ -69,6 +81,10 @@ class CameraInfo extends React.Component {
         );
 
         const labelAbove = isWideLocale(this.props.intl.locale);
+        const toggleLabel = this.props.intl.formatMessage(isCollapsed ?
+            messages.expandCameraAction :
+            messages.collapseCameraAction
+        );
 
         const xPosition = (
             <div className={styles.group}>
@@ -158,51 +174,84 @@ class CameraInfo extends React.Component {
             </div>
         );
 
+        const collapseControl = (
+            <div className={styles.collapseControlRow}>
+                {isCollapsed ? (
+                    <div className={styles.collapsedLabel}>{camera}</div>
+                ) : <div />}
+                <button
+                    aria-expanded={!isCollapsed}
+                    className={classNames(styles.collapseToggle, {
+                        [styles.collapseToggleCollapsed]: isCollapsed
+                    })}
+                    title={toggleLabel}
+                    type="button"
+                    onClick={this.props.onToggleCollapsed}
+                >
+                    <span className={styles.collapseToggleIcon} />
+                </button>
+            </div>
+        );
+
         if (stageSize === STAGE_DISPLAY_SIZES.small) {
             return (
-                <Box className={styles.cameraInfo}>
-                    <div className={classNames(styles.row)}>
-                        {xPosition}
-                        {yPosition}
-                        {zoom}
-                        {rotation}
-                    </div>
+                <Box className={classNames(styles.cameraInfo, {
+                    [styles.cameraInfoCollapsed]: isCollapsed
+                })}
+                >
+                    {isCollapsed ? null : (
+                        <div className={classNames(styles.row)}>
+                            {xPosition}
+                            {yPosition}
+                            {zoom}
+                            {rotation}
+                        </div>
+                    )}
+                    {collapseControl}
                 </Box>
             );
         }
 
         return (
-            <Box className={styles.cameraInfo}>
-                <div className={classNames(styles.row, styles.rowPrimary)}>
-                    <div className={styles.group}>
-                        <Label
-                            above={labelAbove}
-                            text={camera}
-                        >
-                        </Label>
+            <Box className={classNames(styles.cameraInfo, {
+                [styles.cameraInfoCollapsed]: isCollapsed
+            })}
+            >
+                {isCollapsed ? null : (
+                    <div className={classNames(styles.row, styles.rowPrimary)}>
+                        <div className={styles.group}>
+                            <Label
+                                above={labelAbove}
+                                text={camera}
+                            >
+                            </Label>
+                        </div>
+                        {xPosition}
+                        {yPosition}
                     </div>
-                    {xPosition}
-                    {yPosition}
-                </div>
-                <div className={classNames(styles.row, styles.rowSecondary)}>
-                    <ToggleButtons
-                        buttons={[
-                            {
-                                handleClick: this.props.onClickCenter,
-                                icon: centerIcon,
-                                title: this.props.intl.formatMessage(messages.centerCameraAction)
-                            },
-                            {
-                                handleClick: this.props.onClickCenterOnTarget,
-                                icon: centerOnTargetIcon,
-                                title: this.props.intl.formatMessage(messages.centerOnTargetAction)
-                            }
-                        ]}
-                        disabled={this.props.disabled}
-                    />
-                    {zoom}
-                    {rotation}
-                </div>
+                )}
+                {isCollapsed ? null : (
+                    <div className={classNames(styles.row, styles.rowSecondary)}>
+                        <ToggleButtons
+                            buttons={[
+                                {
+                                    handleClick: this.props.onClickCenter,
+                                    icon: centerIcon,
+                                    title: this.props.intl.formatMessage(messages.centerCameraAction)
+                                },
+                                {
+                                    handleClick: this.props.onClickCenterOnTarget,
+                                    icon: centerOnTargetIcon,
+                                    title: this.props.intl.formatMessage(messages.centerOnTargetAction)
+                                }
+                            ]}
+                            disabled={this.props.disabled}
+                        />
+                        {zoom}
+                        {rotation}
+                    </div>
+                )}
+                {collapseControl}
             </Box>
         );
     }
@@ -221,7 +270,9 @@ CameraInfo.propTypes = {
     x: PropTypes.number,
     y: PropTypes.number,
     zoom: PropTypes.number,
-    direction: PropTypes.number
+    direction: PropTypes.number,
+    isCollapsed: PropTypes.bool,
+    onToggleCollapsed: PropTypes.func,
 };
 
 export default injectIntl(CameraInfo);

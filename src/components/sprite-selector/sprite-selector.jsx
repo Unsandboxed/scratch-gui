@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {defineMessages, injectIntl, intlShape} from 'react-intl';
@@ -79,13 +80,29 @@ const SpriteSelectorComponent = function (props) {
     } = props;
     let selectedSprite = sprites[selectedId];
     let spriteInfoDisabled = false;
+
+    const [spritePropertiesCollapsed, setSpritePropertiesCollapsed] = React.useState(true);
+
+    const handleToggleSpriteProperties = React.useCallback(() => {
+        setSpritePropertiesCollapsed(prevState => !prevState);
+    }, []);
+
+    const handleSelectSprite = React.useCallback((id, clickCount = 1) => {
+        onSelectSprite(id);
+        if (clickCount >= 2) {
+            setSpritePropertiesCollapsed(prevState => !prevState);
+        }
+    }, [onSelectSprite]);
+
     if (typeof selectedSprite === 'undefined') {
         selectedSprite = {};
         spriteInfoDisabled = true;
     }
     return (
         <Box
-            className={styles.spriteSelector}
+            className={classNames(styles.spriteSelector, {
+                [styles.spritePropertiesCollapsed]: spritePropertiesCollapsed
+            })}
             {...componentProps}
         >
             <CameraInfo
@@ -104,6 +121,7 @@ const SpriteSelectorComponent = function (props) {
             <SpriteInfo
                 direction={selectedSprite.direction}
                 disabled={spriteInfoDisabled}
+                isCollapsed={spritePropertiesCollapsed}
                 name={selectedSprite.name}
                 rotationStyle={selectedSprite.rotationStyle}
                 size={selectedSprite.size}
@@ -118,6 +136,7 @@ const SpriteSelectorComponent = function (props) {
                 onChangeVisibility={onChangeSpriteVisibility}
                 onChangeX={onChangeSpriteX}
                 onChangeY={onChangeSpriteY}
+                onToggleCollapsed={handleToggleSpriteProperties}
             />
 
             <SpriteList
@@ -126,11 +145,12 @@ const SpriteSelectorComponent = function (props) {
                 items={Object.keys(sprites).map(id => sprites[id])}
                 raised={raised}
                 selectedId={selectedId}
+                spritePropertiesCollapsed={spritePropertiesCollapsed}
                 onDeleteSprite={onDeleteSprite}
                 onDrop={onDrop}
                 onDuplicateSprite={onDuplicateSprite}
                 onExportSprite={onExportSprite}
-                onSelectSprite={onSelectSprite}
+                onSelectSprite={handleSelectSprite}
             />
             <ActionMenu
                 className={styles.addButton}

@@ -87,7 +87,7 @@ class SpriteSelectorItem extends React.PureComponent {
     handleClick (e) {
         e.preventDefault();
         if (!this.noClick) {
-            this.props.onClick(this.props.id);
+            this.props.onClick(this.props.id, e.detail);
         }
     }
     handleDelete (e) {

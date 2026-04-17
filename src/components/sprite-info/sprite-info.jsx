@@ -38,6 +38,21 @@ const messages = defineMessages({
         id: 'gui.SpriteInfo.hideSpriteAction',
         defaultMessage: 'Hide sprite',
         description: 'Tooltip for hide sprite button'
+    },
+    collapseSpritePropertiesAction: {
+        id: 'gui.SpriteInfo.collapseSpritePropertiesAction',
+        defaultMessage: 'Hide properties',
+        description: 'Tooltip for collapsing the sprite properties panel'
+    },
+    expandSpritePropertiesAction: {
+        id: 'gui.SpriteInfo.expandSpritePropertiesAction',
+        defaultMessage: 'Show properties',
+        description: 'Tooltip for expanding the sprite properties panel'
+    },
+    spriteLabel: {
+        id: 'gui.SpriteInfo.spriteLabel',
+        defaultMessage: 'Sprite',
+        description: 'Fallback label when sprite name is unavailable in collapsed panel'
     }
 });
 
@@ -46,6 +61,7 @@ class SpriteInfo extends React.Component {
         return (
             this.props.rotationStyle !== nextProps.rotationStyle ||
             this.props.disabled !== nextProps.disabled ||
+            this.props.isCollapsed !== nextProps.isCollapsed ||
             this.props.name !== nextProps.name ||
             this.props.stageSize !== nextProps.stageSize ||
             this.props.visible !== nextProps.visible ||
@@ -58,6 +74,7 @@ class SpriteInfo extends React.Component {
     }
     render () {
         const {
+            isCollapsed,
             stageSize
         } = this.props;
 
@@ -70,6 +87,13 @@ class SpriteInfo extends React.Component {
         );
 
         const labelAbove = isWideLocale(this.props.intl.locale);
+        const toggleLabel = this.props.intl.formatMessage(isCollapsed ?
+            messages.expandSpritePropertiesAction :
+            messages.collapseSpritePropertiesAction
+        );
+        const collapsedSpriteLabel = this.props.disabled ?
+            this.props.intl.formatMessage(messages.spriteLabel) :
+            this.props.name;
 
         const spriteNameInput = (
             <BufferedInput
@@ -144,80 +168,115 @@ class SpriteInfo extends React.Component {
             </div>
         );
 
+        const collapseControl = (
+            <div className={styles.collapseControlRow}>
+                {isCollapsed ? (
+                    <div className={styles.collapsedLabel}>{collapsedSpriteLabel}</div>
+                ) : <div />}
+                <button
+                    aria-expanded={!isCollapsed}
+                    className={classNames(styles.collapseToggle, {
+                        [styles.collapseToggleCollapsed]: isCollapsed
+                    })}
+                    title={toggleLabel}
+                    type="button"
+                    onClick={this.props.onToggleCollapsed}
+                >
+                    <span className={styles.collapseToggleIcon} />
+                </button>
+            </div>
+        );
+
         if (stageSize === STAGE_DISPLAY_SIZES.small) {
             return (
-                <Box className={styles.spriteInfo}>
-                    <div className={classNames(styles.row, styles.rowPrimary)}>
-                        <div className={styles.group}>
-                            {spriteNameInput}
+                <Box className={classNames(styles.spriteInfo, {
+                    [styles.spriteInfoCollapsed]: isCollapsed
+                })}
+                >
+                    {isCollapsed ? null : (
+                        <div>
+                            <div className={classNames(styles.row, styles.rowPrimary)}>
+                                <div className={styles.group}>
+                                    {spriteNameInput}
+                                </div>
+                            </div>
+                            <div className={classNames(styles.row, styles.rowSecondary)}>
+                                {xPosition}
+                                {yPosition}
+                            </div>
                         </div>
-                    </div>
-                    <div className={classNames(styles.row, styles.rowSecondary)}>
-                        {xPosition}
-                        {yPosition}
-                    </div>
+                    )}
+                    {collapseControl}
                 </Box>
             );
         }
 
         return (
-            <Box className={styles.spriteInfo}>
-                <div className={classNames(styles.row, styles.rowPrimary)}>
-                    <div className={styles.group}>
-                        {spriteNameInput}
+            <Box className={classNames(styles.spriteInfo, {
+                [styles.spriteInfoCollapsed]: isCollapsed
+            })}
+            >
+                {isCollapsed ? null : (
+                    <div>
+                        <div className={classNames(styles.row, styles.rowPrimary)}>
+                            <div className={styles.group}>
+                                {spriteNameInput}
+                            </div>
+                            {xPosition}
+                            {yPosition}
+                        </div>
+                        <div className={classNames(styles.row, styles.rowSecondary)}>
+                            <div className={labelAbove ? styles.column : styles.group}>
+                                <ToggleButtons
+                                    buttons={[
+                                        {
+                                            handleClick: this.props.onClickVisible,
+                                            icon: showIcon,
+                                            isSelected: this.props.visible && !this.props.disabled,
+                                            title: this.props.intl.formatMessage(messages.showSpriteAction)
+                                        },
+                                        {
+                                            handleClick: this.props.onClickNotVisible,
+                                            icon: hideIcon,
+                                            isSelected: !this.props.visible && !this.props.disabled,
+                                            title: this.props.intl.formatMessage(messages.hideSpriteAction)
+                                        }
+                                    ]}
+                                    disabled={this.props.disabled}
+                                />
+                            </div>
+                            <div className={classNames(styles.group, styles.largerInput)}>
+                                <Label
+                                    secondary
+                                    above={labelAbove}
+                                    text={sizeLabel}
+                                >
+                                    <BufferedInput
+                                        small
+                                        disabled={this.props.disabled}
+                                        label={sizeLabel}
+                                        tabIndex="0"
+                                        type="number"
+                                        value={this.props.disabled ? '' : Math.round(this.props.size)}
+                                        onSubmit={this.props.onChangeSize}
+                                    />
+                                </Label>
+                            </div>
+                            <div className={classNames(styles.group, styles.largerInput)}>
+                                <DirectionPicker
+                                    direction={Math.round(this.props.direction)}
+                                    disabled={this.props.disabled}
+                                    labelAbove={labelAbove}
+                                    rotationStyle={this.props.rotationStyle}
+                                    onChangeDirection={this.props.onChangeDirection}
+                                    onChangeRotationStyle={this.props.onChangeRotationStyle}
+                                    removeRotationStyle={false}
+                                />
+                            </div>
+                        </div>
                     </div>
-                    {xPosition}
-                    {yPosition}
-                </div>
-                <div className={classNames(styles.row, styles.rowSecondary)}>
-                    <div className={labelAbove ? styles.column : styles.group}>
-                        <ToggleButtons
-                            buttons={[
-                                {
-                                    handleClick: this.props.onClickVisible,
-                                    icon: showIcon,
-                                    isSelected: this.props.visible && !this.props.disabled,
-                                    title: this.props.intl.formatMessage(messages.showSpriteAction)
-                                },
-                                {
-                                    handleClick: this.props.onClickNotVisible,
-                                    icon: hideIcon,
-                                    isSelected: !this.props.visible && !this.props.disabled,
-                                    title: this.props.intl.formatMessage(messages.hideSpriteAction)
-                                }
-                            ]}
-                            disabled={this.props.disabled}
-                        />
-                    </div>
-                    <div className={classNames(styles.group, styles.largerInput)}>
-                        <Label
-                            secondary
-                            above={labelAbove}
-                            text={sizeLabel}
-                        >
-                            <BufferedInput
-                                small
-                                disabled={this.props.disabled}
-                                label={sizeLabel}
-                                tabIndex="0"
-                                type="number"
-                                value={this.props.disabled ? '' : Math.round(this.props.size)}
-                                onSubmit={this.props.onChangeSize}
-                            />
-                        </Label>
-                    </div>
-                    <div className={classNames(styles.group, styles.largerInput)}>
-                        <DirectionPicker
-                            direction={Math.round(this.props.direction)}
-                            disabled={this.props.disabled}
-                            labelAbove={labelAbove}
-                            rotationStyle={this.props.rotationStyle}
-                            onChangeDirection={this.props.onChangeDirection}
-                            onChangeRotationStyle={this.props.onChangeRotationStyle}
-                            removeRotationStyle={false}
-                        />
-                    </div>
-                </div>
+                )}
+                {collapseControl}
             </Box>
         );
     }
@@ -239,6 +298,7 @@ SpriteInfo.propTypes = {
     onChangeY: PropTypes.func,
     onClickNotVisible: PropTypes.func,
     onClickVisible: PropTypes.func,
+    onToggleCollapsed: PropTypes.func,
     rotationStyle: PropTypes.string,
     removeRotationStyle: PropTypes.bool,
     size: PropTypes.oneOfType([
@@ -251,6 +311,7 @@ SpriteInfo.propTypes = {
         PropTypes.string,
         PropTypes.number
     ]),
+    isCollapsed: PropTypes.bool,
     y: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number

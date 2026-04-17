@@ -3,13 +3,17 @@
 @import "../../css/filters.css";
 
 .camera-info {
-    padding: 0.75rem;
+    padding: 0.75rem 0.75rem 0.15rem;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     background-color: $ui-white;
     color: $text-primary;
     border-top-left-radius: $space;
     border-top-right-radius: $space;
     border-bottom: 1px solid $ui-black-transparent;
+}
+
+.camera-info-collapsed {
+    padding: 0.1rem 0.75rem 0.15rem;
 }
 
 .row {
@@ -29,6 +33,58 @@
     display: inline-flex;
     flex-direction: row; /* makes columns, for each label/form group */
     align-items: center;
+}
+
+.collapse-control-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.15rem;
+}
+
+.collapsed-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: $text-primary;
+    opacity: 0.9;
+}
+
+.camera-info-collapsed .collapse-control-row {
+    margin-top: 0;
+}
+
+.collapse-toggle {
+    width: 1.5rem;
+    height: 1rem;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.collapse-toggle:hover {
+    background: $ui-transparent;
+}
+
+.collapse-toggle:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 1px $looks-secondary;
+}
+
+.collapse-toggle-icon {
+    width: 0;
+    height: 0;
+    border-left: 0.4rem solid transparent;
+    border-right: 0.4rem solid transparent;
+    border-bottom: 0.4rem solid $ui-black-transparent;
+}
+
+.collapse-toggle-collapsed .collapse-toggle-icon {
+    border-bottom: none;
+    border-top: 0.4rem solid $ui-black-transparent;
 }
 
 .column {

@@ -29,6 +29,7 @@ const SpriteList = function (props) {
         onRemoveSortable,
         ordering,
         raised,
+        spritePropertiesCollapsed,
         selectedId,
         items
     } = props;
@@ -132,6 +133,7 @@ SpriteList.propTypes = {
     onSelectSprite: PropTypes.func,
     ordering: PropTypes.arrayOf(PropTypes.number),
     raised: PropTypes.bool,
+    spritePropertiesCollapsed: PropTypes.bool,
     selectedId: PropTypes.string
 };
 

@@ -7,11 +7,28 @@ import CameraInfoComponent from '../components/camera-info/camera-info.jsx';
 class CameraInfo extends React.Component {
     constructor (props) {
         super(props);
+
+        bindAll(this, [
+            'handleToggleCollapsed'
+        ]);
+
+        this.state = {
+            isCollapsed: false
+        };
     }
+
+    handleToggleCollapsed () {
+        this.setState(prevState => ({
+            isCollapsed: !prevState.isCollapsed
+        }));
+    }
+
     render () {
         return (
             <CameraInfoComponent
                 {...this.props}
+                isCollapsed={this.state.isCollapsed}
+                onToggleCollapsed={this.handleToggleCollapsed}
             />
         );
     }
@@ -23,6 +40,7 @@ CameraInfo.propTypes = {
     onChangeY: PropTypes.func,
     onChangeZoom: PropTypes.func,
     onChangeDirection: PropTypes.func,
+    onToggleCollapsed: PropTypes.func,
     x: PropTypes.number,
     y: PropTypes.number,
     zoom: PropTypes.number,
