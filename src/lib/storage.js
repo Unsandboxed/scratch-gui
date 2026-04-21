@@ -1,6 +1,4 @@
-import VirtualMachine from 'scratch-vm';
-
-const ScratchStorage = VirtualMachine.$.modules.tw_scratchstorage();
+import ScratchStorage from '@turbowarp/scratch-storage';
 
 import defaultProject from './default-project';
 
