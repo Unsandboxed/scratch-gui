@@ -99,6 +99,7 @@ class Blocks extends React.Component {
         bindAll(this, [
             'attachVM',
             'detachVM',
+            'clearStagePositionPicker',
             'getToolboxXML',
             'handleCategorySelected',
             'handleConnectionModalStart',
@@ -120,6 +121,7 @@ class Blocks extends React.Component {
             'onVisualReport',
             'onWorkspaceUpdate',
             'onWorkspaceMetricsChange',
+            'openStagePositionPicker',
             'setBlocks',
             'setLocale',
             'handleEnableProcedureReturns',
@@ -135,12 +137,16 @@ class Blocks extends React.Component {
         };
         this.onTargetsUpdate = debounce(this.onTargetsUpdate, 100);
         this.toolboxUpdateQueue = [];
+        this.stagePositionPickerCleanup = null;
     }
     componentDidMount () {
         this.ScratchBlocks = VMScratchBlocks(this.props.vm, this.props.useCatBlocks);
         this.ScratchBlocks.prompt = this.handlePromptStart;
         this.ScratchBlocks.statusButtonCallback = this.handleConnectionModalStart;
         this.ScratchBlocks.recordSoundCallback = this.handleOpenSoundRecorder;
+        if (this.ScratchBlocks.FieldPosition && this.ScratchBlocks.FieldPosition.setPickerProvider) {
+            this.ScratchBlocks.FieldPosition.setPickerProvider(this.openStagePositionPicker);
+        }
 
         this.ScratchBlocks.FieldColourSlider.activateEyedropper_ = this.props.onActivateColorPicker;
         this.ScratchBlocks.Procedures.externalProcedureDefCallback = this.props.onActivateCustomProcedures;
@@ -287,6 +293,7 @@ class Blocks extends React.Component {
         }
     }
     componentWillUnmount () {
+        this.clearStagePositionPicker();
         this.detachVM();
         this.unmounted = true;
         this.workspace.dispose();
@@ -296,6 +303,89 @@ class Blocks extends React.Component {
         this.props.vm.clearFlyoutBlocks();
 
         AddonHooks.blocklyWorkspace = null;
+    }
+    clearStagePositionPicker () {
+        if (this.stagePositionPickerCleanup) {
+            this.stagePositionPickerCleanup();
+            this.stagePositionPickerCleanup = null;
+        }
+    }
+    openStagePositionPicker (request) {
+        this.clearStagePositionPicker();
+
+        const renderer = this.props.vm && this.props.vm.renderer;
+        const canvas = renderer && renderer.canvas;
+        if (!renderer || !canvas) {
+            if (request && request.onCancel) request.onCancel();
+            return;
+        }
+
+        const doc = canvas.ownerDocument || document;
+        const previousCursor = canvas.style.cursor;
+        canvas.style.cursor = 'crosshair';
+
+        const hint = doc.createElement('div');
+        hint.textContent = 'Click stage to pick position (Esc to cancel)';
+        hint.style.position = 'fixed';
+        hint.style.left = '50%';
+        hint.style.bottom = '24px';
+        hint.style.transform = 'translateX(-50%)';
+        hint.style.padding = '8px 12px';
+        hint.style.borderRadius = '999px';
+        hint.style.background = 'rgba(0, 0, 0, 0.78)';
+        hint.style.color = '#fff';
+        hint.style.font = '500 12px/1.2 sans-serif';
+        hint.style.zIndex = '100000';
+        hint.style.pointerEvents = 'none';
+        (doc.body || document.body).appendChild(hint);
+
+        let done = false;
+        const finish = () => {
+            if (done) return;
+            done = true;
+            canvas.style.cursor = previousCursor;
+            if (hint.parentNode) hint.parentNode.removeChild(hint);
+            canvas.removeEventListener('mousedown', onPick, true);
+            canvas.removeEventListener('touchstart', onPick, true);
+            doc.removeEventListener('keydown', onKeyDown, true);
+            this.stagePositionPickerCleanup = null;
+        };
+
+        const getClientPoint = event => {
+            if (event.touches && event.touches.length) {
+                return {x: event.touches[0].clientX, y: event.touches[0].clientY};
+            }
+            return {x: event.clientX, y: event.clientY};
+        };
+
+        const onPick = event => {
+            event.preventDefault();
+            event.stopPropagation();
+            if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+
+            const point = getClientPoint(event);
+            const rect = canvas.getBoundingClientRect();
+            const localX = point.x - rect.left;
+            const localY = point.y - rect.top;
+            const scratchPoint = renderer.clientSpaceToScratchPoint(localX, localY);
+            finish();
+            if (request && request.onSelect) {
+                request.onSelect(Math.round(scratchPoint[0]), Math.round(scratchPoint[1]));
+            }
+        };
+
+        const onKeyDown = event => {
+            if (event.key === 'Escape') {
+                finish();
+                if (request && request.onCancel) request.onCancel();
+            }
+        };
+
+        canvas.addEventListener('mousedown', onPick, true);
+        canvas.addEventListener('touchstart', onPick, true);
+        doc.addEventListener('keydown', onKeyDown, true);
+
+        this.stagePositionPickerCleanup = finish;
     }
     requestToolboxUpdate () {
         clearTimeout(this.toolboxUpdateTimeout);
@@ -461,7 +551,8 @@ class Blocks extends React.Component {
     onVisualReport (data) {
         this.workspace.reportValueWithCallback(data.id, '', (div) => {
             div = div.querySelector('.valueReportBox') || div.querySelector('.blocklyDropDownContent > div');
-            div.appendChild(this.ScratchBlocks.Highlight.highlight(data.value, data.type));
+            const visualType = data.visualReportType || data.type;
+            div.appendChild(this.ScratchBlocks.Highlight.highlight(data.value, visualType));
             div.classList.add('valueReportBox');
             this.ScratchBlocks.DropDownDiv.showPositionedByBlock(this.workspace, this.workspace.getBlockById(this.ScratchBlocks.DropDownDiv._blockId));
         });
