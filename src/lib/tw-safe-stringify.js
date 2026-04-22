@@ -18,6 +18,32 @@ const circularReplacer = () => {
  */
 export const safeStringify = input => {
     if (typeof input === 'object' && input !== null) {
+        const prototype = Object.getPrototypeOf(input);
+        const isPlainObject = prototype === Object.prototype || prototype === null;
+
+        if (!isPlainObject) {
+            try {
+                const primitive = input[Symbol.toPrimitive];
+                if (typeof primitive === 'function') {
+                    const primitiveValue = primitive.call(input, 'string');
+                    if (typeof primitiveValue === 'string') {
+                        return primitiveValue;
+                    }
+                }
+            } catch (e) {
+                // Ignore and keep fallback behavior.
+            }
+
+            try {
+                const stringified = input.toString();
+                if (typeof stringified === 'string' && stringified !== '[object Object]') {
+                    return stringified;
+                }
+            } catch (e) {
+                // Ignore and keep fallback behavior.
+            }
+        }
+
         // TODO: this will not handle -0 inside the input properly, though that is very low priority.
         return JSON.stringify(input, circularReplacer());
     }

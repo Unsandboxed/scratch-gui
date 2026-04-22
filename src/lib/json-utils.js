@@ -1,22 +1,24 @@
+import {safeStringify} from './tw-safe-stringify.js';
+
 const sanitize = (value) => {
-    if (typeof value === "object") {
-        return JSON.stringify(value);
-    } else return value;
-}
+    if (value && typeof value === 'object') {
+        return safeStringify(value);
+    }
+    return value;
+};
 
 const sanitizeVariableValue = (value, mode) => {
-    if (mode === "list") {
+    if (mode === 'list') {
         const newValue = [];
         for (const item of value) {
             newValue.push(sanitize(item));
         }
         return newValue;
-    } else {
-        return sanitize(value);
     }
-}
+    return sanitize(value);
+};
 
-module.exports = {
-  sanitizeVariableValue,
-  sanitize,
-}
+export {
+    sanitizeVariableValue,
+    sanitize
+};
