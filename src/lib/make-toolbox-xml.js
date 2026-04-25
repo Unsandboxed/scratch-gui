@@ -137,7 +137,9 @@ const motion = function (isInitialSetup, isStage, targetId, colors) {
         ${blockSeparator}
         <block id="${targetId}_xposition" type="motion_xposition"/>
         <block id="${targetId}_yposition" type="motion_yposition"/>
-        <block id="${targetId}_direction" type="motion_direction"/>`}
+        <block id="${targetId}_direction" type="motion_direction"/>
+        ${blockSeparator}
+        <block type="motion_position"/>`}
         ${categorySeparator}
     </category>
     `;
@@ -492,6 +494,7 @@ const sensing = function (isInitialSetup, isStage, targetId, colors) {
         <block type="sensing_mousedown"/>
         <block type="sensing_mousex"/>
         <block type="sensing_mousey"/>
+        <block type="sensing_mouseposition"/>
         ${blockSeparator}
         <block id="timer" type="sensing_timer"/>
         <block type="sensing_resettimer"/>
@@ -570,6 +573,11 @@ const camera = function (isInitialSetup, isStage, targetId, colors) {
             </value>
         </block>
         ${blockSeparator}
+        <block type="camera_position"/>
+        ${blockSeparator}
+        <block type="camera_xposition"/>
+        <block type="camera_yposition"/>
+        ${blockSeparator}
         <block type="camera_turnright">
             <value name="DEGREES">
                 <shadow type="math_number">
@@ -607,8 +615,6 @@ const camera = function (isInitialSetup, isStage, targetId, colors) {
             </value>
         </block>
         ${blockSeparator}
-        <block type="camera_xposition"/>
-        <block type="camera_yposition"/>
         <block type="camera_zoom"/>
         <block type="camera_rotation"/>
         ${categorySeparator}
