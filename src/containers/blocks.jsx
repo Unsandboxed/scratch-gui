@@ -552,7 +552,7 @@ class Blocks extends React.Component {
         this.workspace.reportValueWithCallback(data.id, '', (div) => {
             div = div.querySelector('.valueReportBox') || div.querySelector('.blocklyDropDownContent > div');
             const visualType = data.visualReportType || data.type;
-            div.appendChild(this.ScratchBlocks.Highlight.highlight(data.value, visualType));
+            div.appendChild(this.ScratchBlocks.Highlight.highlightVisualReport(data.value, visualType, data));
             div.classList.add('valueReportBox');
             this.ScratchBlocks.DropDownDiv.showPositionedByBlock(this.workspace, this.workspace.getBlockById(this.ScratchBlocks.DropDownDiv._blockId));
         });

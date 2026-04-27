@@ -22,6 +22,18 @@ import hideIcon from '!../../lib/tw-recolor/build!./icon--hide.svg';
 import ToggleButtons from '../toggle-buttons/toggle-buttons.jsx';
 
 const BufferedInput = BufferedInputHOC(Input);
+const normalizeTags = tags => {
+    if (!Array.isArray(tags)) return [];
+    const seen = new Set();
+    const out = [];
+    for (const tag of tags) {
+        const normalized = String(tag || '').trim();
+        if (!normalized || seen.has(normalized)) continue;
+        seen.add(normalized);
+        out.push(normalized);
+    }
+    return out;
+};
 
 const messages = defineMessages({
     spritePlaceholder: {
@@ -53,16 +65,38 @@ const messages = defineMessages({
         id: 'gui.SpriteInfo.spriteLabel',
         defaultMessage: 'Sprite',
         description: 'Fallback label when sprite name is unavailable in collapsed panel'
+    },
+    tagsLabel: {
+        id: 'gui.SpriteInfo.tagsLabel',
+        defaultMessage: 'Sprite tags',
+        description: 'Sprite info tags label'
+    },
+    tagsPlaceholder: {
+        id: 'gui.SpriteInfo.tagsPlaceholder',
+        defaultMessage: 'Type a tag and press Enter',
+        description: 'Placeholder text for sprite tags'
     }
 });
 
 class SpriteInfo extends React.Component {
-    shouldComponentUpdate (nextProps) {
+    constructor (props) {
+        super(props);
+        this.state = {
+            tagDraft: ''
+        };
+        this.handleTagDraftChange = this.handleTagDraftChange.bind(this);
+        this.handleTagDraftKeyDown = this.handleTagDraftKeyDown.bind(this);
+        this.commitTagDraft = this.commitTagDraft.bind(this);
+        this.handleRemoveTag = this.handleRemoveTag.bind(this);
+    }
+    shouldComponentUpdate (nextProps, nextState) {
         return (
             this.props.rotationStyle !== nextProps.rotationStyle ||
             this.props.disabled !== nextProps.disabled ||
             this.props.isCollapsed !== nextProps.isCollapsed ||
             this.props.name !== nextProps.name ||
+            this.state.tagDraft !== nextState.tagDraft ||
+            String(this.props.tags || '') !== String(nextProps.tags || '') ||
             this.props.stageSize !== nextProps.stageSize ||
             this.props.visible !== nextProps.visible ||
             // Only update these if rounded value has changed
@@ -71,6 +105,29 @@ class SpriteInfo extends React.Component {
             Math.round(this.props.x) !== Math.round(nextProps.x) ||
             Math.round(this.props.y) !== Math.round(nextProps.y)
         );
+    }
+    handleTagDraftChange (e) {
+        this.setState({tagDraft: e.target.value});
+    }
+    commitTagDraft () {
+        if (this.props.disabled) return;
+        const draft = String(this.state.tagDraft || '').trim();
+        if (!draft) return;
+        const tags = normalizeTags(this.props.tags);
+        if (!tags.includes(draft)) {
+            this.props.onChangeTags([...tags, draft]);
+        }
+        this.setState({tagDraft: ''});
+    }
+    handleTagDraftKeyDown (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            this.commitTagDraft();
+        }
+    }
+    handleRemoveTag (tagToRemove) {
+        if (this.props.disabled) return;
+        this.props.onChangeTags(normalizeTags(this.props.tags).filter(tag => tag !== tagToRemove));
     }
     render () {
         const {
@@ -110,6 +167,47 @@ class SpriteInfo extends React.Component {
                 value={this.props.disabled ? '' : this.props.name}
                 onSubmit={this.props.onChangeName}
             />
+        );
+
+        const normalizedTags = normalizeTags(this.props.tags);
+        const tagsLabel = this.props.intl.formatMessage(messages.tagsLabel);
+        const tagsInput = (
+            <Label
+                secondary
+                above={labelAbove}
+                text={tagsLabel}
+            >
+                <Input
+                    className={styles.tagsEntry}
+                    disabled={this.props.disabled}
+                    placeholder={this.props.intl.formatMessage(messages.tagsPlaceholder)}
+                    tabIndex="0"
+                    type="text"
+                    value={this.state.tagDraft}
+                    onChange={this.handleTagDraftChange}
+                    onKeyDown={this.handleTagDraftKeyDown}
+                />
+            </Label>
+        );
+        const tagsChips = (
+            <div className={styles.tagsList}>
+                {normalizedTags.map(tag => (
+                    <span
+                        className={styles.tagChip}
+                        key={tag}
+                    >
+                        <span className={styles.tagChipText}>{tag}</span>
+                        <button
+                            className={styles.tagRemove}
+                            disabled={this.props.disabled}
+                            type="button"
+                            onClick={() => this.handleRemoveTag(tag)}
+                        >
+                            x
+                        </button>
+                    </span>
+                ))}
+            </div>
         );
 
         const xPosition = (
@@ -208,6 +306,16 @@ class SpriteInfo extends React.Component {
                                 {xPosition}
                                 {yPosition}
                             </div>
+                            <div className={classNames(styles.row, styles.rowSecondary)}>
+                                <div className={styles.group}>
+                                    {tagsInput}
+                                </div>
+                            </div>
+                            <div className={classNames(styles.row, styles.rowTagsChips)}>
+                                <div className={styles.group}>
+                                    {tagsChips}
+                                </div>
+                            </div>
                         </div>
                     )}
                     {collapseControl}
@@ -279,6 +387,16 @@ class SpriteInfo extends React.Component {
                                 />
                             </div>
                         </div>
+                        <div className={classNames(styles.row, styles.rowTertiary)}>
+                            <div className={classNames(styles.group, styles.tagsGroup)}>
+                                {tagsInput}
+                            </div>
+                        </div>
+                        <div className={classNames(styles.row, styles.rowTagsChips)}>
+                            <div className={classNames(styles.group, styles.tagsGroup)}>
+                                {tagsChips}
+                            </div>
+                        </div>
                     </div>
                 )}
                 {collapseControl}
@@ -311,11 +429,16 @@ SpriteInfo.propTypes = {
         PropTypes.number
     ]),
     stageSize: PropTypes.oneOf(Object.keys(STAGE_DISPLAY_SIZES)).isRequired,
+    tags: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.arrayOf(PropTypes.string)
+    ]),
     visible: PropTypes.bool,
     x: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number
     ]),
+    onChangeTags: PropTypes.func,
     isCollapsed: PropTypes.bool,
     y: PropTypes.oneOfType([
         PropTypes.string,

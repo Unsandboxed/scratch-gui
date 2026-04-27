@@ -37,6 +37,7 @@ class TargetPane extends React.Component {
             'handleChangeSpriteName',
             'handleChangeSpriteSize',
             'handleChangeSpriteVisibility',
+            'handleChangeSpriteTags',
             'handleChangeSpriteX',
             'handleChangeSpriteY',
             'handleChangeCameraX',
@@ -78,6 +79,36 @@ class TargetPane extends React.Component {
     }
     handleChangeSpriteVisibility (visible) {
         this.props.vm.postSpriteInfo({visible});
+    }
+    handleChangeSpriteTags (tagsText) {
+        const target = this.props.vm.runtime.getTargetById(this.props.editingTarget);
+        if (!target || target.isStage) return;
+
+        const parsedTags = Array.isArray(tagsText) ?
+            tagsText.map(tag => String(tag || '').trim()).filter(Boolean) :
+            String(tagsText || '')
+                .split(',')
+                .map(tag => tag.trim())
+                .filter(Boolean);
+        const uniqueTags = Array.from(new Set(parsedTags));
+
+        target.tags = uniqueTags;
+
+        if (typeof this.props.vm.runtime.requestTargetsUpdate === 'function') {
+            this.props.vm.runtime.requestTargetsUpdate(target);
+        }
+        if (typeof this.props.vm.emit === 'function') {
+            this.props.vm.emit('SPRITE_TAGS_CHANGED', {
+                targetId: target.id,
+                tags: uniqueTags
+            });
+        }
+        if (typeof this.props.vm.emitTargetsUpdate === 'function') {
+            this.props.vm.emitTargetsUpdate(false);
+        }
+        if (typeof this.props.vm.runtime.emitProjectChanged === 'function') {
+            this.props.vm.runtime.emitProjectChanged();
+        }
     }
     handleChangeSpriteX (x) {
         this.props.vm.postSpriteInfo({x});
@@ -267,6 +298,7 @@ class TargetPane extends React.Component {
                 onChangeSpriteRotationStyle={this.handleChangeSpriteRotationStyle}
                 onChangeSpriteSize={this.handleChangeSpriteSize}
                 onChangeSpriteVisibility={this.handleChangeSpriteVisibility}
+                onChangeSpriteTags={this.handleChangeSpriteTags}
                 onChangeSpriteX={this.handleChangeSpriteX}
                 onChangeSpriteY={this.handleChangeSpriteY}
                 onChangeCameraX={this.handleChangeCameraX}

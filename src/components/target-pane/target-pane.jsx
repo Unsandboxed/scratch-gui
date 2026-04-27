@@ -28,6 +28,7 @@ const TargetPane = ({
     onChangeSpriteRotationStyle,
     onChangeSpriteSize,
     onChangeSpriteVisibility,
+    onChangeSpriteTags,
     onChangeSpriteX,
     onChangeSpriteY,
     onChangeCameraX,
@@ -73,6 +74,7 @@ const TargetPane = ({
             onChangeSpriteRotationStyle={onChangeSpriteRotationStyle}
             onChangeSpriteSize={onChangeSpriteSize}
             onChangeSpriteVisibility={onChangeSpriteVisibility}
+            onChangeSpriteTags={onChangeSpriteTags}
             onChangeSpriteX={onChangeSpriteX}
             onChangeSpriteY={onChangeSpriteY}
             onChangeCameraX={onChangeCameraX}
@@ -133,6 +135,7 @@ const spriteShape = PropTypes.shape({
     id: PropTypes.string,
     name: PropTypes.string,
     order: PropTypes.number,
+    tags: PropTypes.arrayOf(PropTypes.string),
     size: PropTypes.number,
     visibility: PropTypes.bool,
     x: PropTypes.number,
@@ -154,6 +157,7 @@ TargetPane.propTypes = {
     onChangeSpriteRotationStyle: PropTypes.func,
     onChangeSpriteSize: PropTypes.func,
     onChangeSpriteVisibility: PropTypes.func,
+    onChangeSpriteTags: PropTypes.func,
     onChangeSpriteX: PropTypes.func,
     onChangeSpriteY: PropTypes.func,
     onChangeCameraX: PropTypes.func,

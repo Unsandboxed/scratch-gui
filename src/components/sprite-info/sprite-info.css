@@ -27,6 +27,21 @@
     margin-bottom: 0.5rem;
 }
 
+.row-secondary {
+    margin-bottom: 0.5rem;
+}
+
+.row-tertiary {
+    justify-content: flex-start;
+    margin-bottom: 0.5rem;
+}
+
+.row-tags-chips {
+    justify-content: flex-start;
+    margin-top: 0.1rem;
+    margin-bottom: 0.5rem;
+}
+
 .collapse-control-row {
     display: flex;
     justify-content: space-between;
@@ -136,4 +151,60 @@
 
 .sprite-input {
     width: 8rem;
+}
+
+.tags-input {
+    width: 100%;
+    min-width: 8rem;
+}
+
+.tags-group {
+    width: 100%;
+    max-width: 16rem;
+}
+
+.tags-entry {
+    width: 100%;
+    min-width: 10rem;
+}
+
+.tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+
+.tag-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    border: 1px solid $ui-black-transparent;
+    border-radius: 1rem;
+    background: $input-background;
+    color: $text-primary;
+    font-size: 0.625rem;
+    font-weight: bold;
+    padding: 0.18rem 0.45rem;
+}
+
+.tag-chip-text {
+    max-width: 8rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tag-remove {
+    border: none;
+    background: transparent;
+    color: $text-primary;
+    cursor: pointer;
+    font-size: 0.7rem;
+    line-height: 1;
+    padding: 0;
+}
+
+.tag-remove:disabled {
+    cursor: default;
+    opacity: 0.5;
 }

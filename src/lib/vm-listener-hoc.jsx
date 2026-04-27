@@ -6,7 +6,7 @@ import VM from 'scratch-vm';
 import {connect} from 'react-redux';
 
 import {updateCamera} from '../reducers/camera';
-import {updateTargets} from '../reducers/targets';
+import {updateTargets, updateTargetTags} from '../reducers/targets';
 import {updateBlockDrag} from '../reducers/block-drag';
 import {updateMonitors} from '../reducers/monitors';
 import {setProjectChanged, setProjectUnchanged} from '../reducers/project-changed';
@@ -46,6 +46,7 @@ const vmListenerHOC = function (WrappedComponent) {
                 'handleTargetsUpdate',
                 'handleCameraUpdate',
                 'handleCloudDataUpdate',
+                'handleSpriteTagsChanged',
                 'handleCompileError'
             ]);
             // We have to start listening to the vm here rather than in
@@ -63,6 +64,7 @@ const vmListenerHOC = function (WrappedComponent) {
             this.props.vm.on('PROJECT_RUN_START', this.props.onProjectRunStart);
             this.props.vm.on('PROJECT_RUN_STOP', this.props.onProjectRunStop);
             this.props.vm.on('PROJECT_CHANGED', this.handleProjectChanged);
+            this.props.vm.on('SPRITE_TAGS_CHANGED', this.handleSpriteTagsChanged);
             this.props.vm.on('RUNTIME_STARTED', this.props.onRuntimeStarted);
             this.props.vm.on('RUNTIME_STOPPED', this.props.onRuntimeStopped);
             this.props.vm.on('PROJECT_START', this.props.onGreenFlag);
@@ -113,6 +115,7 @@ const vmListenerHOC = function (WrappedComponent) {
             this.props.vm.off('PROJECT_RUN_START', this.props.onProjectRunStart);
             this.props.vm.off('PROJECT_RUN_STOP', this.props.onProjectRunStop);
             this.props.vm.off('PROJECT_CHANGED', this.handleProjectChanged);
+            this.props.vm.off('SPRITE_TAGS_CHANGED', this.handleSpriteTagsChanged);
             this.props.vm.off('RUNTIME_STARTED', this.props.onRuntimeStarted);
             this.props.vm.off('RUNTIME_STOPPED', this.props.onRuntimeStopped);
             this.props.vm.off('PROJECT_START', this.props.onGreenFlag);
@@ -157,10 +160,15 @@ const vmListenerHOC = function (WrappedComponent) {
         handleCameraUpdate (cameraState) {
             this.props.onCameraUpdate(cameraState);
         }
+        handleSpriteTagsChanged (payload) {
+              if (!payload || !payload.targetId) return;
+              const tags = Array.isArray(payload.tags) ? payload.tags : [];
+              this.props.onSpriteTagsChanged(payload.targetId, tags);
+              // Force a full targets rebuild so toJSON() picks up the new tags
+              this.props.vm.emitTargetsUpdate(false);
+        }
         handleTargetsUpdate (data) {
-            if (this.props.shouldUpdateTargets) {
-                this.props.onTargetsUpdate(data);
-            }
+            this.props.onTargetsUpdate(data);
         }
         handleKeyDown (e) {
             // Don't capture keys intended for Blockly inputs.
@@ -255,6 +263,7 @@ const vmListenerHOC = function (WrappedComponent) {
                 onStageSizeChanged,
                 onCompileError,
                 onClearCompileErrors,
+                onSpriteTagsChanged,
                 onShowExtensionAlert,
                 /* eslint-enable no-unused-vars */
                 ...props
@@ -328,6 +337,9 @@ const vmListenerHOC = function (WrappedComponent) {
     const mapDispatchToProps = dispatch => ({
         onTargetsUpdate: data => {
             dispatch(updateTargets(data.targetList, data.editingTarget));
+        },
+        onSpriteTagsChanged: (targetId, tags) => {
+            dispatch(updateTargetTags(targetId, tags));
         },
         onCameraUpdate: camera => {
             dispatch(updateCamera(camera));
