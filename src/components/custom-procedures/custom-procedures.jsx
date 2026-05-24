@@ -153,11 +153,6 @@ const CustomProcedures = props => (
                         />
                     </div>
                 </div>
-                <div style={{visibility: (new URLSearchParams(global.location.search)).has('miyoprocdbg1') ? 'visible' : 'hidden'}}>
-                  <hr />
-                  <button onClick={props.onAddArray}>add array</button>
-                  <button onClick={props.onAddObject}>add object</button>
-                </div>
             </div>
             <div className={styles.optionTitle}>
                 <FormattedMessage
@@ -286,8 +281,6 @@ CustomProcedures.propTypes = {
     onAddLabel: PropTypes.func.isRequired,
     onAddText: PropTypes.func.isRequired,
     onAddNumber: PropTypes.func.isRequired,
-    onAddArray: PropTypes.func.isRequired,
-    onAddObject: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     onOk: PropTypes.func.isRequired,
     onToggleWarp: PropTypes.func.isRequired,
