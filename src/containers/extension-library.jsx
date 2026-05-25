@@ -58,13 +58,13 @@ const shouldUseLocalDevServer = () => {
         return false;
     }
 
-    // Default to enabled to prioritize local development cards when the dev server is running.
-    // Users can explicitly disable by setting localStorage[LOCAL_DEV_SERVER_FLAG] = '0'.
+    // Default to disabled to avoid localhost probing delays during normal usage.
+    // Users can explicitly enable by setting localStorage[LOCAL_DEV_SERVER_FLAG] = '1'.
     try {
         const localFlag = window.localStorage.getItem(LOCAL_DEV_SERVER_FLAG);
-        return localFlag !== '0';
+        return localFlag === '1';
     } catch (error) {
-        return true;
+        return false;
     }
 };
 
