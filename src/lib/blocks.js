@@ -7,7 +7,7 @@ import LazyScratchBlocks from './tw-lazy-scratch-blocks';
  */
 export default function (vm) {
     const ScratchBlocks = LazyScratchBlocks.get();
-    const jsonForMenuBlock = function (name, menuOptionsFn, colors, start) {
+    const jsonForMenuBlock = function (name, menuOptionsFn, colors, start, outputShape = ScratchBlocks.OUTPUT_SHAPE_ROUND) {
         return {
             message0: '%1',
             args0: [
@@ -25,7 +25,7 @@ export default function (vm) {
             colourSecondary: colors.secondary,
             colourTertiary: colors.tertiary,
             colourQuaternary: colors.quaternary,
-            outputShape: ScratchBlocks.OUTPUT_SHAPE_ROUND
+            outputShape
         };
     };
 
@@ -271,7 +271,7 @@ export default function (vm) {
             [mouse, '_mouse_'],
             [camera, '_camera_'],
             [random, '_random_']
-        ]);
+        ], ScratchBlocks.OUTPUT_SHAPE_VECTOR);
         this.jsonInit(json);
     };
 
@@ -283,7 +283,7 @@ export default function (vm) {
             [random, '_random_'],
             [camera, '_camera_'],
             [mouse, '_mouse_']
-        ]);
+        ], ScratchBlocks.OUTPUT_SHAPE_VECTOR);
         this.jsonInit(json);
     };
 
@@ -295,7 +295,7 @@ export default function (vm) {
             [random, '_random_'],
             [camera, '_camera_'],
             [mouse, '_mouse_']
-        ]);
+        ], ScratchBlocks.OUTPUT_SHAPE_VECTOR);
         this.jsonInit(json);
     };
 
@@ -396,7 +396,7 @@ export default function (vm) {
         const json = jsonForMenuBlock('DISTANCETOMENU', spriteMenu, sensingColors, [
             [mouse, '_mouse_'],
             [camera, '_camera_']
-        ]);
+        ], ScratchBlocks.OUTPUT_SHAPE_VECTOR);
         this.jsonInit(json);
     };
 
