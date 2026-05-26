@@ -26,6 +26,7 @@ jobs:
       with:
         node-version: 22
         cache: npm
+    - run: npm update
     - run: npm ci
     - run: npm run build
       env:
