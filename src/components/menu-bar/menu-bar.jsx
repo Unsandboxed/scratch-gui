@@ -929,7 +929,7 @@ class MenuBar extends React.Component {
         return (
             <React.Fragment>
                 {menuBar}
-                {/* <TWNews /> */}
+                <TWNews />
             </React.Fragment>
         );
     }
