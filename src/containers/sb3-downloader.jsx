@@ -66,10 +66,17 @@ class SB3Downloader extends React.Component {
         super(props);
         bindAll(this, [
             'downloadProject',
+            'getSaveFormatFromFilename',
             'saveAsNew',
             'saveToLastFile',
             'saveToLastFileOrNew'
         ]);
+    }
+    getSaveFormatFromFilename (filename) {
+        if (typeof filename === 'string' && filename.toLowerCase().endsWith('.sb3')) {
+            return 'sb3';
+        }
+        return 'ubp';
     }
     startedSaving () {
         this.props.onShowSavingAlert();
@@ -86,7 +93,7 @@ class SB3Downloader extends React.Component {
             return;
         }
         this.startedSaving();
-        this.props.saveProjectSb3().then(content => {
+        this.props.saveProjectUbp().then(content => {
             this.finishedSaving();
             downloadBlob(this.props.projectFilename, content);
         });
@@ -102,7 +109,13 @@ class SB3Downloader extends React.Component {
                     {
                         description: 'Unsandboxed Project',
                         accept: {
-                            'application/octet-stream': '.ubp',
+                            'application/x.unsandboxed-ubp': '.ubp',
+                        }
+                    },
+                    {
+                        description: 'Scratch Project',
+                        accept: {
+                            'application/x.scratch.sb3': '.sb3'
                         }
                     }
                 ],
@@ -138,11 +151,14 @@ class SB3Downloader extends React.Component {
 
         const writable = await handle.createWritable();
         this.startedSaving();
+        const format = this.getSaveFormatFromFilename(handle.name);
 
         await new Promise((resolve, reject) => {
             // Projects can be very large, so we'll utilize JSZip's stream API to avoid having the
             // entire sb3 in memory at the same time.
-            const jszipStream = this.props.saveProjectSb3Stream();
+            const jszipStream = format === 'sb3' ?
+                this.props.saveProjectSb3Stream() :
+                this.props.saveProjectUbpStream();
 
             const abortController = new AbortController();
             jszipStream.on('error', error => {
@@ -284,6 +300,8 @@ SB3Downloader.propTypes = {
     projectFilename: PropTypes.string,
     saveProjectSb3: PropTypes.func,
     saveProjectSb3Stream: PropTypes.func,
+    saveProjectUbp: PropTypes.func,
+    saveProjectUbpStream: PropTypes.func,
     canSaveProject: PropTypes.bool,
     onSetFileHandle: PropTypes.func,
     onSetProjectTitle: PropTypes.func,
@@ -304,6 +322,8 @@ const mapStateToProps = state => ({
     fileHandle: state.scratchGui.tw.fileHandle,
     saveProjectSb3: state.scratchGui.vm.saveProjectSb3.bind(state.scratchGui.vm),
     saveProjectSb3Stream: state.scratchGui.vm.saveProjectSb3Stream.bind(state.scratchGui.vm),
+    saveProjectUbp: state.scratchGui.vm.saveProjectUbp.bind(state.scratchGui.vm),
+    saveProjectUbpStream: state.scratchGui.vm.saveProjectUbpStream.bind(state.scratchGui.vm),
     canSaveProject: getIsShowingProject(state.scratchGui.projectState.loadingState),
     projectFilename: getProjectFilename(state.scratchGui.projectTitle, projectTitleInitialState)
 });
