@@ -103,6 +103,7 @@ const projectData = translateFunction => {
         meta: {
             semver: '3.0.0',
             vm: '0.1.0',
+            ubpVersion: 1,
             agent: ''
         }
     });
