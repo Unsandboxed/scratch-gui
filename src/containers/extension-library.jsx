@@ -200,27 +200,6 @@ const hasMeaningfulMetadataDiff = (localItem, bundledItem) => {
     return normalizeCreditsForComparison(localItem.credits) !== normalizeCreditsForComparison(bundledItem.credits);
 };
 
-const mergeDevTags = (...tagLists) => {
-    const tags = new Set();
-
-    for (const list of tagLists) {
-        if (!Array.isArray(list)) {
-            continue;
-        }
-
-        for (const tag of list) {
-            const normalized = typeof tag === 'string' ? tag.trim() : '';
-            if (normalized) {
-                tags.add(normalized);
-            }
-        }
-    }
-
-    tags.add('usb');
-    tags.add('dev');
-    return Array.from(tags);
-};
-
 const translateGalleryItem = (extension, locale) => ({
     ...extension,
     name: extension.nameTranslations[locale] || extension.name,
@@ -229,17 +208,26 @@ const translateGalleryItem = (extension, locale) => ({
 
 // Manual ordering for the full extension list by extension ID.
 const PRIMARY_EXTENSION_ORDER = [
+    // Core data and utility blocks
     'usbArrays',
     'usbObjects',
-    'text', // tw animated text (lab/text)
-    'stretch', // wont be around for long but we want it to be high priority while it is
-    'pen',
-    'usbIteration',
+    'usbTypes',
+    'usbVectors',
     'usbTemporaryData',
     'usbRuntime',
+    'usbIteration',
+    // Input and interaction
     'usbMouse',
     'usbTouch',
+    // Visual/compositing
     'usbComments',
+    'usbSpriteTags',
+    'usbBlendingEffects',
+    'usbClipMask',
+    'text', // tw animated text (lab/text)
+    'stretch', // wont be around for long but we want it to be high priority while it is
+    // Built-in Scratch cards
+    'pen',
     'music',
     'videoSensing',
     'text2speech',
@@ -251,6 +239,11 @@ const TEMP_MINIMAL_LIBRARY_MODE = false;
 
 // Allowlist of default extension IDs that stay visible in temporary curation mode.
 const TEMP_VISIBLE_DEFAULT_EXTENSION_IDS = ['custom_extension'];
+
+// TurboWarp IDs to suppress when we provide our own canonical implementation.
+const SUPPRESSED_TURBOWARP_EXTENSION_IDS = new Set([
+    'stretch'
+]);
 
 const orderById = (extensions, orderedIds) => {
     if (!orderedIds.length) {
@@ -374,7 +367,8 @@ const constructUnsandboxedLibrary = async () => {
                 if (!bundledItem) {
                     promotedLocal.push({
                         ...localItem,
-                        tags: mergeDevTags(localItem.tags),
+                        // Keep Unsandboxed cards grouped only under USB + Dev.
+                        tags: ['usb', 'dev'],
                         localDevStatus: LOCAL_DEV_STATUS.LOCAL_ONLY,
                         featured: true
                     });
@@ -398,7 +392,8 @@ const constructUnsandboxedLibrary = async () => {
                     insetColor: item.insetColor || localItem.insetColor,
                     // Local dev source should be the default load URL whenever available.
                     extensionURL: localItem.extensionURL || item.extensionURL,
-                    tags: mergeDevTags(item.tags, localItem.tags),
+                    // Keep Unsandboxed cards grouped only under USB + Dev.
+                    tags: ['usb', 'dev'],
                     localDevStatus: LOCAL_DEV_STATUS.LOCAL_OVERRIDE,
                     localDevHasMetadataDiff: hasDiff,
                     featured: true
@@ -694,6 +689,7 @@ class ExtensionLibrary extends React.PureComponent {
 
                 const translatedTurboWarp = this.state.turbowarpGallery
                     .filter(i => i.extensionId !== 'faceSensing')
+                    .filter(i => !SUPPRESSED_TURBOWARP_EXTENSION_IDS.has(i.extensionId))
                     .map(i => translateGalleryItem(i, locale));
 
                 const primaryOrderSet = new Set(PRIMARY_EXTENSION_ORDER);
@@ -709,6 +705,9 @@ class ExtensionLibrary extends React.PureComponent {
                 const uniqueNonTurboWarpExtensions = dedupeExtensions(allNonTurboWarpExtensions);
                 const seenIds = new Set(uniqueNonTurboWarpExtensions
                     .map(item => item && item.extensionId)
+                    .filter(Boolean));
+                const seenNames = new Set(uniqueNonTurboWarpExtensions
+                    .map(item => toSearchableText(item && item.name))
                     .filter(Boolean));
 
                 const localDevPriority = orderById(
@@ -728,7 +727,10 @@ class ExtensionLibrary extends React.PureComponent {
 
                 const turbowarpSection = orderById(
                     translatedTurboWarp
-                        .filter(item => !seenIds.has(item.extensionId)),
+                        .filter(item => !seenIds.has(item.extensionId))
+                        // Prevent duplicate-looking cards (e.g. Comment Blocks) from appearing twice
+                        // under different sources with different IDs.
+                        .filter(item => !seenNames.has(toSearchableText(item && item.name))),
                     PRIMARY_EXTENSION_ORDER
                 );
 
