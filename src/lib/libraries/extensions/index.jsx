@@ -81,13 +81,10 @@ export const blacklist = new Set([
     'skyhigh173JSON',
     'clayhtmlencode',
     // the following are for having our own versions tailored to our mod
-    // TODO: cast, runtime options, clones plus
+    // TODO: cast, runtime options
     // NONE RIGHT NOW :<
     // the following are for bad conduct towards oss
     '0832rxfs2',
-    // these are Unsandboxed extensions, but require special APIs that arent 
-    // released yet.
-    'usbClonesPlus',
 ]);
 
 export default [
