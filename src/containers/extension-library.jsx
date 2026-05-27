@@ -208,25 +208,23 @@ const translateGalleryItem = (extension, locale) => ({
 
 // Manual ordering for the full extension list by extension ID.
 const PRIMARY_EXTENSION_ORDER = [
-    // Core data and utility blocks
     'usbArrays',
     'usbObjects',
-    'usbTypes',
-    'usbVectors',
     'usbTemporaryData',
-    'usbRuntime',
-    'usbIteration',
-    // Input and interaction
-    'usbMouse',
-    'usbTouch',
-    // Visual/compositing
-    'usbComments',
-    'usbSpriteTags',
+    'usbClonesPlus',
     'usbBlendingEffects',
     'usbClipMask',
-    'text', // tw animated text (lab/text)
-    'stretch', // wont be around for long but we want it to be high priority while it is
-    // Built-in Scratch cards
+    'stretch',
+    'usbIteration',
+    'usbLambda',
+    'usbSpriteTags',
+    'usbVectors',
+    'usbMouse',
+    'usbTypes',
+    'usbRuntime',
+    'usbComments',
+    'usbTouch',
+    'text',
     'pen',
     'music',
     'videoSensing',
