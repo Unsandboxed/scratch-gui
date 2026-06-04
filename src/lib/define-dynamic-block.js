@@ -167,9 +167,48 @@ const defineDynamicBlock = (ScratchBlocks, categoryInfo, staticBlockInfo, extend
             // TODO handle E/C Blocks
             const blockText = blockInfo.text;
             const args = [];
+            const nonReporterMenuDefaults = {};
             let argCount = 0;
             const scratchBlocksStyleText = blockText.replace(/\[(.+?)]/g, (match, argName) => {
                 const arg = blockInfo.arguments[argName];
+                const menuName = arg && arg.menu;
+                const menuInfo = menuName && categoryInfo.convertedMenuInfo ?
+                    categoryInfo.convertedMenuInfo[menuName] : null;
+                const hasMenu = Boolean(menuInfo);
+                const canAcceptReporters = Boolean(menuInfo && menuInfo.acceptReporters);
+
+                if (hasMenu && !canAcceptReporters) {
+                    const isDynamicTerminalMenu = blockInfo.dynamicTerminalField === argName;
+                    const terminalValues = Array.isArray(blockInfo.terminalValues) ?
+                        blockInfo.terminalValues.map(value => String(value).trim().toLowerCase()) : [];
+                    const dropdownOptions =
+                        isDynamicTerminalMenu && Array.isArray(menuInfo.items) ?
+                            function () {
+                                const allOptions = menuInfo.items;
+                                if (
+                                    this.sourceBlock_ &&
+                                    this.sourceBlock_.nextConnection &&
+                                    this.sourceBlock_.nextConnection.isConnected()
+                                ) {
+                                    return allOptions.filter(option => {
+                                        const optionValue = option && option[1];
+                                        return !terminalValues.includes(String(optionValue).trim().toLowerCase());
+                                    });
+                                }
+                                return allOptions;
+                            } : menuInfo.items;
+
+                    args.push({
+                        type: 'field_dropdown',
+                        name: argName,
+                        options: dropdownOptions
+                    });
+                    if (arg && typeof arg.defaultValue !== 'undefined' && arg.defaultValue !== null) {
+                        nonReporterMenuDefaults[argName] = String(arg.defaultValue);
+                    }
+                    return `%${++argCount}`;
+                }
+
                 switch (arg.type) {
                 case ArgumentType.STRING:
                     args.push({type: 'input_value', name: argName});
@@ -181,6 +220,88 @@ const defineDynamicBlock = (ScratchBlocks, categoryInfo, staticBlockInfo, extend
                 return `%${++argCount}`;
             });
             this.interpolate_(scratchBlocksStyleText, args);
+
+            // Dynamic extension blocks skip normal field XML serialization, so restore
+            // non-reporter menu values from blockInfo argument defaults.
+            for (const [fieldName, fieldValue] of Object.entries(nonReporterMenuDefaults)) {
+                const field = this.getField(fieldName);
+                if (!field || typeof field.setValue !== 'function') {
+                    continue;
+                }
+                field.setValue(fieldValue);
+            }
+
+            // Match control_stop behavior for terminal/non-terminal toggles by
+            // mutating blockInfo + connection shape inside a field validator.
+            const terminalFieldName = blockInfo.dynamicTerminalField;
+            if (terminalFieldName) {
+                const terminalField = this.getField(terminalFieldName);
+                if (terminalField && !terminalField.__dynamicTerminalValidatorInstalled) {
+                    const terminalValues = Array.isArray(blockInfo.terminalValues) ?
+                        blockInfo.terminalValues.map(value => String(value).trim().toLowerCase()) : [];
+                    const previousValidator = typeof terminalField.getValidator === 'function' ?
+                        terminalField.getValidator() : null;
+
+                    terminalField.setValidator(function (option) {
+                        ScratchBlocks.Events.setGroup(true);
+                        try {
+                            let nextOption = option;
+                            if (typeof previousValidator === 'function') {
+                                nextOption = previousValidator.call(this, option);
+                            }
+                            if (nextOption === null) {
+                                return null;
+                            }
+
+                            const sourceBlock = this.sourceBlock_;
+                            if (!sourceBlock) {
+                                this.setValue(nextOption);
+                                return null;
+                            }
+
+                            const oldMutation = ScratchBlocks.Xml.domToText(sourceBlock.mutationToDom());
+                            const normalizedValue = String(nextOption).trim().toLowerCase();
+                            const shouldBeTerminal = terminalValues.includes(normalizedValue);
+
+                            let nextBlockInfo = null;
+                            if (sourceBlock.blockInfoText) {
+                                try {
+                                    nextBlockInfo = JSON.parse(sourceBlock.blockInfoText);
+                                } catch (error) {
+                                    nextBlockInfo = null;
+                                }
+                            }
+                            if (nextBlockInfo) {
+                                nextBlockInfo.isTerminal = shouldBeTerminal;
+                                if (
+                                    nextBlockInfo.arguments &&
+                                    nextBlockInfo.arguments[terminalFieldName]
+                                ) {
+                                    nextBlockInfo.arguments[terminalFieldName].defaultValue = nextOption;
+                                }
+                                sourceBlock.blockInfoText = JSON.stringify(nextBlockInfo);
+                            }
+
+                            sourceBlock.setNextStatement(!shouldBeTerminal);
+                            const newMutation = ScratchBlocks.Xml.domToText(sourceBlock.mutationToDom());
+                            ScratchBlocks.Events.fire(new ScratchBlocks.Events.BlockChange(
+                                sourceBlock,
+                                'mutation',
+                                null,
+                                oldMutation,
+                                newMutation
+                            ));
+
+                            this.setValue(nextOption);
+                            return null;
+                        } finally {
+                            ScratchBlocks.Events.setGroup(false);
+                        }
+                    });
+
+                    terminalField.__dynamicTerminalValidatorInstalled = true;
+                }
+            }
         }
     });
 };

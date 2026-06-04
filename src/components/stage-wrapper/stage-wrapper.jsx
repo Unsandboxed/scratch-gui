@@ -8,6 +8,7 @@ import {STAGE_DISPLAY_SIZES} from '../../lib/layout-constants.js';
 import StageHeader from '../../containers/stage-header.jsx';
 import Stage from '../../containers/stage.jsx';
 import Loader from '../loader/loader.jsx';
+import ExtensionErrorPopup from '../../containers/extension-error-popup.jsx';
 
 import styles from './stage-wrapper.css';
 
@@ -51,6 +52,7 @@ const StageWrapperComponent = function (props) {
                         null
                 }
             </Box>
+            <ExtensionErrorPopup />
             {loading ? (
                 <Loader isFullScreen={isFullScreen} />
             ) : null}

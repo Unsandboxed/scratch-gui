@@ -318,15 +318,20 @@ SB3Downloader.defaultProps = {
         null
 };
 
-const mapStateToProps = state => ({
-    fileHandle: state.scratchGui.tw.fileHandle,
-    saveProjectSb3: state.scratchGui.vm.saveProjectSb3.bind(state.scratchGui.vm),
-    saveProjectSb3Stream: state.scratchGui.vm.saveProjectSb3Stream.bind(state.scratchGui.vm),
-    saveProjectUbp: state.scratchGui.vm.saveProjectUbp.bind(state.scratchGui.vm),
-    saveProjectUbpStream: state.scratchGui.vm.saveProjectUbpStream.bind(state.scratchGui.vm),
-    canSaveProject: getIsShowingProject(state.scratchGui.projectState.loadingState),
-    projectFilename: getProjectFilename(state.scratchGui.projectTitle, projectTitleInitialState)
-});
+const mapStateToProps = state => {
+    const vm = state.scratchGui.vm;
+    const uninitialized = () => Promise.reject(new Error('VM is not initialized yet.'));
+
+    return {
+        fileHandle: state.scratchGui.tw.fileHandle,
+        saveProjectSb3: vm && vm.saveProjectSb3 ? vm.saveProjectSb3.bind(vm) : uninitialized,
+        saveProjectSb3Stream: vm && vm.saveProjectSb3Stream ? vm.saveProjectSb3Stream.bind(vm) : uninitialized,
+        saveProjectUbp: vm && vm.saveProjectUbp ? vm.saveProjectUbp.bind(vm) : uninitialized,
+        saveProjectUbpStream: vm && vm.saveProjectUbpStream ? vm.saveProjectUbpStream.bind(vm) : uninitialized,
+        canSaveProject: !!vm && getIsShowingProject(state.scratchGui.projectState.loadingState),
+        projectFilename: getProjectFilename(state.scratchGui.projectTitle, projectTitleInitialState)
+    };
+};
 
 const mapDispatchToProps = dispatch => ({
     onSetFileHandle: fileHandle => dispatch(setFileHandle(fileHandle)),

@@ -13,6 +13,7 @@ import {
     updateExtensionModal,
     closeExtensionModal
 } from '../reducers/extension-modals';
+import {addExtensionError} from '../reducers/extension-errors';
 
 /**
  * Implements Scratch.gui API for unsandboxed extensions.
@@ -269,6 +270,25 @@ const implementGuiAPI = Scratch => {
             return document.querySelector(`[data-extension-modal-body='${normalizedId}']`);
         },
         getThemeMetrics
+    };
+
+    /**
+     * Display an extension issue popup on the stage area.
+     * @param {string} spriteName - Name of the sprite or extension that triggered the issue
+     * @param {string} message    - Human-readable message
+     * @param {string} [blockId]  - Optional block ID to jump to when clicked
+     * @param {string} [errorType="error"] - Severity type: error or warning
+     */
+    Scratch.gui.throwExtensionError = (spriteName, message, blockId, errorType = 'error') => {
+        const store = getStore();
+        if (!store) return;
+        const normalizedType = `${errorType || ''}`.trim().toLowerCase() === 'warning' ? 'warning' : 'error';
+        store.dispatch(addExtensionError({
+            spriteName: `${spriteName || ''}`,
+            message: `${message || ''}`,
+            blockId: blockId ? `${blockId}` : null,
+            errorType: normalizedType
+        }));
     };
 };
 
