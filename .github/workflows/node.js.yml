@@ -27,6 +27,7 @@ jobs:
         node-version-file: .nvmrc
         cache: npm
     - run: npm update
+    - run: npm run prepublish
     - run: npm run build
       env:
         NODE_ENV: production
