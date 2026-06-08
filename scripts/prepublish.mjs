@@ -8,7 +8,7 @@ import fs from 'fs';
 import path from 'path';
 import nodeCrypto from 'crypto';
 
-import crossFetch from 'cross-fetch';
+import fetch from 'node-fetch';
 import yauzl from 'yauzl';
 import {fileURLToPath} from 'url';
 
@@ -81,7 +81,7 @@ const downloadMicrobitHex = async () => {
     const url = 'https://packagerdata.turbowarp.org/scratch-microbit-1.2.0.hex.zip';
     const expectedSHA256 = 'dfd574b709307fe76c44dbb6b0ac8942e7908f4d5c18359fae25fbda3c9f4399';
     console.info(`Downloading ${url}`);
-    const response = await crossFetch(url);
+    const response = await fetch(url);
     const zipBuffer = Buffer.from(await response.arrayBuffer());
     const sha256 = nodeCrypto.createHash('sha-256').update(zipBuffer).digest('hex');
     if (sha256 !== expectedSHA256) {
