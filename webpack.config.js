@@ -66,6 +66,7 @@ const base = {
     resolve: {
         symlinks: false,
         alias: {
+            '@turbowarp/jszip$': path.resolve(__dirname, 'node_modules/@turbowarp/jszip/dist/jszip.min.js'),
             'text-encoding$': path.resolve(__dirname, 'src/lib/tw-text-encoder'),
             'scratch-render-fonts$': path.resolve(__dirname, 'src/lib/tw-scratch-render-fonts')
         }
