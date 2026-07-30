@@ -9,6 +9,8 @@ import booleanInputIcon from './icon--boolean-input.svg';
 import objectInputIcon from './icon--object-input.svg';
 import arrayInputIcon from './icon--array-input.svg';
 import textInputIcon from './icon--text-input.svg';
+import colorInputIcon from './icon--color-input.svg';
+import numberMenuInputIcon from './icon--number-menu.svg';
 import dropdownInputIcon from './icon--dropdown.svg';
 import branchIcon from './icon--branch.svg';
 import labelIcon from './icon--label.svg';
@@ -27,7 +29,7 @@ const CustomProcedures = props => {
     const [inputIcon, setInputIcon] = useState(textInputIcon);
     useEffect(() => {
         switch (props.menuOption) {
-        case 'stringornumber': // To be split up as string and number types on a later date
+        case 'stringornumber':
             setInputIcon(textInputIcon);
             break;
         case 'boolean':
@@ -38,6 +40,12 @@ const CustomProcedures = props => {
             break;
         case 'array':
             setInputIcon(arrayInputIcon);
+            break;
+        case 'color':
+            setInputIcon(colorInputIcon);
+            break;
+        case 'numbermenu':
+            setInputIcon(numberMenuInputIcon);
             break;
         }
     }, [props.menuOption]);
@@ -82,6 +90,8 @@ const CustomProcedures = props => {
                             <option value="boolean">boolean</option>
                             <option value="object">object</option>
                             <option value="array">array</option>
+                            <option value="color">color</option>
+                            <option value="numbermenu">number menu</option>
                         </select>
                     </div>
                     <div
@@ -96,6 +106,236 @@ const CustomProcedures = props => {
                             draggable={false}
                         />
                         <div className={styles.optionTitle}>
+                            <FormattedMessage
+                                defaultMessage="Add a dropdown"
+                                description="Label for button to add a dropdown"
+                                id="gui.customProcedures.addADropdown"
+                            />
+                        </div>
+                    </div>
+                    <div
+                        className={styles.optionCard}
+                        role="button"
+                        tabIndex="0"
+                        onClick={props.onAddBranch}
+                    >
+                        <img
+                            className={styles.optionIcon}
+                            src={branchIcon}
+                            draggable={false}
+                        />
+                        <div className={styles.optionTitle}>
+                            <FormattedMessage
+                                defaultMessage="Add a branch"
+                                description="Label for button to add a branch"
+                                id="gui.customProcedures.addABranch"
+                            />
+                        </div>
+                    </div>
+                    <div
+                        className={styles.optionCard}
+                        role="button"
+                        tabIndex="0"
+                        onClick={props.onAddLabel}
+                    >
+                        <img
+                            className={styles.optionIcon}
+                            src={labelIcon}
+                            draggable={false}
+                        />
+                        <div className={styles.optionTitle}>
+                            <FormattedMessage
+                                defaultMessage="Add a label"
+                                description="Label for button to add a label"
+                                id="gui.customProcedures.addALabel"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div className={styles.sectionTitle}>
+                    <FormattedMessage
+                        defaultMessage="Select a color"
+                        description="Label for row of color options"
+                        id="gui.customProcedures.selectAColorText"
+                    />
+                </div>
+                <Box className={styles.colorRow}>
+                    <span
+                        style={{backgroundColor: '#FF6680'}}
+                        className={styles.colorOption}
+                        role="button"
+                        color="#FF6680"
+                        draggable={false}
+                        onClick={props.setColor}
+                    />
+                    <span
+                        style={{backgroundColor: '#4C97FF'}}
+                        className={styles.colorOption}
+                        role="button"
+                        color="#4C97FF"
+                        draggable={false}
+                        onClick={props.setColor}
+                    />
+                    <span
+                        style={{backgroundColor: '#9966FF'}}
+                        className={styles.colorOption}
+                        role="button"
+                        color="#9966FF"
+                        draggable={false}
+                        onClick={props.setColor}
+                    />
+                    <span
+                        style={{backgroundColor: '#CF63CF'}}
+                        className={styles.colorOption}
+                        role="button"
+                        color="#CF63CF"
+                        draggable={false}
+                        onClick={props.setColor}
+                    />
+                    <span
+                        style={{backgroundColor: '#FFBF00'}}
+                        className={styles.colorOption}
+                        role="button"
+                        color="#FFBF00"
+                        draggable={false}
+                        onClick={props.setColor}
+                    />
+                    <span
+                        style={{backgroundColor: '#FFAB19'}}
+                        className={styles.colorOption}
+                        role="button"
+                        color="#FFAB19"
+                        draggable={false}
+                        onClick={props.setColor}
+                    />
+                    <span
+                        style={{backgroundColor: '#5CB1D6'}}
+                        className={styles.colorOption}
+                        role="button"
+                        color="#5CB1D6"
+                        draggable={false}
+                        onClick={props.setColor}
+                    />
+                    <span
+                        style={{backgroundColor: '#59C059'}}
+                        className={styles.colorOption}
+                        role="button"
+                        color="#59C059"
+                        draggable={false}
+                        onClick={props.setColor}
+                    />
+                    <span
+                        style={{backgroundColor: '#FF8C1A'}}
+                        className={styles.colorOption}
+                        role="button"
+                        color="#FF8C1A"
+                        draggable={false}
+                        onClick={props.setColor}
+                    />
+                    <span
+                        style={{backgroundColor: '#FF661A'}}
+                        className={styles.colorOption}
+                        role="button"
+                        color="#FF661A"
+                        draggable={false}
+                        onClick={props.setColor}
+                    />
+                    <span
+                        style={{backgroundColor: '#66BD5C'}}
+                        className={styles.colorOption}
+                        role="button"
+                        color="#66BD5C"
+                        draggable={false}
+                        onClick={props.setColor}
+                    />
+                    <span
+                        style={{backgroundColor: '#5755D4'}}
+                        className={styles.colorOption}
+                        role="button"
+                        color="#5755D4"
+                        draggable={false}
+                        onClick={props.setColor}
+                    />
+                    <input
+                        style={{backgroundColor: props.colour}}
+                        type="color"
+                        value={props.colour}
+                        className={styles.colorPicker}
+                        onChange={props.setColor}
+                    />
+                </Box>
+                <div className={styles.checkboxRow}>
+                    <label>
+                        <FancyCheckbox
+                            checked={props.warp}
+                            onChange={props.onToggleWarp}
+                        />
+                        <FormattedMessage
+                            defaultMessage="Run without screen refresh"
+                            description="Label for checkbox to run without screen refresh"
+                            id="gui.customProcedures.runWithoutScreenRefresh"
+                        />
+                    </label>
+                </div>
+                <div className={styles.checkboxRow}>
+                    <label>
+                        <FancyCheckbox
+                            checked={props.global}
+                            onChange={props.onToggleGlobal}
+                        />
+                        <FormattedMessage
+                            defaultMessage="For all sprites"
+                            description="Label for checkbox to toggle availability for all sprites"
+                            id="gui.customProcedures.forAllSprites"
+                        />
+                    </label>
+                </div>
+                <Box className={styles.buttonRow}>
+                    <button
+                        className={styles.cancelButton}
+                        onClick={props.onCancel}
+                    >
+                        <FormattedMessage
+                            defaultMessage="Cancel"
+                            description="Label for button to cancel custom procedure edits"
+                            id="gui.customProcedures.cancel"
+                        />
+                    </button>
+                    <button
+                        className={styles.okButton}
+                        onClick={props.onOk}
+                    >
+                        <FormattedMessage
+                            defaultMessage="OK"
+                            description="Label for button to save new custom procedure"
+                            id="gui.customProcedures.ok"
+                        />
+                    </button>
+                </Box>
+            </Box>
+        </Modal>
+    );
+};
+
+CustomProcedures.propTypes = {
+    componentRef: PropTypes.func.isRequired,
+    intl: intlShape,
+    onAddInput: PropTypes.func.isRequired,
+    onAddDropdown: PropTypes.func.isRequired,
+    onAddBranch: PropTypes.func.isRequired,
+    onAddLabel: PropTypes.func.isRequired,
+    handlePropagation: PropTypes.func.isRequired,
+    handleInputMenuChange: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+    onOk: PropTypes.func.isRequired,
+    onToggleWarp: PropTypes.func.isRequired,
+    warp: PropTypes.bool.isRequired,
+    onToggleGlobal: PropTypes.func.isRequired,
+    global: PropTypes.bool.isRequired
+};
+
+export default injectIntl(CustomProcedures);
                             <FormattedMessage
                                 defaultMessage="Add a dropdown"
                                 description="Label for button to add a dropdown"
