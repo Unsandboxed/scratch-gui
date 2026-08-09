@@ -36,7 +36,7 @@ const colors = [
     {color: "#FF661A", id: "colours_data_lists"},
     {color: "#FF6680", id: "colours_more"},
     {color: "#0fBD8C", id: "colours_pen"},
-]
+];
 
 const CustomProcedures = props => (
     <Modal
@@ -209,6 +209,20 @@ const CustomProcedures = props => (
                 <label className={styles.checkboxContainer}>
                     <FancyCheckbox
                         className={styles.checkbox}
+                        checked={props.terminal}
+                        onChange={props.onToggleTerminal}
+                    />
+                    <FormattedMessage
+                        defaultMessage="End-capped block"
+                        description="Label for checkbox to make an end-capped/terminal custom block"
+                        id="gui.customProcedures.terminalBlock"
+                    />
+                </label>
+            </div>
+            <div className={styles.checkboxRow}>
+                <label className={styles.checkboxContainer}>
+                    <FancyCheckbox
+                        className={styles.checkbox}
                         checked={props.warp}
                         onChange={props.onToggleWarp}
                     />
@@ -286,10 +300,12 @@ CustomProcedures.propTypes = {
     onToggleWarp: PropTypes.func.isRequired,
     onToggleHat: PropTypes.func.isRequired,
     onToggleHatAlwaysActivated: PropTypes.func.isRequired,
+    onToggleTerminal: PropTypes.func.isRequired,
     onToggleGlobal: PropTypes.func.isRequired,
     onToggleSharedLocals: PropTypes.func.isRequired,
     warp: PropTypes.bool.isRequired,
     hat: PropTypes.bool.isRequired,
+    terminal: PropTypes.bool.isRequired,
     global: PropTypes.bool.isRequired,
     hatAlwaysActivated: PropTypes.bool.isRequired,
     sharedLocals: PropTypes.bool.isRequired
